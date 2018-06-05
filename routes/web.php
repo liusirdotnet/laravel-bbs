@@ -11,6 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::group(['namespace' => 'Web'], function () {
+
+    // 默认欢迎页。
+    Route::get('/', 'DefaultsController@welcome')->name('welcome');
 });
