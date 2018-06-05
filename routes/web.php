@@ -15,4 +15,9 @@ Route::group(['namespace' => 'Web'], function () {
 
     // 默认欢迎页。
     Route::get('/', 'DefaultsController@welcome')->name('welcome');
+
+    Auth::routes();
+
+    // 默认主页。
+    Route::get('/home', 'HomesController@index')->name('home');
 });
