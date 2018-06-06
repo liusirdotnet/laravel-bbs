@@ -10411,9 +10411,46 @@ a.text-dark:focus {
   }
 }
 
-.navbar-laravel {
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+
+.lbs-navbar {
+  border-color: #e7e7e7;
   background-color: #fff;
-  -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  -webkit-box-shadow: 0px 1px 11px 2px rgba(42, 42, 42, 0.1);
+          box-shadow: 0px 1px 11px 2px rgba(42, 42, 42, 0.1);
+  border-top: 4px solid #f06665;
+  margin-bottom: 40px;
+  margin-top: 0px;
+}
+
+.lbs-footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #000;
+}
+
+.lbs-footer .container {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.lbs-footer .container p {
+  margin: 19px 0;
+  color: #c1c1c1;
+}
+
+.lbs-footer .container p a {
+  color: inherit;
 }
 
