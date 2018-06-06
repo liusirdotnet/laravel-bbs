@@ -11,11 +11,10 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <!-- Left Side Of Navbar -->
       <ul class="navbar-nav mr-auto">
-
       </ul>
 
       <!-- Right Side Of Navbar -->
-      <ul class="navbar-nav ml-auto">
+      <ul class="navbar-nav ml-auto lbs-nav-right">
         <!-- Authentication Links -->
         @guest
           <li class="nav-item">
@@ -34,7 +33,7 @@
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="{{ route('logout') }}"
                  onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                {{ __('Login') }}
+                登录
               </a>
 
               <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
