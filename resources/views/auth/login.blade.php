@@ -55,7 +55,9 @@
 
               <div class="form-group row mb-0">
                 <div class="col-md-8 offset-md-4">
-                  <button type="submit" class="btn btn-outline-success">登录</button>
+                  <button type="submit" class="btn btn-outline-success">
+                    <i class="fa fa-sign-in-alt"></i> 登录
+                  </button>
                   <a class="btn btn-link" href="{{ route('password.request') }}">忘记密码</a>
                 </div>
               </div>

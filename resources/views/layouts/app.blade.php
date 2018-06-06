@@ -16,6 +16,8 @@
   <link rel="shortcut icon" href="/favicon.png">
 
   {{-- Styles S --}}
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
+        integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
   @yield('styles')
   {{-- Styles E --}}
