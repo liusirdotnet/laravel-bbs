@@ -68,15 +68,20 @@
                 <div class="col-md-6">
                   <input id="captcha" type="text" class="form-control{{ $errors->has('captcha') ? ' is-invalid' : '' }}"
                          name="captcha" required>
-                  <img class="img-thumbnail captcha" src="{{ captcha_src('flat') }}"
+                  @if ($errors->has('captcha'))
+                    <span class="invalid-feedback">
+                      <strong>{{ $errors->first('captcha') }}</strong>
+                    </span>
+                  @endif
+                  <img class="img-thumbnail img-captcha" src="{{ captcha_src('flat') }}"
                        onclick="this.src='/captcha/flat?'+Math.random()" title="点击图片重新获取验证码">
                 </div>
               </div>
 
               <div class="form-group row mb-0">
                 <div class="col-md-6 offset-md-4">
-                  <button type="submit" class="btn btn-primary">
-                    <i class="fa fa-cog"></i>注册
+                  <button type="submit" class="btn btn-outline-success">
+                    <i class="fa fa-user-plus"></i> 注册
                   </button>
                 </div>
               </div>
