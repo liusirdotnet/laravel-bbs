@@ -16,8 +16,6 @@ Route::group(['namespace' => 'Web'], function () {
     // 默认欢迎页。
     Route::get('/', 'DefaultsController@welcome')->name('welcome');
 
-    Auth::routes();
-
     // 用户登录登出。
     Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
     Route::post('login', 'Auth\LoginController@login');
@@ -35,4 +33,7 @@ Route::group(['namespace' => 'Web'], function () {
 
     // 默认主页。
     Route::get('/home', 'HomesController@index')->name('home');
+
+    // 用户中心。
+    Route::resource('users', 'UsersController', ['only' => ['show', 'update', 'edit']]);
 });

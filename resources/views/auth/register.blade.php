@@ -68,13 +68,13 @@
                 <div class="col-md-6">
                   <input id="captcha" type="text" class="form-control{{ $errors->has('captcha') ? ' is-invalid' : '' }}"
                          name="captcha" required>
+                  <img class="img-thumbnail img-captcha" src="{{ captcha_src('flat') }}"
+                       onclick="this.src='/captcha/flat?'+Math.random()" title="点击图片重新获取验证码">
                   @if ($errors->has('captcha'))
                     <span class="invalid-feedback">
                       <strong>{{ $errors->first('captcha') }}</strong>
                     </span>
                   @endif
-                  <img class="img-thumbnail img-captcha" src="{{ captcha_src('flat') }}"
-                       onclick="this.src='/captcha/flat?'+Math.random()" title="点击图片重新获取验证码">
                 </div>
               </div>
 
