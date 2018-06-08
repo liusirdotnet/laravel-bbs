@@ -28,6 +28,7 @@
   @include('layouts._header')
 
   <main class="lbs-main">
+    @include('layouts._message')
     @yield('content')
   </main>
 

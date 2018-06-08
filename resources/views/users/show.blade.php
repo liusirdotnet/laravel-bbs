@@ -8,16 +8,15 @@
       <div class="col-lg col-lg-3 col-md-3">
         <div class="card">
           <div class="card-body">
-            <img class="card-img-top" src="" alt="Card image cap">
+            <img class="card-img-top"
+                 src="https://lccdn.phphub.org/uploads/avatars/24031_1523004832.jpg?imageView2/1/w/100/h/100"
+                 alt="Card image cap">
             <hr>
             <h5 class="card-title">个人简介</h5>
-            <p class="card-text">
-              Some quick example text to build on the card title and make up the bulk of the card's
-              content.
-            </p>
+            <p class="card-text">{{ $user->introduction }}</p>
             <hr>
             <h5><strong>注册于</strong></h5>
-            <p>January 1 2020</p>
+            <p>{{ $user->created_at->diffForHumans() }}</p>
           </div>
         </div>
       </div>
