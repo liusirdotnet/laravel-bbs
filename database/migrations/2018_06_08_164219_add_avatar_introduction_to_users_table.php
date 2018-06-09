@@ -14,14 +14,14 @@ class AddAvatarIntroductionToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('avatar')
-                  ->nullable()
-                  ->after('password')
-                  ->comment('用户头像');
             $table->string('introduction')
                   ->nullable()
-                  ->after('avatar')
+                  ->after('password')
                   ->comment('用户简介');
+            $table->string('avatar')
+                  ->nullable()
+                  ->after('introduction')
+                  ->comment('用户头像');
         });
     }
 
@@ -33,7 +33,7 @@ class AddAvatarIntroductionToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['avatar', 'introduction']);
+            $table->dropColumn(['introduction', 'avatar']);
         });
     }
 }

@@ -10,8 +10,8 @@
           <div class="card-header">编辑个人资料</div>
 
           <div class="card-body">
-            <form method="POST" action="{{ route('users.update', \Illuminate\Support\Facades\Auth::id()) }}"
-                  accept-charset="UTF-8">
+            <form method="POST" action="{{ route('users.update', Auth::id()) }}"
+                  accept-charset="UTF-8" enctype="multipart/form-data">
               @csrf
               @method('put')
 
@@ -53,11 +53,30 @@
                 <div class="col-md-6">
                   <textarea id="introduction-field"
                             class="form-control{{ $errors->has('introduction') ? ' is-invalid' : '' }}"
-                            name="introduction"></textarea>
+                            name="introduction">{{ old('introduction', $user->introduction) }}</textarea>
 
                   @if ($errors->has('introduction'))
                     <span class="invalid-feedback">
                       <strong>{{ $errors->first('introduction') }}</strong>
+                    </span>
+                  @endif
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="avatar-field" class="col-md-4 col-form-label text-md-right">个人头像</label>
+
+                <div class="col-md-6">
+                  <input type="file" class="form-control" name="avatar">
+
+                  @if ($user->avatar)
+                    <br>
+                    <img class="img-thumbnail" src="{{ $user->avatar }}" alt="个人头像">
+                  @endif
+
+                  @if ($errors->has('avatar'))
+                    <span class="invalid-feedback">
+                      <strong>{{ $errors->first('avatar') }}</strong>
                     </span>
                   @endif
                 </div>

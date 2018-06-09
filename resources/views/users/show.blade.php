@@ -8,9 +8,10 @@
       <div class="col-lg col-lg-3 col-md-3">
         <div class="card">
           <div class="card-body">
-            <img class="card-img-top"
-                 src="https://lccdn.phphub.org/uploads/avatars/24031_1523004832.jpg?imageView2/1/w/100/h/100"
-                 alt="Card image cap">
+            <img class="card-img-top img-thumbnail"
+                 src="{{ $user->avatar }}"
+                 width="300px" height="300px"
+                 alt="个人头像">
             <hr>
             <h5 class="card-title">个人简介</h5>
             <p class="card-text">{{ $user->introduction }}</p>

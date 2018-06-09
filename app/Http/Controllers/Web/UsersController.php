@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Handlers\ImageHandler;
 use App\Http\Requests\Web\UserFormRequest;
 use App\Models\User;
+use function Couchbase\defaultDecoder;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -41,12 +43,24 @@ class UsersController extends Controller
      *
      * @param \App\Http\Requests\Web\UserFormRequest $request
      * @param \App\Models\User                       $user
+     * @param \App\Handlers\ImageHandler             $handler
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UserFormRequest $request, User $user)
-    {
-        $user->update($request->all());
+    public function update(
+        UserFormRequest $request,
+        User $user,
+        ImageHandler $handler
+    ) {
+        $data = $request->all();
+
+        if ($request->avatar) {
+            $result = $handler->upload($request->avatar, 'avatars', $user->id);
+            if ($result) {
+                $data['avatar'] = $result['path'];
+            }
+        }
+        $user->update($data);
 
         return redirect()->route('users.show', $user->id)
                          ->with('success', '个人资料更新成功！');
