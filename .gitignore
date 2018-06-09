@@ -11,6 +11,7 @@ yarn-error.log
 ## Laravel
 /public/hot
 /public/storage
+/public/uploads
 /storage/*.key
 /vendor
 .env
