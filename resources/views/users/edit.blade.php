@@ -67,17 +67,17 @@
                 <label for="avatar-field" class="col-md-4 col-form-label text-md-right">个人头像</label>
 
                 <div class="col-md-6">
-                  <input type="file" class="form-control" name="avatar">
-
-                  @if ($user->avatar)
-                    <br>
-                    <img class="img-thumbnail" src="{{ $user->avatar }}" alt="个人头像">
-                  @endif
-
+                  <input type="file" class="form-control{{ $errors->has('avatar') ? ' is-invalid' : '' }}"
+                         name="avatar">
                   @if ($errors->has('avatar'))
                     <span class="invalid-feedback">
                       <strong>{{ $errors->first('avatar') }}</strong>
                     </span>
+                  @endif
+
+                  @if ($user->avatar)
+                    <br>
+                    <img class="img-thumbnail" src="{{ $user->avatar }}" alt="个人头像">
                   @endif
                 </div>
               </div>

@@ -10427,13 +10427,15 @@ body {
   -webkit-box-shadow: 0px 1px 11px 2px rgba(42, 42, 42, 0.1);
           box-shadow: 0px 1px 11px 2px rgba(42, 42, 42, 0.1);
   border-top: 4px solid #f06665;
-  margin-bottom: 40px;
-  margin-top: 0px;
 }
 
 .form-group .img-captcha {
   margin-top: 10px;
   cursor: pointer;
+}
+
+.lbs-main {
+  margin-top: 10%;
 }
 
 .lbs-footer {
