@@ -3,6 +3,7 @@
 namespace App\Handlers;
 
 use Illuminate\Http\UploadedFile;
+use Image;
 
 class ImageHandler
 {
@@ -17,10 +18,11 @@ class ImageHandler
      * @param \Illuminate\Http\UploadedFile $file
      * @param string                        $folder
      * @param string                        $prefix
+     * @param mixed                         $maxWidth
      *
      * @return array|bool
      */
-    public function upload(UploadedFile $file, $folder, $prefix)
+    public function upload(UploadedFile $file, $folder, $prefix, $maxWidth = false)
     {
         $folder = 'uploads/images/' . $folder . '/' . date('Ym/d');
         $ext = strtolower($file->getClientOriginalExtension()) ?: 'png';
@@ -32,8 +34,28 @@ class ImageHandler
 
         $file->move($folder, $filename);
 
+        if ($maxWidth && $ext !== 'gif') {
+            $this->reduceSize("$folder/$filename", $maxWidth);
+        }
+
         return [
             'path' => config('app.url') . "/$folder/$filename",
         ];
+    }
+
+    /**
+     * 缩小尺寸。
+     *
+     * @param string $path
+     * @param int    $width
+     */
+    public function reduceSize($path, $width)
+    {
+        $image = Image::make($path);
+        $image->resize($width, null, function ($constraint) {
+            $constraint->aspectRatio();
+            $constraint->upsize();
+        });
+        $image->save();
     }
 }
