@@ -5,13 +5,19 @@ namespace App\Http\Controllers\Web;
 use App\Handlers\ImageHandler;
 use App\Http\Requests\Web\UserFormRequest;
 use App\Models\User;
-use function Couchbase\defaultDecoder;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller
 {
+    /**
+     * UsersController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth', ['only' => 'show']);
+    }
+
     /**
      * 用户信息展示页。
      *
@@ -32,9 +38,13 @@ class UsersController extends Controller
      * @param \App\Models\User         $user
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(Request $request, User $user)
     {
+        $this->authorize('update', $user);
+
         return view('users.edit', compact('user'));
     }
 
@@ -46,12 +56,15 @@ class UsersController extends Controller
      * @param \App\Handlers\ImageHandler             $handler
      *
      * @return \Illuminate\Http\RedirectResponse
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(
         UserFormRequest $request,
         User $user,
         ImageHandler $handler
     ) {
+        $this->authorize('update', $user);
         $data = $request->all();
 
         if ($request->avatar) {
