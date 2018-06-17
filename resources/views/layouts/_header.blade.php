@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-light fixed-top lbs-navbar">
+<nav class="navbar navbar-expand-md navbar-light shadow-sm lbs-navbar">
   <div class="container">
     <a class="navbar-brand" href="{{ url('/') }}">
       {{ config('app.name', 'Laravel-BBS') }}
