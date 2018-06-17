@@ -19,7 +19,7 @@ class UsersController extends Controller
     }
 
     /**
-     * 用户信息展示页。
+     * 用户详情页。
      *
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\User         $user
@@ -32,7 +32,7 @@ class UsersController extends Controller
     }
 
     /**
-     * 用户信息编辑页。
+     * 用户编辑页。
      *
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\User         $user
@@ -49,7 +49,7 @@ class UsersController extends Controller
     }
 
     /**
-     * 用户信息更新操作。
+     * 用户更新操作。
      *
      * @param \App\Http\Requests\Web\UserFormRequest $request
      * @param \App\Models\User                       $user
