@@ -10,7 +10,7 @@
             <div class="pull-right badge badge-secondary">{{ $topic->reply_count }}</div>
           </h5>
           <div class="media-meta">
-            <a href="#" title="{{ $topic->category->name }}">
+            <a href="{{ route('categories.show', $topic->category->id) }}" title="{{ $topic->category->name }}">
               <i class="fa fa-folder-open"></i> {{ $topic->category->name }}
             </a>
             <span>&nbsp;•&nbsp;</span>

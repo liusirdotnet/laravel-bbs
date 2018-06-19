@@ -12,7 +12,19 @@
       <!-- Left Side Of Navbar -->
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" href="{{ url('/') }}"> 首页<span class="sr-only"></span></a>
+          <a href="{{ url('/') }}" class="nav-link"> 首页<span class="sr-only"></span></a>
+        </li>
+        <li class="nav-item">
+          <a href="{{ route('categories.show', 1) }}" class="nav-link"> 分享<span class="sr-only"></span></a>
+        </li>
+        <li class="nav-item">
+          <a href="{{ route('categories.show', 2) }}" class="nav-link"> 教程<span class="sr-only"></span></a>
+        </li>
+        <li class="nav-item">
+          <a href="{{ route('categories.show', 3) }}" class="nav-link"> 问答<span class="sr-only"></span></a>
+        </li>
+        <li class="nav-item">
+          <a href="{{ route('categories.show', 4) }}" class="nav-link"> 公告<span class="sr-only"></span></a>
         </li>
       </ul>
 
