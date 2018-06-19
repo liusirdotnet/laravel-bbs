@@ -75,6 +75,32 @@ body {
   }
 }
 
+.users-show-page {
+  .nav-tabs {
+    margin-bottom: 20px;
+
+    > li.active > a {
+      background-color: #fff;
+    }
+  }
+
+  .list-group {
+    .list-group-item {
+      border: none;
+      margin-bottom: 0;
+      border-bottom: 1px solid #efefef;
+
+      .meta {
+        color: #b3b3b3;
+      }
+    }
+  }
+
+  .pagination {
+    margin: 20px 0;
+  }
+}
+
 .lbs-footer {
   position: absolute;
   bottom: 0;
