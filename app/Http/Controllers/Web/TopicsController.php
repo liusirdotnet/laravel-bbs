@@ -20,11 +20,14 @@ class TopicsController extends Controller
     /**
      * 话题列表页。
      *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Topic        $topic
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request, Topic $topic)
     {
-        $topics = Topic::with('user', 'category')->paginate(30);
+        $topics = $topic->withOrder($request->order)->paginate(20);
 
         return view('topics.index', compact('topics'));
     }

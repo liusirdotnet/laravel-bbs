@@ -14,12 +14,15 @@ class CategoriesController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\Category     $category
+     * @param \App\Models\Topic        $topic
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function show(Request $request, Category $category)
+    public function show(Request $request, Category $category, Topic $topic)
     {
-        $topics = Topic::where('category_id', $category->id)->paginate(20);
+        $topics = $topic->withOrder($request->order)
+                        ->where('category_id', $category->id)
+                        ->paginate(20);
 
         return view('topics.index', compact('topics', 'category'));
     }
