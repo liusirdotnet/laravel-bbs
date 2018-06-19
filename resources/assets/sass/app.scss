@@ -29,6 +29,20 @@ body {
   .navbar-nav > .active > a:focus {
     color: #555;
   }
+
+  .lbs-nav-right .dropdown-menu {
+    padding: 0;
+    margin-top: 8px;
+
+    a {
+      border-bottom: 1px solid #d8d8d8;
+      line-height: 2;
+
+      .fa {
+        margin-right: 6px;
+      }
+    }
+  }
 }
 
 .form-group {

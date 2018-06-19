@@ -46,14 +46,20 @@
                 <img class="rounded-circle"
                      src="{{ Auth::user()->avatar }}" width="30px" height="30px" alt="头像">
               </span>
-              {{ Auth::user()->name }} <span class="caret"></span>
+              {{ Auth::user()->name }}
+              <span class="caret"></span>
             </a>
 
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="{{ route('users.edit', Auth::id()) }}">编辑资料</a>
-              <a class="dropdown-item" href="{{ route('logout') }}"
+              <a href="{{ route('users.show', Auth::id()) }}" class="dropdown-item">
+                <i class="fa fa-user"></i> 个人中心
+              </a>
+              <a href="{{ route('users.edit', Auth::id()) }}" class="dropdown-item">
+                <i class="fa fa-edit"></i> 编辑资料
+              </a>
+              <a href="{{ route('logout') }}" class="dropdown-item"
                  onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                退出登录
+                <i class="fa fa-sign-out"></i> 退出登录
               </a>
 
               <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
