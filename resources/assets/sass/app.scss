@@ -23,6 +23,12 @@ body {
   border-top: 4px solid #f06665;
   margin-bottom: 40px;
   margin-top: 0;
+
+  .navbar-nav > .active > a,
+  .navbar-nav > .active > a:hover,
+  .navbar-nav > .active > a:focus {
+    color: #555;
+  }
 }
 
 .form-group {
@@ -38,6 +44,7 @@ body {
   }
 }
 
+.welcome-page,
 .topics-index-page,
 .categories-show-page {
   .topic-list a {

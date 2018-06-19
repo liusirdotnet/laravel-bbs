@@ -14,7 +14,8 @@
 Route::group(['namespace' => 'Web'], function () {
 
     // 默认欢迎页。
-    Route::get('/', 'DefaultsController@welcome')->name('welcome');
+    // Route::get('/', 'DefaultsController@welcome')->name('welcome');
+    Route::get('/', 'TopicsController@index')->name('welcome');
 
     // 用户登录登出。
     Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');

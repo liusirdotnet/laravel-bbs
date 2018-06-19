@@ -13484,6 +13484,12 @@ body {
   margin-top: 0;
 }
 
+.lbs-navbar .navbar-nav > .active > a,
+.lbs-navbar .navbar-nav > .active > a:hover,
+.lbs-navbar .navbar-nav > .active > a:focus {
+  color: #555;
+}
+
 .form-group .img-captcha {
   margin-top: 10px;
   cursor: pointer;
@@ -13493,17 +13499,20 @@ body {
   margin-bottom: 22px;
 }
 
+.welcome-page .topic-list a,
 .topics-index-page .topic-list a,
 .categories-show-page .topic-list a {
   color: #444;
 }
 
+.welcome-page .topic-list .media-meta,
 .topics-index-page .topic-list .media-meta,
 .categories-show-page .topic-list .media-meta {
   font-size: 0.9em;
   color: #b3b3b3;
 }
 
+.welcome-page .topic-list .media-meta a,
 .topics-index-page .topic-list .media-meta a,
 .categories-show-page .topic-list .media-meta a {
   color: #b3b3b3;
