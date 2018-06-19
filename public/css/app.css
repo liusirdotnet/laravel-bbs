@@ -13493,16 +13493,19 @@ body {
   margin-bottom: 22px;
 }
 
-.topics-index-page .topic-list a {
+.topics-index-page .topic-list a,
+.categories-show-page .topic-list a {
   color: #444;
 }
 
-.topics-index-page .topic-list .media-meta {
+.topics-index-page .topic-list .media-meta,
+.categories-show-page .topic-list .media-meta {
   font-size: 0.9em;
   color: #b3b3b3;
 }
 
-.topics-index-page .topic-list .media-meta a {
+.topics-index-page .topic-list .media-meta a,
+.categories-show-page .topic-list .media-meta a {
   color: #b3b3b3;
 }
 
