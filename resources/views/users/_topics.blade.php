@@ -7,7 +7,9 @@
           {{ $topic->title }}
         </a>
         <span class="meta pull-right">
-          {{ $topic->reply_count }}回复<span>&nbsp;•&nbsp;</span>{{ $topic->created_at->diffForHumans() }}
+          <i class="fa fa-reply"></i> {{ $topic->reply_count }}回复
+          <span>&nbsp;•&nbsp;</span>
+          <i class="fa fa-clock-o"></i> {{ $topic->created_at->diffForHumans() }}
         </span>
       </li>
     @endforeach
