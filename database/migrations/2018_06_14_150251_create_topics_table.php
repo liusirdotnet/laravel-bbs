@@ -17,7 +17,7 @@ class CreateTopicsTable extends Migration
             $table->integer('view_count')->unsigned()->default(0)->comment('查看总数');
             $table->integer('last_reply_user_id')->unsigned()->default(0)->comment('最后回复的用户 ID');
             $table->integer('order')->unsigned()->default(0)->comment('排序');
-            $table->text('excerpt')->comment('文章摘要');
+            $table->text('excerpt')->nullable()->comment('文章摘要');
             $table->string('slug')->nullable()->comment('SEO 友好的 URI');
             $table->timestamps();
         });
