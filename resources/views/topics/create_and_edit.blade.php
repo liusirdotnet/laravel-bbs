@@ -22,42 +22,40 @@
             $action = $topic->id ? route('topics.update', $topic->id): route('topics.store');
           @endphp
           <form action="{{ $action }}" method="POST" accept-charset="UTF-8">
+            @csrf
             @if ($topic->id)
-              <input type="hidden" name="_method" value="PUT">
+              @method('put')
             @endif
 
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
             <div class="form-group">
-              <label for="title-field">Title</label>
+              <label for="title-field">标题</label>
               <input class="form-control" type="text" name="title" id="title-field"
-                     value="{{ old('title', $topic->title ) }}"/>
+                     value="{{ old('title', $topic->title ) }}"
+                     placeholder="请填写标题">
             </div>
             <div class="form-group">
-              <label for="body-field">Body</label>
-              <textarea name="body" id="body-field" class="form-control"
-                        rows="3">{{ old('body', $topic->body ) }}</textarea>
+              <label for="category-id-field">分类</label>
+              <select class="form-control" name="category_id" id="category-id-field">
+                <option value="" hidden disabled selected>请选择分类</option>
+                @foreach ($categories as $value)
+                  <option value="{{ $value->id }}">{{ $value->name }}</option>
+                @endforeach
+              </select>
             </div>
             <div class="form-group">
-              <label for="category_id-field">Category_id</label>
-              <input class="form-control" type="text" name="category_id" id="category_id-field"
-                     value="{{ old('category_id', $topic->category_id ) }}"/>
+              <label for="body-field">内容</label>
+              <textarea class="form-control" name="body" id="body-field" rows="3"
+                        placeholder="请填入至少三个字符的内容">{{ old('body', $topic->body ) }}</textarea>
             </div>
-            <div class="form-group">
-              <label for="excerpt-field">Excerpt</label>
-              <textarea name="excerpt" id="excerpt-field" class="form-control"
-                        rows="3">{{ old('excerpt', $topic->excerpt ) }}</textarea>
-            </div>
-            <div class="form-group">
-              <label for="slug-field">Slug</label>
-              <input class="form-control" type="text" name="slug" id="slug-field"
-                     value="{{ old('slug', $topic->slug ) }}"/>
-            </div>
-
-            <div class="well well-sm">
-              <button type="submit" class="btn btn-primary">Save</button>
-              <a class="btn btn-link pull-right" href="{{ route('topics.index') }}"><i
-                    class="glyphicon glyphicon-backward"></i> Back</a>
+            <div class="form-group row mb-0">
+              <div class="col-md-6">
+                <button type="submit" class="btn btn-outline-primary">
+                  <i class="fa fa-save"></i> 保存
+                </button>
+                <a class="btn btn-outline-primary" href="{{ route('topics.index') }}">
+                  <i class="fa fa-backward"></i> 返回
+                </a>
+              </div>
             </div>
           </form>
         </div>
