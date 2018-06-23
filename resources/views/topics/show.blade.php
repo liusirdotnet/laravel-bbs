@@ -30,15 +30,25 @@
             </div>
             <div class="row topic-body">
               <div class="col-md-12">{!! $topic->body !!}</div>
-              TopicsController</div>
+            </div>
             <hr>
             <div class="row">
               <div class="col-md-6">
-                <a class="btn btn-outline-primary" href="{{ route('topics.index') }}">
-                  <i class="fa fa-backward"></i> 返回</a>
-                <a class="btn btn-outline-warning" href="{{ route('topics.edit', $topic->id) }}">
-                  <i class="fa fa-edit"></i> 编辑
+                <a href="{{ route('topics.index') }}" class="btn btn-outline-primary">
+                  <i class="fa fa-backward"></i> 返回
                 </a>
+                @can('update', $topic)
+                  <a href="{{ route('topics.edit', $topic->id) }}" class="btn btn-outline-warning">
+                    <i class="fa fa-edit"></i> 编辑
+                  </a>
+                  <form action="{{ route('topics.destroy', $topic->id) }}" method="post" style="display: inline-block">
+                    @csrf
+                    @method('DELETE')
+                    <button class="btn btn-outline-danger">
+                      <i class="fa fa-trash"></i> 删除
+                    </button>
+                  </form>
+                @endcan
               </div>
             </div>
           </div>

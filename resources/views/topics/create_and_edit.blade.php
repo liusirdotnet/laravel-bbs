@@ -78,12 +78,12 @@
             </div>
             <div class="form-group row mb-0">
               <div class="col-md-6">
-                <button type="submit" class="btn btn-outline-primary">
-                  <i class="fa fa-save"></i> 保存
-                </button>
                 <a class="btn btn-outline-primary" href="{{ route('topics.index') }}">
                   <i class="fa fa-backward"></i> 返回
                 </a>
+                <button type="submit" class="btn btn-outline-primary">
+                  <i class="fa fa-save"></i> 保存
+                </button>
               </div>
             </div>
           </form>

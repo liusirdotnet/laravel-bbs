@@ -15,11 +15,17 @@ class TopicPolicy extends Policy
      */
     public function update(User $user, Topic $topic)
     {
-        return $topic->user_id === $user->id;
+        return $user->isAuthor($topic);
     }
 
+    /**
+     * @param \App\Models\User  $user
+     * @param \App\Models\Topic $topic
+     *
+     * @return bool
+     */
     public function destroy(User $user, Topic $topic)
     {
-        return true;
+        return $user->isAuthor($topic);
     }
 }

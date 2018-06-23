@@ -39,4 +39,16 @@ class User extends Authenticatable
     {
         return $this->hasMany(Topic::class);
     }
+
+    /**
+     * 判断是否为原作者。
+     *
+     * @param \Illuminate\Database\Eloquent\Model $model
+     *
+     * @return bool
+     */
+    public function isAuthor(\Illuminate\Database\Eloquent\Model $model)
+    {
+        return $this->id === $model->user_id;
+    }
 }

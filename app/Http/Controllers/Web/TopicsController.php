@@ -77,7 +77,7 @@ class TopicsController extends Controller
 
         return redirect()
             ->route('topics.show', $topic->id)
-            ->with('message', 'Created successfully.');
+            ->with('message', '创建成功。');
     }
 
     /**
@@ -114,7 +114,7 @@ class TopicsController extends Controller
 
         return redirect()
             ->route('topics.show', $topic->id)
-            ->with('message', 'Updated successfully.');
+            ->with('message', '更新成功。');
     }
 
     /**
@@ -133,7 +133,7 @@ class TopicsController extends Controller
 
         return redirect()
             ->route('topics.index')
-            ->with('success', 'Deleted successfully.');
+            ->with('success', '删除成功。');
     }
 
     /**
@@ -157,7 +157,7 @@ class TopicsController extends Controller
 
             if ($result) {
                 $data['status'] = true;
-                $data['msg'] = '上传成功！';
+                $data['msg'] = '上传成功。';
                 $data['path'] = $result['path'];
             }
         }
