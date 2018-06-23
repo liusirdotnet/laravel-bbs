@@ -4,6 +4,9 @@ namespace App\Models;
 
 class Topic extends Model
 {
+    /**
+     * @var array
+     */
     protected $fillable = [
         'title',
         'body',
@@ -44,5 +47,17 @@ class Topic extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * 话题详情链接。
+     *
+     * @param array $args
+     *
+     * @return string
+     */
+    public function link($args = [])
+    {
+        return route('topics.show', array_merge([$this->id, $this->slug], $args));
     }
 }

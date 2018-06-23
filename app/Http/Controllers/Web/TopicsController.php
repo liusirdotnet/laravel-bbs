@@ -38,12 +38,17 @@ class TopicsController extends Controller
     /**
      * 话题详情页。
      *
-     * @param \App\Models\Topic $topic
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Topic        $topic
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function show(Topic $topic)
+    public function show(Request $request, Topic $topic)
     {
+        if (! empty($topic->slug) && $topic->slug !== $request->slug) {
+            return redirect($topic->link(), 301);
+        }
+
         return view('topics.show', compact('topic'));
     }
 
@@ -76,7 +81,7 @@ class TopicsController extends Controller
         $topic->save();
 
         return redirect()
-            ->route('topics.show', $topic->id)
+            ->route($topic->link(), $topic->id)
             ->with('message', '创建成功。');
     }
 
@@ -113,7 +118,7 @@ class TopicsController extends Controller
         $topic->update($request->all());
 
         return redirect()
-            ->route('topics.show', $topic->id)
+            ->route($topic->link(), $topic->id)
             ->with('message', '更新成功。');
     }
 

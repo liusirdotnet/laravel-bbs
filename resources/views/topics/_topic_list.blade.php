@@ -6,7 +6,7 @@
              style="width: 52px; height: 52px;" alt="User avatar">
         <div class="media-body">
           <div class="mt-1 mb-2">
-            <a href="#" title="{{ $topic->title }}">{{ $topic->title }}</a>
+            <a href="{{ $topic->link() }}" title="{{ $topic->title }}">{{ $topic->title }}</a>
             <div class="pull-right badge badge-secondary">{{ $topic->reply_count }}</div>
           </div>
           <div class="media-meta">

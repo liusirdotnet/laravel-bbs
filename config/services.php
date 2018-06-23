@@ -35,4 +35,10 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'baidu_translate' => [
+        'api'    => env('BAIDU_TRANSLATE_API'),
+        'appid'  => env('BAIDU_TRANSLATE_APPID'),
+        'appkey' => env('BAIDU_TRANSLATE_APPKEY'),
+    ],
+
 ];

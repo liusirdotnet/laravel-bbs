@@ -42,10 +42,11 @@ Route::group(['namespace' => 'Web'], function () {
 
 
     // 用户话题。
-    Route::resource('topics', 'TopicsController',
-        ['only' => ['index', 'show', 'create', 'store', 'update', 'edit', 'destroy']]
-    );
+    Route::resource('topics', 'TopicsController', [
+        'only' => ['index', 'create', 'store', 'update', 'edit', 'destroy'],
+    ]);
     Route::post('upload', 'TopicsController@upload')->name('topics.upload');
+    Route::get('topics/{topic}/{slug?}', 'TopicsController@show')->name('topics.show');
 
     // 话题分类。
     Route::resource('categories', 'CategoriesController', ['only' => ['show']]);
