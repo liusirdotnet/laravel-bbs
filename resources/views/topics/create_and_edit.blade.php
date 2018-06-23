@@ -2,7 +2,7 @@
 
 @section('styles')
   <link rel="stylesheet" href="{{ asset('css/simditor.css') }}">
-@endsection
+@stop
 
 @section('scripts')
   <script src="{{ asset('js/module.js') }}"></script>
@@ -12,25 +12,33 @@
   <script>
     (function ($) {
       var editor = new Simditor({
-        textarea: $('#editor')
+        textarea: $('#editor'),
+        upload: {
+          url: '{{ route('topics.upload') }}',
+          params: {_token: '{{ csrf_token() }}'},
+          fileKey: 'uploader',
+          connectionCount: 3,
+          leaveConfirm: '文件上传中，关闭页面将取消上传！'
+        },
+        pasteImage: true
       });
     })(jQuery);
   </script>
-@endsection
+@stop
 
 @section('content')
   <div class="container">
     <div class="col-md-10 offset-1">
       <div class="card">
         <div class="card-header">
-          <h2>
+          <h3>
             <i class="fa fa-edit"></i> 话题 /
             @if($topic->id)
               编辑话题
             @else
               新建话题
             @endif
-          </h2>
+          </h3>
         </div>
 
         @include('common.error')

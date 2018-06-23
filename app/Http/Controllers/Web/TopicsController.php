@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Handlers\ImageHandler;
 use App\Http\Requests\Web\TopicFormRequest;
 use App\Models\Category;
 use App\Models\Topic;
@@ -98,14 +99,14 @@ class TopicsController extends Controller
     /**
      * 话题更新操作。
      *
-     * @param \App\Http\Requests\TopicRequest $request
-     * @param \App\Models\Topic               $topic
+     * @param \App\Http\Requests\Web\TopicFormRequest $request
+     * @param \App\Models\Topic                       $topic
      *
      * @return \Illuminate\Http\RedirectResponse
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(TopicRequest $request, Topic $topic)
+    public function update(TopicFormRequest $request, Topic $topic)
     {
         $this->authorize('update', $topic);
         $topic->update($request->all());
@@ -132,5 +133,34 @@ class TopicsController extends Controller
         return redirect()
             ->route('topics.index')
             ->with('success', 'Deleted successfully.');
+    }
+
+    /**
+     * 话题相关图片上传（编辑中上传图片）。
+     *
+     * @param \Illuminate\Http\Request   $request
+     * @param \App\Handlers\ImageHandler $handler
+     *
+     * @return array
+     */
+    public function upload(Request $request, ImageHandler $handler)
+    {
+        $data = [
+            'status' => false,
+            'msg'    => '上传失败！',
+            'path'   => '',
+        ];
+
+        if ($uploader = $request->uploader) {
+            $result = $handler->upload($uploader, 'topics', Auth::id());
+
+            if ($result) {
+                $data['status'] = true;
+                $data['msg'] = '上传成功！';
+                $data['path'] = $result['path'];
+            }
+        }
+
+        return $data;
     }
 }

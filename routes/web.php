@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
+
 Route::group(['namespace' => 'Web'], function () {
 
     // 默认欢迎页。
@@ -43,6 +45,7 @@ Route::group(['namespace' => 'Web'], function () {
     Route::resource('topics', 'TopicsController',
         ['only' => ['index', 'show', 'create', 'store', 'update', 'edit', 'destroy']]
     );
+    Route::post('upload', 'TopicsController@upload')->name('topics.upload');
 
     // 话题分类。
     Route::resource('categories', 'CategoriesController', ['only' => ['show']]);

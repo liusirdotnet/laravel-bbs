@@ -5,10 +5,10 @@
         <img class="mr-3 img-thumbnail" src="{{ $topic->user->avatar }}" title="{{ $topic->user->name }}"
              style="width: 52px; height: 52px;" alt="User avatar">
         <div class="media-body">
-          <h5 class="mt-1 mb-2">
-            {{ $topic->title }}
+          <div class="mt-1 mb-2">
+            <a href="#" title="{{ $topic->title }}">{{ $topic->title }}</a>
             <div class="pull-right badge badge-secondary">{{ $topic->reply_count }}</div>
-          </h5>
+          </div>
           <div class="media-meta">
             <a href="{{ route('categories.show', $topic->category->id) }}" title="{{ $topic->category->name }}">
               <i class="fa fa-folder-open"></i> {{ $topic->category->name }}
