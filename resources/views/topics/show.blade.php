@@ -29,7 +29,7 @@
               <i class="fa fa-comments-o"></i> {{ $topic->reply_count }}
             </div>
             <div class="row topic-body">
-              <div class="col-md-12">{{ $topic->body }}config/purifier.php</div>
+              <div class="col-md-12">{!! $topic->body !!}</div>
             </div>
             <hr>
             <div class="row">
