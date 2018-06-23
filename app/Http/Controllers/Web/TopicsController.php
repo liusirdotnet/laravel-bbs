@@ -81,7 +81,7 @@ class TopicsController extends Controller
         $topic->save();
 
         return redirect()
-            ->route($topic->link(), $topic->id)
+            ->to($topic->link())
             ->with('message', '创建成功。');
     }
 
@@ -118,7 +118,7 @@ class TopicsController extends Controller
         $topic->update($request->all());
 
         return redirect()
-            ->route($topic->link(), $topic->id)
+            ->to($topic->link())
             ->with('message', '更新成功。');
     }
 
@@ -142,7 +142,7 @@ class TopicsController extends Controller
     }
 
     /**
-     * 话题相关图片上传（编辑中上传图片）。
+     * 话题相关图片上传（编辑器中上传图片）。
      *
      * @param \Illuminate\Http\Request   $request
      * @param \App\Handlers\ImageHandler $handler
