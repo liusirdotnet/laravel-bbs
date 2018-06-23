@@ -30,7 +30,7 @@
             </div>
             <div class="row topic-body">
               <div class="col-md-12">{!! $topic->body !!}</div>
-            </div>
+              TopicsController</div>
             <hr>
             <div class="row">
               <div class="col-md-6">
