@@ -30,6 +30,7 @@ class TopicObserver
         $topic->excerpt = make_excerpt($topic->body);
 
         if (! $topic->slug) {
+            // TODO: 异步执行消耗时间的任务。
             // $topic->slug = app(TranslateHandler::class)->translate($topic->title);
         }
     }
@@ -40,7 +41,7 @@ class TopicObserver
     public function saved(Topic $topic)
     {
         if (! $topic->slug) {
-            TranslateJob::dispatchNow($topic);
+            TranslateJob::dispatch($topic)->delay(now()->addSecond(3));
         }
     }
 }
