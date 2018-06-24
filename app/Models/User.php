@@ -41,6 +41,14 @@ class User extends Authenticatable
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function replies()
+    {
+        return $this->hasMany(Reply::class);
+    }
+
+    /**
      * 判断是否为原作者。
      *
      * @param \Illuminate\Database\Eloquent\Model $model
