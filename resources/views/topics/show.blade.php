@@ -53,6 +53,15 @@
             </div>
           </div>
         </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="row reply-list">
+              <div class="col col-md-12">
+                @include('topics._reply_list', ['replies' => $topic->replies()->with('user')->get()])
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
