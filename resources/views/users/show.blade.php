@@ -33,13 +33,19 @@
           <div class="card-body">
             <ul class="nav nav-tabs">
               <li class="nav-item">
-                <a class="nav-link active" href="#">Ta 的话题</a>
+                <a href="{{ route('users.show', $user->id) }}"
+                   class="nav-link {{ active_class(if_query('tab', null)) }}">Ta 的话题</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Ta 的回复</a>
+                <a href="{{ route('users.show', [$user->id, 'tab' => 'replies']) }}"
+                   class="nav-link {{ active_class(if_query('tab', 'replies')) }}">Ta 的回复</a>
               </li>
             </ul>
-            @include('users._topics', ['topics' => $user->topics()->recent()->paginate(5)])
+            @if (if_query('tab', 'replies'))
+              @include('users._replies', ['replies' => $user->replies()->with('topic')->updateDesc()->paginate(5)])
+            @else
+              @include('users._topics', ['topics' => $user->topics()->updateDesc()->paginate(5)])
+            @endif
           </div>
         </div>
       </div>
