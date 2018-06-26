@@ -2,8 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Traits\OrderTrait;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+
 class Topic extends Model
 {
+    use OrderTrait;
+
     /**
      * @var array
      */
@@ -15,28 +21,24 @@ class Topic extends Model
         'slug',
     ];
 
-    public function scopeWithOrder($query, $order)
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param string|null                           $order
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithOrder(Builder $builder, $order = null)
     {
         switch ($order) {
             case 'recent':
-                $query->recent();
+                $builder->createDesc();
                 break;
             default:
-                $query->recentReplied();
+                $builder->updateDesc();
                 break;
         }
 
-        return $query->with('user', 'category');
-    }
-
-    public function scopeRecent($query)
-    {
-        return $query->orderBy('created_at', 'desc');
-    }
-
-    public function scopeRecentReplied($query)
-    {
-        return $query->orderBy('updated_at', 'desc');
+        return $builder->with('user', 'category');
     }
 
     /**
