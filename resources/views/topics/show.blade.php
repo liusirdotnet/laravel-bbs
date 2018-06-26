@@ -57,7 +57,7 @@
           <div class="card-body">
             <div class="row reply-list">
               <div class="col col-md-12">
-                @include('topics._reply_box', ['topic' => $topic])
+                @includeWhen(Auth::check(), 'topics._reply_box', ['topic' => $topic])
                 @include('topics._reply_list', ['replies' => $topic->replies()->with('user')->get()])
               </div>
             </div>

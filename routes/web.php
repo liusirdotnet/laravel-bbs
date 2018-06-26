@@ -50,5 +50,8 @@ Route::group(['namespace' => 'Web'], function () {
 
     // 话题分类。
     Route::resource('categories', 'CategoriesController', ['only' => ['show']]);
+
+    // 话题回复。
+    Route::resource('replies', 'RepliesController', ['only' => ['store', 'destroy']]);
 });
 
