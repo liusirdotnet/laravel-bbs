@@ -53,5 +53,8 @@ Route::group(['namespace' => 'Web'], function () {
 
     // 话题回复。
     Route::resource('replies', 'RepliesController', ['only' => ['store', 'destroy']]);
+
+    // 消息通知。
+    Route::resource('notifications', 'NotificationsController', ['only' => ['index']]);
 });
 

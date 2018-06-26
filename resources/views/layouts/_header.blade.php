@@ -41,7 +41,15 @@
         @else
           <li class="nav-item">
             <a href="{{ route('topics.create') }}" class="nav-link">
-              <i class="fa fa-plus"></i>
+              <span><i class="fa fa-plus"></i></span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('notifications.index') }}" class="nav-link" title="消息提醒" style="margin-top: -2px;">
+              @php
+                $badge = Auth::user()->notification_count > 0 ? 'danger' : 'secondary';
+              @endphp
+              <span class="badge badge-pill badge-{{ $badge }}">{{ Auth::user()->notification_count }}</span>
             </a>
           </li>
           <li class="nav-item dropdown">

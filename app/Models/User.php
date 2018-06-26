@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable {
+        notify as protected inform;
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -46,6 +49,21 @@ class User extends Authenticatable
     public function replies()
     {
         return $this->hasMany(Reply::class);
+    }
+
+    /**
+     * 发送给定的通知。
+     *
+     * @param mixed $instance
+     */
+    public function notify($instance)
+    {
+        if ($this->id === Auth::id()) {
+            return;
+        }
+
+        $this->increment('notification_count');
+        $this->inform($instance);
     }
 
     /**
