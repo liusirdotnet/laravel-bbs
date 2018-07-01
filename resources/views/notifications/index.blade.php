@@ -10,7 +10,7 @@
 
           <div class="card-body">
             <h3 class="text-center">
-              <i class="fa fa-info"></i> 我的通知
+              <i class="fa fa-bell-o"></i> 我的通知
             </h3>
             <hr>
 
