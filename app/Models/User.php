@@ -67,6 +67,16 @@ class User extends Authenticatable
     }
 
     /**
+     * 标记已经浏览的通知。
+     */
+    public function markAsRead()
+    {
+        $this->notification_count = 0;
+        $this->save();
+        $this->unreadNotifications->markAsRead();
+    }
+
+    /**
      * 判断是否为原作者。
      *
      * @param \Illuminate\Database\Eloquent\Model $model
