@@ -13929,6 +13929,14 @@ body {
   margin-bottom: 60px;
 }
 
+.card {
+  border-color: #d3e0e9;
+}
+
+.card .card-header {
+  border-color: #d3e0e9;
+}
+
 .lbs-navbar {
   border-color: #e7e7e7;
   background-color: #fff;
@@ -13993,6 +14001,16 @@ body {
   margin: 0.4em auto 0.6em;
   font-size: 28px;
   line-height: 38px;
+}
+
+.welcome-page .topic-list hr,
+.topics-index-page .topic-list hr,
+.categories-show-page .topic-list hr,
+.notifications-index-page .notification-list hr {
+  margin-top: 12px;
+  margin-bottom: 12px;
+  border: 0;
+  border-top: 1px solid #dcebf5;
 }
 
 .users-show-page .nav-tabs {

@@ -47377,7 +47377,7 @@ if (false) {
 /* 43 */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+throw new Error("Module build failed: ModuleBuildError: Module build failed: \n  border-color: #d3e0e9app/Models/User.php;\n                                     ^\n      Invalid CSS after \"...app/Models/User\": expected expression (e.g. 1px, bold), was \".php;\"\n      in /Users/majinyun/Codes/laravel/laravel-bbs.test/resources/assets/sass/app.scss (line 27, column 39)\n    at runLoaders (/Users/majinyun/Codes/laravel/laravel-bbs.test/node_modules/webpack/lib/NormalModule.js:195:19)\n    at /Users/majinyun/Codes/laravel/laravel-bbs.test/node_modules/loader-runner/lib/LoaderRunner.js:364:11\n    at /Users/majinyun/Codes/laravel/laravel-bbs.test/node_modules/loader-runner/lib/LoaderRunner.js:230:18\n    at context.callback (/Users/majinyun/Codes/laravel/laravel-bbs.test/node_modules/loader-runner/lib/LoaderRunner.js:111:13)\n    at Object.asyncSassJobQueue.push [as callback] (/Users/majinyun/Codes/laravel/laravel-bbs.test/node_modules/sass-loader/lib/loader.js:55:13)\n    at Object.done [as callback] (/Users/majinyun/Codes/laravel/laravel-bbs.test/node_modules/neo-async/async.js:7974:18)\n    at options.error (/Users/majinyun/Codes/laravel/laravel-bbs.test/node_modules/node-sass/lib/index.js:294:32)");
 
 /***/ })
 /******/ ]);
