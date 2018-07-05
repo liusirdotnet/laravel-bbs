@@ -6,9 +6,6 @@ use App\Handlers\TranslateHandler;
 use App\Jobs\TranslateJob;
 use App\Models\Topic;
 
-// creating, created, updating, updated, saving,
-// saved,  deleting, deleted, restoring, restored
-
 class TopicObserver
 {
     public function creating(Topic $topic)
