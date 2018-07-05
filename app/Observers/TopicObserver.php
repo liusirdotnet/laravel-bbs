@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Handlers\TranslateHandler;
 use App\Jobs\TranslateJob;
 use App\Models\Topic;
+use Illuminate\Support\Facades\DB;
 
 class TopicObserver
 {
@@ -40,5 +41,13 @@ class TopicObserver
         if (! $topic->slug) {
             TranslateJob::dispatch($topic)->delay(now()->addSecond(3));
         }
+    }
+
+    /**
+     * @param \App\Models\Topic $topic
+     */
+    public function deleted(Topic $topic)
+    {
+        DB::table('replies')->where('topic_id', $topic->id)->delete();
     }
 }

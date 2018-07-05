@@ -15,11 +15,17 @@
           <span title="最后活跃于" class="timeago">
             <i class="fa fa-clock-o"></i> {{ $reply->created_at->diffForHumans() }}
           </span>
-          <span class="pull-right">
-          <button class="btn btn-outline-danger btn-sm">
-            <i class="fa fa-trash"></i>
-          </button>
-        </span>
+          @can('destroy', $reply)
+            <form action="{{ route('replies.destroy', $reply->id) }}" method="post" style="display: inline;">
+              @csrf
+              @method('DELETE')
+              <span class="pull-right">
+                <button type="submit" class="btn btn-outline-danger btn-sm">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </span>
+            </form>
+          @endcan
         </div>
         <div class="media-meta">{!! $reply->content !!}</div>
       </div>

@@ -41,7 +41,7 @@
           </h3>
         </div>
 
-        @include('common.error')
+        @include('components.error')
 
         <div class="card-body">
           @php

@@ -36,7 +36,7 @@ class RepliesController extends Controller
 
         return redirect()
             ->to($reply->topic->link())
-            ->with('message', '创建成功。');
+            ->with('success', '创建成功！');
     }
 
     /**
@@ -54,7 +54,7 @@ class RepliesController extends Controller
         $reply->delete();
 
         return redirect()
-            ->route('replies.index')
-            ->with('message', '删除成功！');
+            ->to($reply->topic->link())
+            ->with('success', '删除成功！');
     }
 }

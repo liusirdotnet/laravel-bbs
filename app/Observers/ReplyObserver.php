@@ -26,4 +26,12 @@ class ReplyObserver
         // 通知作者话题被回复了。
         $topic->user->notify(new ReplyNotification($reply));
     }
+
+    /**
+     * @param \App\Models\Reply $reply
+     */
+    public function deleted(Reply $reply)
+    {
+        $reply->topic->decrement('reply_count', 1);
+    }
 }
