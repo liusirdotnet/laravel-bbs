@@ -57,4 +57,3 @@ Route::group(['namespace' => 'Web'], function () {
     // 消息通知。
     Route::resource('notifications', 'NotificationsController', ['only' => ['index']]);
 });
-
