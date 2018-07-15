@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasRelationshipTrait;
+use App\Models\Traits\UserTrait;
+use App\Support\Contracts\UserInterface;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Auth;
-use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements UserInterface
 {
-    use HasRoles;
+    use UserTrait, HasRelationshipTrait;
     use Notifiable {
         notify as protected inform;
     }
