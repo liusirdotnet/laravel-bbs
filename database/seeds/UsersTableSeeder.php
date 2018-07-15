@@ -42,16 +42,17 @@ class UsersTableSeeder extends Seeder
         User::insert($array);
 
         $user = User::find(1);
-        $user->name = 'alphabeter';
+        $user->role_id = 1;
+        $user->name = 'apphabeter';
         $user->email = 'alphabeter@qq.com';
         $user->avatar = 'http://pbfa6u6aq.bkt.clouddn.com/image/user/avatar/Ji3ohCho5Quov5UL.jpg';
         $user->save();
 
         // 初始化 1 号用户角色为站长。
-        $user->assignRole('Founder');
+        // $user->assignRole('Founder');
 
         // 初始化 2 号用户角色为网管。
-        $user = User::find(2);
-        $user->assignRole('Webmaster');
+        // $user = User::find(2);
+        // $user->assignRole('Webmaster');
     }
 }
