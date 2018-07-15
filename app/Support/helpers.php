@@ -28,3 +28,20 @@ if (! function_exists('make_excerpt')) {
         return str_limit($excerpt, $length);
     }
 }
+
+if (! function_exists('admin_menu')) {
+    /**
+     * 获取后台菜单。
+     *
+     * @param string      $name
+     * @param string|null $type
+     * @param array       $options
+     *
+     * @return mixed
+     */
+    function admin_menu($name, $type = null, array $options = [])
+    {
+        return \App\Support\Facades\Admin::getModel('Menu')->display($name,
+            $type, $options);
+    }
+}
