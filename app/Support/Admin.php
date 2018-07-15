@@ -19,8 +19,14 @@ use Arrilot\Widgets\Facade as Widget;
 
 class Admin
 {
+    /**
+     * @var string
+     */
     protected $version = 'v.0.1';
 
+    /**
+     * @var array
+     */
     protected $alerts = [];
 
     /**
@@ -32,8 +38,14 @@ class Admin
         ViewAction::class,
     ];
 
+    /**
+     * @var array
+     */
     protected $formFields = [];
 
+    /**
+     * @var bool
+     */
     protected $alertsCollected = false;
 
     /**
@@ -128,50 +140,4 @@ class Admin
     {
         return $this->version;
     }
-
-    // public function can($permission)
-    // {
-    //     $this->loadPermissions();
-    //
-    //     // Check if permission exist
-    //     $exist = $this->permissions->where('key', $permission)->first();
-    //
-    //     // Permission not found
-    //     if (! $exist) {
-    //         throw new \Exception('Permission does not exist', 400);
-    //     }
-    //
-    //     $user = $this->getUser();
-    //     if ($user === null || ! $user->hasPermission($permission)) {
-    //         return false;
-    //     }
-    //
-    //     return true;
-    // }
-    //
-    // protected function loadPermissions()
-    // {
-    //     if (! $this->permissionsLoaded) {
-    //         $this->permissionsLoaded = true;
-    //
-    //         $this->permissions = self::model('Permission')->all();
-    //     }
-    // }
-    //
-    // protected function getUser($id = null)
-    // {
-    //     if (is_null($id)) {
-    //         $id = auth()->check() ? auth()->user()->id : null;
-    //     }
-    //
-    //     if (is_null($id)) {
-    //         return;
-    //     }
-    //
-    //     if (! isset($this->users[$id])) {
-    //         $this->users[$id] = self::model('User')->find($id);
-    //     }
-    //
-    //     return $this->users[$id];
-    // }
 }

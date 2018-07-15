@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static string getModelClass($name)
  * @method static void getWidgets()
  * @method static array getAlerts()
+ * @method static array getActions()
  * @method static void addFormField()
  * @method static void getFormField()
  * @method static string getVersion()
