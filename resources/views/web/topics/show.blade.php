@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('web.layouts.app')
 
 @section('title', $topic->title)
 @section('description', $topic->excerpt)

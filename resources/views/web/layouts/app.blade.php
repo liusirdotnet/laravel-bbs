@@ -23,14 +23,14 @@
 
 <body>
 <div id="app" class="{{ route_class() }}-page">
-  @include('layouts._header')
+  @include('web.layouts._header')
 
   <main class="lbs-main">
-    @include('layouts._message')
+    @include('web.layouts._message')
     @yield('content')
   </main>
 
-  @include('layouts._footer')
+  @include('web.layouts._footer')
 </div>
 
 @if(app()->isLocal())

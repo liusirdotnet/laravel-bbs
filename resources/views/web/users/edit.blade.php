@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('web.layouts.app')
 
 @section('title', $user->name . ' 的个人中心')
 
@@ -96,4 +96,3 @@
     </div>
   </div>
 @endsection
-

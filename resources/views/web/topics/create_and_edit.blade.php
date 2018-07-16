@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('web.layouts.app')
 
 @section('styles')
   <link rel="stylesheet" href="{{ asset('css/simditor.css') }}">

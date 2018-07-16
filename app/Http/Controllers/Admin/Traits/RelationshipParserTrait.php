@@ -37,9 +37,10 @@ trait RelationshipParserTrait
             if ($row->type === 'relationship') {
                 $options = json_decode($row->details);
                 $relationshipField = @$options->column;
-                $keyInCollection =
-                    key($dataType->{$type . 'Rows'}->where('field', '=',
-                        $relationshipField)->toArray());
+                $array = $dataType->{$type . 'Rows'}
+                    ->where('field', '=', $relationshipField)
+                    ->toArray();
+                $keyInCollection = key($array);
                 $forget_keys[] = $keyInCollection;
             }
         }
@@ -82,7 +83,7 @@ trait RelationshipParserTrait
     {
         $relations = $item->getRelations();
 
-        if (! empty ($relations) && array_filter($relations)) {
+        if (! empty($relations) && array_filter($relations)) {
             foreach ($relations as $field => $relation) {
                 if (isset($this->relation_field[$field])) {
                     $field = $this->relation_field[$field];
@@ -119,8 +120,7 @@ trait RelationshipParserTrait
                 }
                 if (isset($relationData->page_slug) && $relation) {
                     $id = $relation->id;
-                    $item[$field . '_page_slug'] =
-                        url($relationData->page_slug, $id);
+                    $item[$field . '_page_slug'] = url($relationData->page_slug, $id);
                 }
             }
         }

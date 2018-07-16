@@ -27,18 +27,15 @@ abstract class AbstractController extends Controller
             $options = json_decode($row->details);
 
             if (! $request->hasFile($row->field)) {
-
             }
 
             $content = $this->getContentFromType($request, $slug, $row, $options);
 
 
             if (null === $content) {
-
             }
 
             if ($row->type === 'relationship' && $options->type === 'belongsToMany') {
-
             } else {
                 $model->{$row->field} = $content;
             }

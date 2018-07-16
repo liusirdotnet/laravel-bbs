@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('web.layouts.app')
 
 @section('title',  '话题列表')
 
@@ -22,13 +22,13 @@
             </nav>
           </div>
           <div class="card-body">
-            @include('topics._topic_list', ['topics' => $topics])
+            @include('web.topics._topic_list', ['topics' => $topics])
             {!! $topics->appends(Request::except('page'))->render() !!}
           </div>
         </div>
       </div>
       <div class="col-lg-3 col-md-3">
-        @include('topics._sidebar')
+        @include('web.topics._sidebar')
       </div>
     </div>
   </div>

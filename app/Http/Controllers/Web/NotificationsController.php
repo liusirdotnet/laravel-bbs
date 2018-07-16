@@ -26,6 +26,6 @@ class NotificationsController extends Controller
         $notifications = Auth::user()->notifications()->paginate(20);
         Auth::user()->markAsRead();
 
-        return view('notifications.index', compact('notifications'));
+        return view('web.notifications.index', compact('notifications'));
     }
 }

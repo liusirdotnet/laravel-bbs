@@ -28,7 +28,7 @@ class UsersController extends Controller
      */
     public function show(Request $request, User $user)
     {
-        return view('users.show', compact('user'));
+        return view('web.users.show', compact('user'));
     }
 
     /**
@@ -45,7 +45,7 @@ class UsersController extends Controller
     {
         $this->authorize('update', $user);
 
-        return view('users.edit', compact('user'));
+        return view('web.users.edit', compact('user'));
     }
 
     /**
@@ -75,8 +75,8 @@ class UsersController extends Controller
         }
         $user->update($data);
 
-        return redirect()->route('users.show', $user->id)
-                         ->with('success', '个人资料更新成功！');
+        return redirect()
+            ->route('users.show', $user->id)
+            ->with('success', '个人资料更新成功！');
     }
-
 }

@@ -16,6 +16,6 @@ class DefaultsController extends Controller
      */
     public function welcome(Request $request)
     {
-        return view('defaults.welcome');
+        return view('web.defaults.welcome');
     }
 }

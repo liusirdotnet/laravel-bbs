@@ -41,7 +41,10 @@ if (! function_exists('admin_menu')) {
      */
     function admin_menu($name, $type = null, array $options = [])
     {
-        return \App\Support\Facades\Admin::getModel('Menu')->display($name,
-            $type, $options);
+        return \App\Support\Facades\Admin::getModel('Menu')->display(
+            $name,
+            $type,
+            $options
+        );
     }
 }

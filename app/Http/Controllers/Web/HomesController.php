@@ -22,6 +22,6 @@ class HomesController extends Controller
      */
     public function index(Request $request)
     {
-        return view('homes.home');
+        return view('web.homes.home');
     }
 }

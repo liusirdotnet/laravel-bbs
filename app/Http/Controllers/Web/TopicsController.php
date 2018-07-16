@@ -32,7 +32,7 @@ class TopicsController extends Controller
     {
         $topics = $topic->withOrder($request->order)->paginate(20);
 
-        return view('topics.index', compact('topics'));
+        return view('web.topics.index', compact('topics'));
     }
 
     /**
@@ -49,7 +49,7 @@ class TopicsController extends Controller
             return redirect($topic->link(), 301);
         }
 
-        return view('topics.show', compact('topic'));
+        return view('web.topics.show', compact('topic'));
     }
 
     /**
@@ -63,7 +63,7 @@ class TopicsController extends Controller
     {
         $categories = Category::all();
 
-        return view('topics.create_and_edit', compact('topic', 'categories'));
+        return view('web.topics.create_and_edit', compact('topic', 'categories'));
     }
 
     /**
@@ -99,7 +99,7 @@ class TopicsController extends Controller
         $this->authorize('update', $topic);
         $categories = Category::all();
 
-        return view('topics.create_and_edit', compact('topic', 'categories'));
+        return view('web.topics.create_and_edit', compact('topic', 'categories'));
     }
 
     /**
@@ -137,7 +137,7 @@ class TopicsController extends Controller
         $topic->delete();
 
         return redirect()
-            ->route('topics.index')
+            ->route('web.topics.index')
             ->with('success', '删除成功。');
     }
 

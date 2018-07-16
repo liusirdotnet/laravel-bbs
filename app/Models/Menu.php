@@ -61,8 +61,12 @@ class Menu extends Model
                     ? $user->role->permissions->pluck('key')->toArray()
                     : [];
             }
-            $options->user = (object)compact('permissions', 'dataTypes',
-                'prefix', 'authorities');
+            $options->user = (object)compact(
+                'permissions',
+                'dataTypes',
+                'prefix',
+                'authorities'
+            );
 
             if (starts_with($type, 'admin_')) {
                 $type = \mb_substr($type, 6);
