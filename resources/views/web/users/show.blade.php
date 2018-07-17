@@ -42,9 +42,9 @@
               </li>
             </ul>
             @if (if_query('tab', 'replies'))
-              @include('users._replies', ['replies' => $user->replies()->with('topic')->updateDesc()->paginate(5)])
+              @include('web.users._replies', ['replies' => $user->replies()->with('topic')->updateDesc()->paginate(5)])
             @else
-              @include('users._topics', ['topics' => $user->topics()->updateDesc()->paginate(5)])
+              @include('web.users._topics', ['topics' => $user->topics()->updateDesc()->paginate(5)])
             @endif
           </div>
         </div>
