@@ -165,9 +165,9 @@
           <form action="#" id="delete_form" method="POST">
             @csrf
             @method('DELETE')
-            <input type="submit" class="btn btn-danger pull-right delete-confirm" value="是的,删除它!">
+            <input type="submit" class="btn btn-danger pull-right delete-confirm" value="删除">
           </form>
-          <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-default pull-right" data-dismiss="modal">取消</button>
         </div>
       </div>
     </div>
