@@ -10,7 +10,7 @@ class ColorField extends AbstractField
 
     public function createContent($row, $dataType, $dataTypeContent, $options)
     {
-        return view('voyager::forms.fields.color', [
+        return view('admin.forms.fields.color', [
             'row'             => $row,
             'options'         => $options,
             'dataType'        => $dataType,

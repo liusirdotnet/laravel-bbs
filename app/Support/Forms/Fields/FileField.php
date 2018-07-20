@@ -10,7 +10,7 @@ class FileField extends AbstractField
 
     public function createContent($row, $dataType, $dataTypeContent, $options)
     {
-        return view('voyager::forms.fields.file', [
+        return view('admin.forms.fields.file', [
             'row'             => $row,
             'options'         => $options,
             'dataType'        => $dataType,

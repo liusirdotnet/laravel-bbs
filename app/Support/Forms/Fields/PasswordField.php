@@ -4,13 +4,13 @@ namespace App\Support\Forms\Fields;
 
 use App\Support\Contracts\Forms\Fields\AbstractField;
 
-class DateField extends AbstractField
+class PasswordField extends AbstractField
 {
-    protected $codename = 'date';
+    protected $codeName = 'password';
 
     public function createContent($row, $dataType, $dataTypeContent, $options)
     {
-        return view('admin.forms.fields.date', [
+        return view('admin.forms.fields.password', [
             'row'             => $row,
             'options'         => $options,
             'dataType'        => $dataType,
