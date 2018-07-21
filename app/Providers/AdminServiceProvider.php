@@ -65,7 +65,7 @@ class AdminServiceProvider extends ServiceProvider
             'image',
             // 'multiple_images',
             // 'number',
-            // 'password',
+            'password',
             // 'radio_btn',
             // 'rich_text_box',
             // 'code_editor',
