@@ -32,7 +32,7 @@ trait RelationshipParserTrait
         DataType $dataType,
         $type = 'access'
     ) {
-        $forget_keys = [];
+        $forgetKeys = [];
         foreach ($dataType->{$type . 'Rows'} as $key => $row) {
             if ($row->type === 'relationship') {
                 $options = json_decode($row->details);
@@ -41,12 +41,12 @@ trait RelationshipParserTrait
                     ->where('field', '=', $relationshipField)
                     ->toArray();
                 $keyInCollection = key($array);
-                $forget_keys[] = $keyInCollection;
+                $forgetKeys[] = $keyInCollection;
             }
         }
 
-        foreach ($forget_keys as $forget_key) {
-            $dataType->{$type . 'Rows'}->forget($forget_key);
+        foreach ($forgetKeys as $forgetKey) {
+            $dataType->{$type . 'Rows'}->forget($forgetKey);
         }
     }
 
@@ -56,7 +56,7 @@ trait RelationshipParserTrait
 
         $dataType->accessRows->each(function ($item) use (& $relationships) {
             $details = json_decode($item->details);
-            if (isset($details->relationship) && isset($item->field)) {
+            if (isset($details->relationship, $item->field)) {
                 $relation = $details->relationship;
                 if (isset($relation->method)) {
                     $method = $relation->method;
