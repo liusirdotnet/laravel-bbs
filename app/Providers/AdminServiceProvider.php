@@ -2,13 +2,27 @@
 
 namespace App\Providers;
 
+use App\Models\MenuItem;
+use App\Policies\MenuItemPolicy;
+use App\Policies\Policy;
 use App\Support\Facades\Admin;
 use Illuminate\Foundation\AliasLoader;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
-use Illuminate\Support\ServiceProvider;
 
 class AdminServiceProvider extends ServiceProvider
 {
+    /**
+     * The policy mappings for the application.
+     *
+     * @var array
+     */
+    protected $policies = [
+        MenuItem::class => MenuItemPolicy::class,
+    ];
+
     /**
      * Bootstrap services.
      *
@@ -16,6 +30,7 @@ class AdminServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->registerGates();
         $this->registerViewComposers();
     }
 
@@ -35,6 +50,31 @@ class AdminServiceProvider extends ServiceProvider
 
         $this->registerAlertComponents();
         $this->registerFormFields();
+    }
+
+    public function registerGates()
+    {
+        try {
+            if (Schema::hasTable('data_types')) {
+                $dataType = Admin::getModel('DataType');
+                $dataTypes = $dataType->select('policy_name', 'model_name')->get();
+
+                foreach ($dataTypes as $dataType) {
+                    $class = Policy::class;
+                    if (isset($dataType->policy_name)
+                        && null !== $dataType->policy_name
+                        && class_exists($dataType->policy_name)
+                    ) {
+                        $class = $dataType->policy_name;
+                    }
+                    $this->policies[$dataType->model_name] = $class;
+                }
+
+                $this->registerPolicies();
+            }
+        } catch (\PDOException $e) {
+            Log::error('No Database connection yet in AdminServiceProvider registerGates()');
+        }
     }
 
     public function registerViewComposers()
