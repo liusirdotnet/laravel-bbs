@@ -24,6 +24,7 @@
           <div class="panel panel-bordered">
             @if (count($errors) > 0)
               <div class="alert alert-danger">
+                <?php dd($errors->all()) ?>
                 <ul>
                   @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -57,7 +58,7 @@
                        autocomplete="new-password">
               </div>
 
-              @can('edit', $dataTypeContent)
+              @can('updateRoles', $dataTypeContent)
                 <div class="form-group">
                   <label for="default_role">默认角色</label>
                   @php
