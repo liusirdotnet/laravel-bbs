@@ -23,6 +23,9 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
         // 个人简介路由。
         Route::get('profile', 'UsersController@profile')->name('profile');
 
+        // 用户头像上传路由。
+        Route::post('upload', ['UsersController@upload'])->name('users.upload');
+
         // 用户路由。
         Route::resource('users', 'UsersController');
 
