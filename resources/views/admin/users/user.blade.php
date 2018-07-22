@@ -24,7 +24,7 @@
           <div class="panel panel-bordered">
             @if (count($errors) > 0)
               <div class="alert alert-danger">
-                <?php dd($errors->all()) ?>
+                  <?php dd($errors->all()) ?>
                 <ul>
                   @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -87,7 +87,7 @@
               <div class="form-group">
                 @if(isset($dataTypeContent->avatar))
                   <img
-                      src="{{ filter_var($dataTypeContent->avatar, FILTER_VALIDATE_URL) ? $dataTypeContent->avatar : Admin::image( $dataTypeContent->avatar ) }}"
+                      src="{{ filter_var($dataTypeContent->avatar, FILTER_VALIDATE_URL) ? $dataTypeContent->avatar : Admin::getImage( $dataTypeContent->avatar ) }}"
                       style="width:200px;height:auto;clear:both;display:block;padding:2px;border:1px solid #ddd;margin-bottom:10px;">
                 @endif
                 <input type="file" data-name="avatar" name="avatar" value="上传头像">

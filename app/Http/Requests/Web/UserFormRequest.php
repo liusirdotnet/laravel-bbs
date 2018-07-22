@@ -35,8 +35,8 @@ class UserFormRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.unique'       => '用户名 已被占用，请重新填写',
-            'name.regex'        => '用户名 只支持英文、数字、横杆和下划线。',
+            'name.unique'       => '用户名 已被占用，请重新填写。',
+            'name.regex'        => '用户名 只支持英文、数字、中划线和下划线。',
             'name.between'      => '用户名 必须介于 3 - 25 个字符之间。',
             'name.required'     => '用户名 不能为空。',
             'avatar.mimes'      => '头像 必须是 jpeg, bmp, png, gif 格式的图片。',
