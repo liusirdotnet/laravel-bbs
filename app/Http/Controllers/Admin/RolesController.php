@@ -156,8 +156,8 @@ class RolesController extends AbstractController
             // Single item delete, get ID from URL
             $ids[] = $id;
         }
-        foreach ($ids as $id) {
-            $data = \call_user_func([$dataType->model_name, 'findOrFail'], $id);
+        foreach ($ids as $val) {
+            $data = \call_user_func([$dataType->model_name, 'findOrFail'], $val);
             $this->cleanup($dataType, $data);
         }
 
@@ -165,14 +165,8 @@ class RolesController extends AbstractController
 
         $res = $data->destroy($ids);
         $data = $res
-            ? [
-                'message'    => '删除成功' . " {$displayName}",
-                'alert-type' => 'success',
-            ]
-            : [
-                'message'    => '删除错误' . " {$displayName}",
-                'alert-type' => 'error',
-            ];
+            ? ['message' => '删除成功' . " {$displayName}", 'alert-type' => 'success',]
+            : ['message' => '删除错误' . " {$displayName}", 'alert-type' => 'error',];
 
         return redirect()
             ->route("admin.{$dataType->slug}.index")

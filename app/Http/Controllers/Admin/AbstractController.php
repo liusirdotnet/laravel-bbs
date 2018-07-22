@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Support\Contents\Types\CheckboxType;
 use App\Support\Contents\Types\FileType;
+use App\Support\Contents\Types\ImageType;
 use App\Support\Contents\Types\PasswordType;
 use App\Support\Contents\Types\SelectType;
 use App\Support\Contents\Types\TextType;
@@ -96,36 +97,36 @@ abstract class AbstractController extends Controller
         return $model;
     }
 
-    public function validateWithForm(array $request, $data, $name = null, $id = null)
+    public function validateWithForm(array $data, Collection $collection, $name = null, $id = null)
     {
         $rules = $messages = $attributes = [];
         $isUpdate = $name && $id;
-
-        $fieldsWithValidationRules = $this->getFieldsWithValidationRules($data);
+        $fieldsWithValidationRules = $this->getFieldsWithValidationRules($collection);
 
         foreach ($fieldsWithValidationRules as $field) {
             $options = json_decode($field->details);
             $fieldRules = $options->validation->rule;
             $fieldName = $field->field;
 
-            // Show the field's display name on the error message
+            // Show the field's display name on the error message.
             if (! empty($field->display_name)) {
-                $customAttributes[$fieldName] = $field->display_name;
+                $attributes[$fieldName] = $field->name;
             }
 
-            // Get the rules for the current field whatever the format it is in
+            // Get the rules for the current field whatever the format it is in.
             $rules[$fieldName] = \is_array($fieldRules) ? $fieldRules : explode('|', $fieldRules);
 
-            // Fix Unique validation rule on Edit Mode
+            // Fix Unique validation rule on Edit Mode.
             if ($isUpdate) {
                 foreach ($rules[$fieldName] as &$fieldRule) {
                     if (stripos($fieldRule, 'UNIQUE') !== false) {
                         $fieldRule = \Illuminate\Validation\Rule::unique($name)->ignore($id);
                     }
                 }
+                unset($fieldRule);
             }
 
-            // Set custom validation messages if any
+            // Set custom validation messages if any.
             if (! empty($options->validation->messages)) {
                 foreach ($options->validation->messages as $key => $msg) {
                     $messages["{$fieldName}.{$key}"] = $msg;
@@ -133,7 +134,7 @@ abstract class AbstractController extends Controller
             }
         }
 
-        return Validator::make($request, $rules, $messages, $attributes);
+        return Validator::make($data, $rules, $messages, $attributes);
     }
 
     public function getContentFromType(Request $request, $slug, $row, $options)
@@ -147,6 +148,8 @@ abstract class AbstractController extends Controller
                 return (new FileType($request, $slug, $row, $options))->handle();
             case 'select':
                 return (new SelectType($request, $slug, $row, $options))->handle();
+            case 'image':
+                return (new ImageType($request, $slug, $row, $options))->handle();
             case 'timestamp':
                 return (new TimestampType($request, $slug, $row, $options))->handle();
             default:
@@ -167,13 +170,9 @@ abstract class AbstractController extends Controller
         }
     }
 
-    protected function getFieldsWithValidationRules($fieldsConfig)
+    protected function getFieldsWithValidationRules(Collection $collection)
     {
-        // $fieldsConfig->filter(function ($value) {
-        //     $decoded = json_decode($value->details, true);
-        // });
-
-        return $fieldsConfig->filter(function ($value) {
+        return $collection->filter(function ($value) {
             if (empty($value->details)) {
                 return false;
             }

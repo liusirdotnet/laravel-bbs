@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Admin\Traits\RelationshipParserTrait;
+use App\Models\User;
 use App\Support\Facades\Admin;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -29,16 +31,12 @@ class UsersController extends AbstractController
         $getter = 'paginate';
         $orderBy = strtolower($request->get('order_by'));
         $orderType = $request->get('order_type');
-        $search = (object)[
+        $search = (object) [
             'key'    => $request->get('key'),
             'value'  => $request->get('s'),
             'filter' => $request->get('filter'),
         ];
-        $fields = ['ID', '用户名', '邮箱', '简介', '通知数', '头像', '创建时间', '更新时间',];
-        $columns = Schema::getColumnListing('users');
-        $columns = array_flip($columns);
-        unset($columns['role_id'], $columns['password'], $columns['remember_token']);
-        $searchable = array_combine(array_flip($columns), $fields);
+        $searchable = Schema::getColumnListing('users');
 
         if ($dataType->model_name !== null) {
             $relationships = $this->getRelationships($dataType);
@@ -64,7 +62,6 @@ class UsersController extends AbstractController
             }
             $dataTypeContent = $this->resolveRelations($dataTypeContent, $dataType);
         } else {
-            // If Model doesn't exist, get data from table name.
             $dataTypeContent = \call_user_func([DB::table($dataType->name), $getter]);
         }
 
@@ -76,6 +73,124 @@ class UsersController extends AbstractController
             'orderBy',
             'orderType'
         ));
+    }
+
+    public function create(Request $request)
+    {
+        $slug = $this->getSlug($request);
+        $dataType = Admin::getModel('DataType')->where('slug', '=', $slug)->first();
+
+        try {
+            $this->authorize('add', app($dataType->model_name));
+        } catch (AuthorizationException $e) {
+            //
+        }
+
+        $dataTypeContent = $dataType->model_name !== null ? new $dataType->model_name() : false;
+        $this->removeRelationshipField($dataType, 'add');
+
+        return view('admin.users.user', compact(
+            'dataType',
+            'dataTypeContent'
+        ));
+    }
+
+    public function store(Request $request)
+    {
+        $slug = $this->getSlug($request);
+        $dataType = Admin::getModel('DataType')
+            ->where('slug', '=', $slug)
+            ->first();
+
+        try {
+            $this->authorize('add', app($dataType->model_name));
+        } catch (AuthorizationException $e) {
+            //
+        }
+        $validator = $this->validateWithForm($request->all(), $dataType->addRows);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()]);
+        }
+
+        if (! $request->has('_validate')) {
+            $data = $this->saveData($request, $slug, $dataType->addRows, new $dataType->model_name());
+
+            if ($request->ajax()) {
+                return response()->json(['success' => true, 'data' => $data]);
+            }
+
+            return redirect()
+                ->route("admin.{$dataType->slug}.index")
+                ->with([
+                    'message'    => $dataType->display_name_singular . '添加成功',
+                    'alert-type' => 'success',
+                ]);
+        }
+    }
+
+    public function edit(Request $request, $id)
+    {
+        $slug = $this->getSlug($request);
+        $dataType = Admin::getModel('DataType')
+            ->where('slug', '=', $slug)
+            ->first();
+
+        $relationships = $this->getRelationships($dataType);
+        $dataTypeContent = $dataType->model_name !== null
+            ? app($dataType->model_name)->with($relationships)->findOrFail($id)
+            : DB::table($dataType->name)->where('id', $id)->first();
+
+        foreach ($dataType->editRows as $key => $row) {
+            $details = json_decode($row->details);
+            $dataType->editRows[$key]['col_width'] = $details->width ?? 100;
+        }
+        $this->removeRelationshipField($dataType, 'edit');
+
+        try {
+            $this->authorize('edit', $dataTypeContent);
+        } catch (AuthorizationException $e) {
+            //
+        }
+
+        return view('admin.users.user', compact(
+            'dataType',
+            'dataTypeContent'
+        ));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $slug = $this->getSlug($request);
+        $dataType = Admin::getModel('DataType')
+            ->where('slug', '=', $slug)
+            ->first();
+
+        $id = $id instanceof Model ? $id->{$id->getKeyName()} : $id;
+        $data = \call_user_func([$dataType->model_name, 'findOrFail'], $id);
+
+        try {
+            $this->authorize('edit', $data);
+        } catch (AuthorizationException $e) {
+            //
+        }
+
+        $validator = $this->validateWithForm($request->all(), $dataType->editRows, $dataType->name, $id);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()]);
+        }
+
+        if (! $request->ajax()) {
+            $this->saveData($request, $slug, $dataType->editRows, $data);
+
+            return redirect()
+                ->route('admin.' . $dataType->slug . '.index')
+                ->with([
+                    'message'    => $dataType->display_name_singular . ' 更新成功',
+                    'alert-type' => 'success',
+                ]);
+        }
     }
 
     public function profile(Request $request)
