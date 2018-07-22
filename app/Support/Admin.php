@@ -16,6 +16,7 @@ use App\Support\Actions\EditAction;
 use App\Support\Actions\ViewAction;
 use App\Support\Contracts\Forms\Fields\FieldInterface;
 use Arrilot\Widgets\Facade as Widget;
+use Illuminate\Support\Facades\Storage;
 
 class Admin
 {
@@ -106,6 +107,15 @@ class Admin
     public function getActions()
     {
         return $this->actions;
+    }
+
+    public function getImage($file, $default = '')
+    {
+        if (! empty ($file)) {
+            return str_replace('\\', '/', Storage::disk(config('admin.storage.disk'))->url($file));
+        }
+
+        return $default;
     }
 
     public function addFormField($formField)
