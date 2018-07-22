@@ -10,4 +10,11 @@ class UserPolicy extends Policy
     {
         return $currentUser->id === $user->id;
     }
+
+    public function updateRoles(User $user, $model)
+    {
+        $another = $user->id !== $model->id;
+
+        return $another && $user->hasPermission('edit_users');
+    }
 }
