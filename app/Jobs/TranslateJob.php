@@ -39,7 +39,7 @@ class TranslateJob implements ShouldQueue
     {
         $slug = app(TranslateHandler::class)->translate($this->topic->title);
         DB::table('topics')
-          ->where('id', $this->topic->id)
-          ->update(['slug' => $slug]);
+            ->where('id', $this->topic->id)
+            ->update(['slug' => $slug]);
     }
 }
