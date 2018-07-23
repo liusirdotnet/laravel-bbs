@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Storage;
 
 trait RelationshipParserTrait
 {
+    protected $relationFields = [];
+
     protected function resolveRelations($dataTypeContent, DataType $dataType)
     {
         if ($dataTypeContent instanceof LengthAwarePaginator) {
@@ -56,11 +58,13 @@ trait RelationshipParserTrait
 
         $dataType->accessRows->each(function ($item) use (& $relationships) {
             $details = json_decode($item->details);
+
             if (isset($details->relationship, $item->field)) {
                 $relation = $details->relationship;
+
                 if (isset($relation->method)) {
                     $method = $relation->method;
-                    $this->relation_field[$method] = $item->field;
+                    $this->relationFields[$method] = $item->field;
                 } else {
                     $method = camel_case($item->field);
                 }
@@ -85,8 +89,8 @@ trait RelationshipParserTrait
 
         if (! empty($relations) && array_filter($relations)) {
             foreach ($relations as $field => $relation) {
-                if (isset($this->relation_field[$field])) {
-                    $field = $this->relation_field[$field];
+                if (isset($this->relationFields[$field])) {
+                    $field = $this->relationFields[$field];
                 } else {
                     $field = snake_case($field);
                 }
