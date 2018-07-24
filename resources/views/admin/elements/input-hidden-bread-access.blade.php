@@ -1,5 +1,4 @@
 <input type="hidden"
-       data-i18n="true"
-       name="{{ $row->field.$row->id }}_i18n"
-       id="{{ $row->field.$row->id }}_i18n"
+       name="{{ $row->field.$row->id }}"
+       id="{{ $row->field.$row->id }}"
        value="{{ $row->field }}">

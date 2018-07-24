@@ -1,16 +1,17 @@
 @if(isset($options->model, $options->type))
   @if(class_exists($options->model))
     @php $relationshipField = $row->field; @endphp
+
     @if($options->type === 'belongsTo')
 
       @if(isset($view) && ($view === 'access' || $view === 'read'))
         @php
-          $relationshipData = $data ?? $dataTypeContent;
+          $relationship = $instance ?? $dataTypeContent;
           $model = app($options->model);
           if (method_exists($model, 'getRelationship')) {
-            $query = $model::getRelationship($relationshipData->{$options->column});
+            $query = $model::getRelationship($relationship->{$options->column});
           } else {
-            $query = $model::find($relationshipData->{$options->column});
+            $query = $model::find($relationship->{$options->column});
           }
         @endphp
         @if(isset($query))
@@ -24,25 +25,23 @@
             $model = app($options->model);
             $query = $model::all();
           @endphp
-
           @if($row->required === 0)
             <option value="">暂无</option>
           @endif
 
-          @foreach($query as $relationshipData)
-            <option
-                value="{{ $relationshipData->{$options->key} }}" @if($dataTypeContent->{$options->column} === $relationshipData->{$options->key}){{ 'selected="selected"' }}@endif>{{ $relationshipData->{$options->label} }}</option>
+          @foreach($query as $relationship)
+            <option value="{{ $relationship->{$options->key} }}" @if($dataTypeContent->{$options->column} === $relationship->{$options->key}){{ 'selected="selected"' }}@endif>{{ $relationship->{$options->label} }}</option>
           @endforeach
         </select>
       @endif
 
     @elseif($options->type === 'hasOne')
-      @php
-        $relationshipData = $data ?? $dataTypeContent;
-        $model = app($options->model);
-        $query = $model::where($options->column, '=', $relationshipData->id)->first();
-      @endphp
 
+      @php
+        $relationship = $instance ?? $dataTypeContent;
+        $model = app($options->model);
+        $query = $model::where($options->column, '=', $relationship->id)->first();
+      @endphp
       @if(isset($query))
         <p>{{ $query->{$options->label} }}</p>
       @else
@@ -53,9 +52,10 @@
 
       @if(isset($view) && ($view === 'access' || $view === 'read'))
         @php
-          $relationshipData = $data ?? $dataTypeContent;
-          $model = app($options->model);
-          $selected_values = $model::where($options->column, '=', $relationshipData->id)->pluck($options->label)->all();
+          // $relationship = $instance ?? $dataTypeContent;
+          // $model = app($options->model);
+          // $selected_values = $model::where($options->column, '=', $relationship->id)->pluck($options->label)->all();
+          $selected_values = $instance->{$options->method}->pluck('display_name')->toArray();
         @endphp
 
         @if($view === 'access')
@@ -86,7 +86,6 @@
           $model = app($options->model);
           $query = $model::where($options->column, '=', $dataTypeContent->id)->get();
         @endphp
-
         @if(isset($query))
           <ul>
             @foreach($query as $query_res)
@@ -102,12 +101,11 @@
     @elseif($options->type === 'belongsToMany')
 
       @if(isset($view) && ($view === 'access' || $view === 'read'))
-
         @php
-          $relationshipData = $data ?? $dataTypeContent;
-                $selected_values = isset($relationshipData) ? $relationshipData->belongsToMany($options->model, $options->pivot_table)->pluck($options->label)->all() : [];
+          //$relationship = $instance ?? $dataTypeContent;
+          // $selected_values = isset($relationship) ? $relationship->belongsToMany($options->model, $options->pivot_table)->pluck($options->label)->all() : [];
+          $selected_values = $instance->{$options->method}->pluck('display_name')->toArray();
         @endphp
-
         @if($view === 'access')
           @php
             $string_values = implode(', ', $selected_values);
@@ -144,14 +142,12 @@
             $selected_values = isset($dataTypeContent) ? $dataTypeContent->belongsToMany($options->model, $options->pivot_table)->pluck($options->table.'.'.$options->key)->all() : array();
             $relationshipOptions = app($options->model)->all();
           @endphp
-
           @if($row->required === 0)
             <option value="">暂无</option>
           @endif
 
           @foreach($relationshipOptions as $relationshipOption)
-            <option
-                value="{{ $relationshipOption->{$options->key} }}" @if(in_array($relationshipOption->{$options->key}, $selected_values, true)){{ 'selected="selected"' }}@endif>{{ $relationshipOption->{$options->label} }}</option>
+            <option value="{{ $relationshipOption->{$options->key} }}" @if(in_array($relationshipOption->{$options->key}, $selected_values, true)){{ 'selected="selected"' }}@endif>{{ $relationshipOption->{$options->label} }}</option>
           @endforeach
         </select>
       @endif

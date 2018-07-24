@@ -1,7 +1,7 @@
-@php $action = new $action($dataType, $data); @endphp
+@php $action = new $action($dataType, $instance); @endphp
 
 @if ($action->shouldActionDisplayOnDataType())
-  @can($action->getPolicy(), $data)
+  @can($action->getPolicy(), $instance)
     <a href="{{ $action->getRoute($dataType->name) }}"
        title="{{ $action->getTitle() }}" {!! $action->convertAttributesToHtml() !!}>
       <i class="{{ $action->getIcon() }}"></i> <span class="hidden-xs hidden-sm">{{ $action->getTitle() }}</span>

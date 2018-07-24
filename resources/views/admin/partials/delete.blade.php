@@ -8,17 +8,18 @@
           <span aria-hidden="true">&times;</span>
         </button>
         <h4 class="modal-title">
-            <i class="voyager-trash"></i> 你确定要删除吗<span id="bulk_delete_count"></span> <span id="bulk_delete_display_name"></span>?
+          <i class="voyager-trash"></i>
+          你确定要删除<span id="bulk_delete_count"></span>个<span id="bulk_delete_display_name"></span>吗?
         </h4>
       </div>
-      <div class="modal-body" id="bulk_delete_modal_body">
-      </div>
+      <div class="modal-body" id="bulk_delete_modal_body"></div>
       <div class="modal-footer">
-        <form action="#" id="bulk_delete_form" method="POST">
+        <form action="{{ route('admin.'.$dataType->slug.'.index') }}/0" id="bulk_delete_form" method="POST">
           @csrf
           @method('DELETE')
-          <input type="hidden" name="ids" id="bulk_delete_input" value="">
-          <input type="submit" class="btn btn-danger pull-right delete-confirm" value="是的, 删除这些 {{ strtolower($dataType->display_name_plural) }}">
+          <input type="hidden" name="ids" id="bulk_delete_input">
+          <input type="submit" class="btn btn-danger pull-right delete-confirm"
+                 value="是的，删除选中的{{ $dataType->display_name_singular }}">
         </form>
         <button type="button" class="btn btn-default pull-right" data-dismiss="modal">取消</button>
       </div>
@@ -27,41 +28,46 @@
 </div>
 
 <script>
-window.onload = function () {
-  // Bulk delete selectors
-  var $bulkDeleteBtn = $('#bulk_delete_btn');
-  var $bulkDeleteModal = $('#bulk_delete_modal');
-  var $bulkDeleteCount = $('#bulk_delete_count');
-  var $bulkDeleteDisplayName = $('#bulk_delete_display_name');
-  var $bulkDeleteInput = $('#bulk_delete_input');
-  // Reposition modal to prevent z-index issues
-  $bulkDeleteModal.appendTo('body');
-  // Bulk delete listener
-  $bulkDeleteBtn.click(function () {
-    var ids = [];
-    var $checkedBoxes = $('#dataTable input[type=checkbox]:checked').not('.select_all');
-    var count = $checkedBoxes.length;
-    if (count) {
-        // Reset input value
+  window.onload = function () {
+    // Bulk delete selectors.
+    let $bulkDeleteBtn = $('#bulk_delete_btn');
+    let $bulkDeleteModal = $('#bulk_delete_modal');
+    let $bulkDeleteCount = $('#bulk_delete_count');
+    let $bulkDeleteDisplayName = $('#bulk_delete_display_name');
+    let $bulkDeleteInput = $('#bulk_delete_input');
+
+    // Reposition modal to prevent z-index issues.
+    $bulkDeleteModal.appendTo('body');
+
+    // Bulk delete listener.
+    $bulkDeleteBtn.click(function () {
+      let ids = [];
+      let $checkedBoxes = $('#dataTable input[type=checkbox]:checked').not('.select_all');
+      let count = $checkedBoxes.length;
+      if (count) {
+        // Reset input value.
         $bulkDeleteInput.val('');
-        // Deletion info
-        var displayName = count > 1 ? '{{ $dataType->display_name_plural }}' : '{{ $dataType->display_name_singular }}';
-        displayName = displayName.toLowerCase();
+
+        // Deletion info.
+        let displayName = count > 1 ? '{{ $dataType->display_name_plural }}' : '{{ $dataType->display_name_singular }}';
         $bulkDeleteCount.html(count);
         $bulkDeleteDisplayName.html(displayName);
-        // Gather IDs
+
+        // Gather IDs.
         $.each($checkedBoxes, function () {
-            var value = $(this).val();
-            ids.push(value);
-        })
-        // Set input value
+          let value = $(this).val();
+          ids.push(value);
+        });
+
+        // Set input value.
         $bulkDeleteInput.val(ids);
-        // Show modal
+
+        // Show modal.
         $bulkDeleteModal.modal('show');
-    } else {
-        // No row selected
+      } else {
+        // No row selected.
         toastr.warning('没有选择要删除的内容');
-    }
-  });
-}
+      }
+    });
+  }
 </script>
