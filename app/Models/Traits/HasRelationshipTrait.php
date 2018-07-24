@@ -4,7 +4,7 @@ namespace App\Models\Traits;
 
 trait HasRelationshipTrait
 {
-    protected static $relationships;
+    protected static $relationships = [];
 
     public static function getRelationship($id)
     {
