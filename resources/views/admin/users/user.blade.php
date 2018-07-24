@@ -63,7 +63,7 @@
                   <label for="default_role">默认角色</label>
                   @php
                     $dataTypeRows = $dataType->{(isset($dataTypeContent->id) ? 'editRows' : 'addRows' )};
-                    $row = $dataTypeRows->where('field', 'user_belongsto_role_relationship')->first();
+                    $row = $dataTypeRows->where('field', 'role')->first();
                     $options = json_decode($row->details);
                   @endphp
                   @include('admin.forms.fields.relationship')
@@ -71,7 +71,7 @@
                 <div class="form-group">
                   <label for="additional_roles">其它角色</label>
                   @php
-                    $row = $dataTypeRows->where('field', 'user_belongstomany_role_relationship')->first();
+                    $row = $dataTypeRows->where('field', 'roles')->first();
                     $options = json_decode($row->details);
                   @endphp
                   @include('admin.forms.fields.relationship')

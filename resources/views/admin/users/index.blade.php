@@ -33,53 +33,51 @@
     @include('admin.components.alert')
     <div class="row">
       <div class="col-md-12">
-        <div class="panel panel-bordered">
+        <div class="panel panel-boardered">
           <div class="panel-body">
-            <form method="get" class="form-search">
-              <div id="search-input">
+            <form class="form-inline well well-sm" id="log-search-form" action="#" method="get" novalidate="">
+              <div class="form-group">
                 <select class="form-control" id="search_key" name="key">
-                  @foreach($searchable as $key => $val)
-                    <option value="{{ $key }}" @if($search->key === $key){{ 'selected' }}@endif>{{ $val }}</option>
+                  @foreach($searchable as $key)
+                    <option value="{{ $key }}" @if($search->key === $key){{ 'selected' }}@endif>{{ ucfirst(camel_case($key)) }}</option>
                   @endforeach
                 </select>
                 <select class="form-control" id="filter" name="filter">
                   <option value="contains" @if($search->filter === "contains"){{ 'selected' }}@endif>包含</option>
                   <option value="equals" @if($search->filter === "equals"){{ 'selected' }}@endif>相等</option>
                 </select>
-                <div class="input-group col-md-12">
-                  <input type="text" class="form-control" name="s" value="{{ $search->value }}"
-                         placeholder="请输入关键字进行搜索...">
-                  <span class="input-group-btn">
-                    <button class="btn btn-info btn-lg" type="submit">
-                        <i class="voyager-search"></i>
-                    </button>
-                  </span>
-                </div>
+                <input type="text" class="form-control" name="s" value="{{ $search->value }}" placeholder="请输入关键字搜索...">
               </div>
+              <button class="btn btn-primary" type="submit"><i class="voyager-search"></i> 搜索</button>
             </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-bordered">
+          <div class="panel-body">
             <div class="table-responsive">
-              <table id="dataTable" class="table table-hover">
+              <table id="dataTable" class="table table-hover table-condensed">
                 <thead>
                 <tr>
                   @can('delete', app($dataType->model_name))
-                    <th>
-                      <input type="checkbox" class="select_all">
-                    </th>
+                    <th><input type="checkbox" class="select_all"></th>
                   @endcan
                   @foreach($dataType->accessRows as $row)
-                    <th>
-                      {{ $row->display_name }}
-                    </th>
+                    <th>{{ $row->display_name }}</th>
                   @endforeach
                   <th class="actions text-right">操作</th>
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($dataTypeContent as $data)
+                @foreach($dataTypeContent as $instance)
                   <tr>
                     @can('delete', app($dataType->model_name))
                       <td>
-                        <input type="checkbox" name="row_id" id="checkbox_" value="">
+                        <input type="checkbox" name="row_id" id="checkbox_{{ $instance->getKey() }}"
+                               value="{{ $instance->getKey() }}">
                       </td>
                     @endcan
 
@@ -95,13 +93,13 @@
                         @elseif($row->type === 'select_dropdown' && property_exists($options, 'options'))
                           <span>select_dropdown</span>
                         @elseif($row->type === 'date' || $row->type === 'timestamp')
-                          {{ $options && property_exists($options, 'format') ? \Carbon\Carbon::parse($data->{$row->field})->formatLocalized($options->format) : $data->{$row->field} }}
+                          {{ $options && property_exists($options, 'format') ? \Carbon\Carbon::parse($instance->{$row->field})->formatLocalized($options->format) : $instance->{$row->field} }}
                         @elseif($row->type === 'color')
                           <span>color</span>
                         @elseif($row->type === 'text')
                           @include('admin.elements.input-hidden-bread-access')
                           <div class="readmore">
-                            {{ mb_strlen( $data->{$row->field} ) > 200 ? mb_substr($data->{$row->field}, 0, 200) . ' ...' : $data->{$row->field} }}
+                            {{ mb_strlen( $instance->{$row->field} ) > 200 ? mb_substr($instance->{$row->field}, 0, 200) . ' ...' : $instance->{$row->field} }}
                           </div>
                         @elseif($row->type === 'text_area')
                           <span>text_area</span>
@@ -112,10 +110,11 @@
                         @elseif($row->type === 'coordinates')
                           <span>coordinates</span>
                         @else
-                          <span>{{ $data->{$row->field} }}</span>
+                          <span>{{ $instance->{$row->field} }}</span>
                         @endif
                       </td>
                     @endforeach
+
                     <td class="no-sort no-click" id="bread-actions">
                       @foreach(Admin::getActions() as $action)
                         @include('admin.partials.action')
@@ -153,16 +152,17 @@
       </div>
     </div>
   </div>
-  <div class="modal modal-danger fade" tabindex="-1" id="delete_modal" role="dialog">
+  <div class="modal modal-danger fade" tabindex="-1" id="delete-modal" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
           </button>
           <h4 class="modal-title"><i class="voyager-trash"></i> 您确定要删除它吗？</h4>
         </div>
         <div class="modal-footer">
-          <form action="#" id="delete_form" method="POST">
+          <form action="#" id="delete-form" method="POST">
             @csrf
             @method('DELETE')
             <input type="submit" class="btn btn-danger pull-right delete-confirm" value="删除">
@@ -186,10 +186,10 @@
       });
     });
 
-    var deleteFormAction;
     $('td').on('click', '.delete', function (e) {
-      $('#delete_form')[0].action = '{{ route('admin.'.$dataType->slug.'.destroy', ['id' => '__id']) }}'.replace('__id', $(this).data('id'));
-      $('#delete_modal').modal('show');
+      let action = '{{ route('admin.'.$dataType->slug.'.destroy', ['id' => '__id']) }}'.replace('__id', $(this).data('id'));
+      $('#delete-form')[0].action = action;
+      $('#delete-modal').modal('show');
     });
   </script>
 @stop
