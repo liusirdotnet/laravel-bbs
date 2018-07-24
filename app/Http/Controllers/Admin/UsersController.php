@@ -15,6 +15,13 @@ class UsersController extends AbstractController
 {
     use RelationshipParserTrait;
 
+    /**
+     * 用户列表页面。
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index(Request $request)
     {
         $slug = $this->getSlug($request);
@@ -43,7 +50,6 @@ class UsersController extends AbstractController
 
             $model = app($dataType->model_name);
             $query = $model::select('*')->with($relationships);
-
             $this->removeRelationshipField($dataType, 'access');
 
             if ($search->key && $search->value && $search->filter) {
@@ -75,6 +81,13 @@ class UsersController extends AbstractController
         ));
     }
 
+    /**
+     * 用户创建页面。
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function create(Request $request)
     {
         $slug = $this->getSlug($request);
@@ -95,6 +108,13 @@ class UsersController extends AbstractController
         ));
     }
 
+    /**
+     * 用户创建操作。
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request)
     {
         $slug = $this->getSlug($request);
@@ -129,6 +149,14 @@ class UsersController extends AbstractController
         }
     }
 
+    /**
+     * 用户编辑页面。
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function edit(Request $request, $id)
     {
         $slug = $this->getSlug($request);
@@ -159,6 +187,14 @@ class UsersController extends AbstractController
         ));
     }
 
+    /**
+     * 用户更新操作。
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     */
     public function update(Request $request, $id)
     {
         $slug = $this->getSlug($request);
@@ -191,6 +227,55 @@ class UsersController extends AbstractController
                     'alert-type' => 'success',
                 ]);
         }
+    }
+
+    /**
+     * 用户删除操作。
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy(Request $request, $id)
+    {
+        $slug = $this->getSlug($request);
+        $dataType = Admin::getModel('DataType')
+            ->where('slug', '=', $slug)
+            ->first();
+
+        try {
+            $this->authorize('delete', app($dataType->model_class));
+        } catch (AuthorizationException $e) {
+            //
+        }
+
+        $ids = [];
+        if (empty($id)) {
+            $ids = explode(',', $request->ids);
+        } else {
+            $ids[] = $id;
+        }
+        foreach ($ids as $val) {
+            $model = \call_user_func([$dataType->model_name, 'findOrFail'], $val);
+            $this->cleanup($dataType, $model);
+        }
+
+        $displayName = \count($ids) > 1 ? $dataType->display_name_plural : $dataType->display_name_singular;
+        $result = $model->destroy($ids);
+        $data = $result
+            ? [
+                'message'    => "{$displayName} " . '删除成功！',
+                'alert-type' => 'success',
+            ]
+            : [
+                'message'    => "{$displayName} " . '删除失败！',
+                'alert-type' => 'error',
+            ];
+
+        return redirect()
+            ->route("admin.{$dataType->slug}.index")
+            ->with($data);
     }
 
     public function profile(Request $request)

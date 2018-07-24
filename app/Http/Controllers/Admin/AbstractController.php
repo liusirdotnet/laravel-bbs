@@ -13,6 +13,7 @@ use App\Support\Contents\Types\TimestampType;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 abstract class AbstractController extends Controller
@@ -159,10 +160,10 @@ abstract class AbstractController extends Controller
 
     protected function cleanup($dataType, $data)
     {
-        // Delete Images
-        $this->deleteBreadImages($data, $dataType->deleteRows->where('type', 'image'));
+        // Delete Images.
+        $this->deleteAvatarImages($data, $dataType->deleteRows->where('type', 'image'));
 
-        // Delete Files
+        // Delete Files.
         foreach ($dataType->deleteRows->where('type', 'file') as $row) {
             foreach (json_decode($data->{$row->field}) as $file) {
                 $this->deleteFileIfExists($file->download_link);
@@ -182,4 +183,30 @@ abstract class AbstractController extends Controller
         });
     }
 
+    protected function deleteAvatarImages($data, $rows)
+    {
+        foreach ($rows as $row) {
+            if ($data->{$row->field} !== config('admin.user.default_avatar')) {
+                $this->deleteFileIfExists($data->{$row->field});
+            }
+            $options = json_decode($row->details);
+
+            if (isset($options->thumbnails)) {
+                foreach ($options->thumbnails as $thumbnail) {
+                    $ext = explode('.', $data->{$row->field});
+                    $extension = '.' . $ext[\count($ext) - 1];
+                    $path = str_replace($extension, '', $data->{$row->field});
+                    $thumb_name = $thumbnail->name;
+                    $this->deleteFileIfExists($path . '-' . $thumb_name . $extension);
+                }
+            }
+        }
+    }
+
+    protected function deleteFileIfExists($path)
+    {
+        if (Storage::disk(config('admin.storage.disk'))->exists($path)) {
+            Storage::disk(config('admin.storage.disk'))->delete($path);
+        }
+    }
 }
