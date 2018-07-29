@@ -81,6 +81,33 @@ class UsersController extends AbstractController
         ));
     }
 
+    public function show(Request $request, $id)
+    {
+        $slug = $this->getSlug($request);
+        $dataType = Admin::getModel('DataType')
+            ->where('slug', '=', $slug)
+            ->first();
+
+        $relationship = $this->getRelationships($dataType);
+        $dataTypeContent = $dataType->model_name !== null
+            ? \call_user_func([app($dataType->model_name)->with($relationship), 'findOrFail'], $id)
+            : DB::table($dataType->name)->where('id', $id)->first();
+
+        $dataTypeContent = $this->resolveRelations($dataTypeContent, $dataType);
+        $this->removeRelationshipField($dataType, 'read');
+
+        try {
+            $this->authorize('read', $dataTypeContent);
+        } catch (AuthorizationException $e) {
+            //
+        }
+
+        return view('admin.users.detail', compact(
+            'dataType',
+            'dataTypeContent'
+        ));
+    }
+
     /**
      * 用户创建页面。
      *
