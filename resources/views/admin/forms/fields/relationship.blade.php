@@ -30,7 +30,8 @@
           @endif
 
           @foreach($query as $relationship)
-            <option value="{{ $relationship->{$options->key} }}" @if($dataTypeContent->{$options->column} === $relationship->{$options->key}){{ 'selected="selected"' }}@endif>{{ $relationship->{$options->label} }}</option>
+            <option
+                value="{{ $relationship->{$options->key} }}" @if($dataTypeContent->{$options->column} === $relationship->{$options->key}){{ 'selected="selected"' }}@endif>{{ $relationship->{$options->label} }}</option>
           @endforeach
         </select>
       @endif
@@ -102,9 +103,8 @@
 
       @if(isset($view) && ($view === 'access' || $view === 'read'))
         @php
-          //$relationship = $instance ?? $dataTypeContent;
-          // $selected_values = isset($relationship) ? $relationship->belongsToMany($options->model, $options->pivot_table)->pluck($options->label)->all() : [];
-          $selected_values = $instance->{$options->method}->pluck('display_name')->toArray();
+          $relationship = $instance ?? $dataTypeContent;
+          $selected_values = isset($relationship) ? $relationship->belongsToMany($options->model, $options->pivot_table)->pluck($options->label)->all() : [];
         @endphp
         @if($view === 'access')
           @php
@@ -147,7 +147,8 @@
           @endif
 
           @foreach($relationshipOptions as $relationshipOption)
-            <option value="{{ $relationshipOption->{$options->key} }}" @if(in_array($relationshipOption->{$options->key}, $selected_values, true)){{ 'selected="selected"' }}@endif>{{ $relationshipOption->{$options->label} }}</option>
+            <option
+                value="{{ $relationshipOption->{$options->key} }}" @if(in_array($relationshipOption->{$options->key}, $selected_values, true)){{ 'selected="selected"' }}@endif>{{ $relationshipOption->{$options->label} }}</option>
           @endforeach
         </select>
       @endif

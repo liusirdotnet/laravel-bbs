@@ -16,7 +16,7 @@
   <link rel="shortcut icon" href="/favicon.png">
 
   {{-- Styles S --}}
-  <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+  <link rel="stylesheet" href="{{ asset('frontend/css/app.css') }}">
   @yield('styles')
   {{-- Styles E --}}
 </head>
@@ -38,7 +38,7 @@
 @endif
 
 {{-- Scripts S --}}
-<script src="{{ asset('js/app.js') }}"></script>
+<script src="{{ asset('frontend/js/app.js') }}"></script>
 @yield('scripts')
 {{-- Scripts E --}}
 </body>

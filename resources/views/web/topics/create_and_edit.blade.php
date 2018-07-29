@@ -1,14 +1,14 @@
 @extends('web.layouts.app')
 
 @section('styles')
-  <link rel="stylesheet" href="{{ asset('css/simditor.css') }}">
+  <link rel="stylesheet" href="{{ asset('frontend/css/simditor.css') }}">
 @stop
 
 @section('scripts')
-  <script src="{{ asset('js/module.js') }}"></script>
-  <script src="{{ asset('js/hotkeys.js') }}"></script>
-  <script src="{{ asset('js/uploader.js') }}"></script>
-  <script src="{{ asset('js/simditor.js') }}"></script>
+  <script src="{{ asset('frontend/js/module.js') }}"></script>
+  <script src="{{ asset('frontend/js/hotkeys.js') }}"></script>
+  <script src="{{ asset('frontend/js/uploader.js') }}"></script>
+  <script src="{{ asset('frontend/js/simditor.js') }}"></script>
   <script>
     (function ($) {
       var editor = new Simditor({
@@ -41,7 +41,7 @@
           </h3>
         </div>
 
-        @include('components.error')
+        @include('web.components.error')
 
         <div class="card-body">
           @php

@@ -4,8 +4,7 @@
 
 @section('page_header')
   <h1 class="page-title">
-    <i class="{{ $dataType->icon }}"></i>
-    {{ isset($dataTypeContent->id) ? '编辑' : '添加' }}
+    <i class="{{ $dataType->icon }}"></i> {{ isset($dataTypeContent->id) ? '编辑' : '添加' }}
   </h1>
 @stop
 
@@ -24,7 +23,6 @@
           <div class="panel panel-bordered">
             @if (count($errors) > 0)
               <div class="alert alert-danger">
-                  <?php dd($errors->all()) ?>
                 <ul>
                   @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
