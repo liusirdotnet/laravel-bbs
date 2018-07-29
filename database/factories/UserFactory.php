@@ -15,7 +15,6 @@ use Faker\Generator as Faker;
 */
 
 $factory->define(App\Models\User::class, function (Faker $faker) {
-
     $now = Carbon::now()->toDateTimeString();
 
     return [

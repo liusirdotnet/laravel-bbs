@@ -11,8 +11,8 @@ let mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/assets/js/app.js', 'public/js')
-  .sass('resources/assets/sass/app.scss', 'public/css')
-  .copy('node_modules/font-awesome/fonts', 'public/fonts')
-  .copyDirectory('resources/assets/simditor/css', 'public/css')
-  .copyDirectory('resources/assets/simditor/js', 'public/js');
+mix.js('resources/assets/frontend/js/app.js', 'public/frontend/js')
+  .sass('resources/assets/frontend/sass/app.scss', 'public/frontend/css')
+  .copy('node_modules/font-awesome/fonts', 'public/frontend/fonts')
+  .copyDirectory('resources/assets/frontend/simditor/css', 'public/frontend/css')
+  .copyDirectory('resources/assets/frontend/simditor/js', 'public/frontend/js');
