@@ -28,13 +28,14 @@ class RolesController extends AbstractController
         $getter = 'paginate';
         $orderBy = strtolower($request->get('order_by'));
         $orderType = $request->get('order_type');
-        $search = (object)[
+        $search = (object) [
             'key'    => $request->get('key'),
             'value'  => $request->get('s'),
             'filter' => $request->get('filter'),
         ];
-        $fields = ['ID', '名称', '显示名称', '创建时间', '更新时间',];
-        $searchable = array_combine(Schema::getColumnListing('roles'), $fields);
+        // $fields = ['ID', '名称', '显示名称', '创建时间', '更新时间',];
+        // $searchable = array_combine(Schema::getColumnListing('roles'), $fields);
+        $searchable = Schema::getColumnListing('roles');
 
         if ($dataType->model_name !== null) {
             $relationships = $this->getRelationships($dataType);
@@ -74,8 +75,31 @@ class RolesController extends AbstractController
         ));
     }
 
-    public function show(Request $request)
+    public function show(Request $request, $id)
     {
+        $slug = $this->getSlug($request);
+        $dataType = Admin::getModel('DataType')
+            ->where('slug', '=', $slug)
+            ->first();
+
+        $relationship = $this->getRelationships($dataType);
+        $dataTypeContent = $dataType->model_name !== null
+            ? \call_user_func([app($dataType->model_name)->with($relationship), 'findOrFail'], $id)
+            : DB::table($dataType->name)->where('id', $id)->first();
+
+        $dataTypeContent = $this->resolveRelations($dataTypeContent, $dataType);
+        $this->removeRelationshipField($dataType, 'read');
+
+        try {
+            $this->authorize('read', $dataTypeContent);
+        } catch (AuthorizationException $e) {
+            //
+        }
+
+        return view('admin.roles.detail', compact(
+            'dataType',
+            'dataTypeContent'
+        ));
     }
 
     public function create(Request $request)

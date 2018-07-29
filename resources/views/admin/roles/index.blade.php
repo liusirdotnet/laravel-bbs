@@ -35,27 +35,20 @@
       <div class="col-md-12">
         <div class="panel panel-bordered">
           <div class="panel-body">
-            <form method="get" class="form-search">
-              <div id="search-input">
+            <form class="form-inline well well-sm" id="log-search-form" action="#" method="get" novalidate="">
+              <div class="form-group">
                 <select class="form-control" id="search_key" name="key">
-                  @foreach($searchable as $key => $val)
-                    <option value="{{ $key }}" @if($search->key === $key){{ 'selected' }}@endif>{{ $val }}</option>
+                  @foreach($searchable as $key)
+                    <option value="{{ $key }}" @if($search->key === $key){{ 'selected' }}@endif>{{ ucfirst(camel_case($key)) }}</option>
                   @endforeach
                 </select>
                 <select class="form-control" id="filter" name="filter">
                   <option value="contains" @if($search->filter === "contains"){{ 'selected' }}@endif>包含</option>
                   <option value="equals" @if($search->filter === "equals"){{ 'selected' }}@endif>相等</option>
                 </select>
-                <div class="input-group col-md-12">
-                  <input type="text" class="form-control" name="s" value="{{ $search->value }}"
-                         placeholder="请输入关键字进行搜索...">
-                  <span class="input-group-btn">
-                    <button class="btn btn-info btn-lg" type="submit">
-                        <i class="voyager-search"></i>
-                    </button>
-                  </span>
-                </div>
+                <input type="text" class="form-control" name="s" value="{{ $search->value }}" placeholder="请输入关键字搜索...">
               </div>
+              <button class="btn btn-primary" type="submit"><i class="voyager-search"></i> 搜索</button>
             </form>
             <div class="table-responsive">
               <table id="dataTable" class="table table-hover">
@@ -71,7 +64,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($dataTypeContent as $data)
+                @foreach($dataTypeContent as $instance)
                   <tr>
                     @can('delete', app($dataType->model_name))
                       <td>
@@ -94,7 +87,7 @@
                         @elseif($row->type === 'text')
                           @include('admin.elements.input-hidden-bread-access')
                           <div class="readmore">
-                            {{ mb_strlen( $data->{$row->field} ) > 200 ? mb_substr($data->{$row->field}, 0, 200) . ' ...' : $data->{$row->field} }}
+                            {{ mb_strlen( $instance->{$row->field} ) > 200 ? mb_substr($instance->{$row->field}, 0, 200) . ' ...' : $instance->{$row->field} }}
                           </div>
                         @elseif($row->type === 'text_area')
                           <span>text_area</span>
@@ -105,7 +98,7 @@
                         @elseif($row->type === 'coordinates')
                           <span>coordinates</span>
                         @else
-                          <span>{{ $data->{$row->field} }}</span>
+                          <span>{{ $instance->{$row->field} }}</span>
                         @endif
                       </td>
                     @endforeach
