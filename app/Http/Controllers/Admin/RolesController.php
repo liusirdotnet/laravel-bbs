@@ -6,6 +6,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use App\Support\Facades\Admin;
 use App\Http\Controllers\Admin\Traits\RelationshipParserTrait;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class RolesController extends AbstractController
@@ -126,7 +127,7 @@ class RolesController extends AbstractController
         }
         $this->removeRelationshipField($dataType, 'add');
 
-        return view('admin.roles.create', compact(
+        return view('admin.roles.role', compact(
             'dataType',
             'dataTypeContent'
         ));
@@ -154,6 +155,70 @@ class RolesController extends AbstractController
                 ->route("admin.{$dataType->slug}.index")
                 ->with([
                     'message'    => __('添加成功') . " {$dataType->display_name_singular}",
+                    'alert-type' => 'success',
+                ]);
+        }
+    }
+
+    public function edit(Request $request, $id)
+    {
+        $slug = $this->getSlug($request);
+        $dataType = Admin::getModel('DataType')
+            ->where('slug', '=', $slug)
+            ->first();
+
+        $relationships = $this->getRelationships($dataType);
+        $dataTypeContent = $dataType->model_name !== null
+            ? app($dataType->model_name)->with($relationships)->findOrFail($id)
+            : DB::table($dataType->name)->where('id', $id)->first();
+
+        foreach ($dataType->editRows as $key => $row) {
+            $details = json_decode($row->details);
+            $dataType->editRows[$key]['col_width'] = $details->width ?? 100;
+        }
+        $this->removeRelationshipField($dataType, 'edit');
+
+        try {
+            $this->authorize('edit', $dataTypeContent);
+        } catch (AuthorizationException $e) {
+            //
+        }
+
+        return view('admin.roles.role', compact(
+            'dataType',
+            'dataTypeContent'
+        ));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $slug = $this->getSlug($request);
+        $dataType = Admin::getModel('DataType')
+            ->where('slug', '=', $slug)
+            ->first();
+
+        try {
+            $this->authorize('edit', app($dataType->model_name));
+        } catch (AuthorizationException $e) {
+            //
+        }
+
+        $validator = $this->validateWithForm($request->all(), $dataType->editRows);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()]);
+        }
+
+        if (! $request->ajax()) {
+            $data = \call_user_func([$dataType->model_name, 'findOrFail'], $id);
+            $this->saveData($request, $slug, $dataType->editRows, $data);
+
+            $data->permissions()->sync($request->input('permissions', []));
+
+            return redirect()
+                ->route("admin.{$slug}.index")
+                ->with([
+                    'message'    => $dataType->display_name_singular . ' 更新成功',
                     'alert-type' => 'success',
                 ]);
         }
