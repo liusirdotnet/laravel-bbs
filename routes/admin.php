@@ -32,7 +32,7 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
             foreach (\App\Models\DataType::all() as $dataType) {
                 $breadController = $dataType->controller
                     ? $dataType->controller
-                    : $namespacePrefix . 'AbstractController';
+                    : $namespacePrefix . 'AdminController';
 
                 Route::get($dataType->slug . '/order', $breadController . '@order')->name($dataType->slug . '.order');
                 Route::post($dataType->slug . '/order', $breadController . '@update_order')->name($dataType->slug
