@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
-class AbstractController extends Controller
+class AdminController extends Controller
 {
     use RelationshipParserTrait;
 
