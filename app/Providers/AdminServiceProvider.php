@@ -45,7 +45,7 @@ class AdminServiceProvider extends ServiceProvider
         $loader->alias('Admin', Admin::class);
 
         $this->app->singleton('admin', function () {
-            return new Admin();
+            return new \App\Support\Admin();
         });
 
         $this->registerAlertComponents();
