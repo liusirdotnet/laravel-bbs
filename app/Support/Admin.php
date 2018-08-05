@@ -45,6 +45,11 @@ class Admin
     protected $formFields = [];
 
     /**
+     * @var array
+     */
+    protected $afterFormFields = [];
+
+    /**
      * @var bool
      */
     protected $alertsCollected = false;
@@ -144,6 +149,22 @@ class Admin
         return collect($this->formFields)->filter(function ($after) use ($driver) {
             return $after->supports($driver);
         });
+    }
+
+    public function afterFormFields($row, $dataType, $dataTypeContent)
+    {
+        $options = json_decode($row->details);
+
+        $collect = collect($this->afterFormFields)->filter(function ($after) use (
+            $row,
+            $dataType,
+            $dataTypeContent,
+            $options
+        ) {
+            return $after->visible($row, $dataType, $dataTypeContent, $options);
+        });
+
+        return $collect;
     }
 
     public function getVersion()
