@@ -162,7 +162,7 @@
        * Menu Modal is Open
        */
       $m_modal.on('show.bs.modal', function (e, data) {
-        let _adding = e.relatedTarget.data ? false : true;
+        let _adding = !e.relatedTarget.data;
 
         if (_adding) {
           $m_form.attr('action', $m_form.data('action-add'));

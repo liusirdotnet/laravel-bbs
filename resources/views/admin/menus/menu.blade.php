@@ -4,7 +4,7 @@
 
 @section('page_header')
   <h1 class="page-title">
-    {{--<i class="{{ $dataType->icon }}"></i>--}}
+    <i class="{{ $dataType->icon }}"></i>
     {{ (isset($dataTypeContent->id) ? '编辑' : '添加') }}
   </h1>
 @stop

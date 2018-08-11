@@ -60,6 +60,26 @@ class MenusController extends AdminController
 
     public function addItem(Request $request)
     {
+        $menu = Admin::getModel('Menu');
+
+        try {
+            $this->authorize('add', $menu);
+        } catch (AuthorizationException $e) {
+            //
+        }
+
+        $data = $this->prepareParameters($request->all());
+        unset($data['id']);
+        $data['order'] = Admin::getModel('MenuItem')->highestOrderMenuItem();
+
+        Admin::getModel('MenuItem')->create($data);
+
+        return redirect()
+            ->route('admin.menus.builder', [$data['menu_id']])
+            ->with([
+                'message' => '菜单项创建成功！',
+                'alert-type' => 'success',
+            ]);
     }
 
     public function updateItem(Request $request)
@@ -71,6 +91,22 @@ class MenusController extends AdminController
         $items = json_decode($request->input('order'));
 
         $this->orderMenuItem($items, null);
+    }
+
+    private function prepareParameters($parameters)
+    {
+        if (array_get($parameters, 'type')) {
+            $parameters['url'] = null;
+        } else {
+            $parameters['route'] = null;
+            $parameters['parameters'] = '';
+        }
+
+        if (isset($parameters['type'])) {
+            unset($parameters['type']);
+        }
+
+        return $parameters;
     }
 
     private function orderMenuItem($items, $parentId)

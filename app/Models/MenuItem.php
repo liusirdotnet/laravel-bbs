@@ -8,10 +8,16 @@ use Illuminate\Support\Facades\Route;
 
 class MenuItem extends Model
 {
-    /**
-     * @var string
-     */
-    protected $table = 'menu_items';
+    protected $fillable = [
+        'title',
+        'url',
+        'route',
+        'target',
+        'icon_class',
+        'color',
+        'order',
+        'parameters',
+    ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -41,6 +47,25 @@ class MenuItem extends Model
     }
 
     /**
+     * @param null|int $parent
+     *
+     * @return int
+     */
+    public function highestOrderMenuItem($parent = null)
+    {
+        $order = 1;
+        $item = $this->where('parent_id', '=', $parent)
+            ->orderBy('order', 'DESC')
+            ->first();
+
+        if ($item !== null) {
+            $order = (int) $item->order + 1;
+        }
+
+        return $order;
+    }
+
+    /**
      * @param bool   $absolute
      * @param string $route
      * @param mixed  $parameters
@@ -56,8 +81,6 @@ class MenuItem extends Model
 
         if (\is_string($parameters)) {
             $parameters = json_decode($parameters, true);
-        } elseif (\is_array($parameters)) {
-            $parameters = $parameters;
         } elseif (\is_object($parameters)) {
             $parameters = json_decode(json_encode($parameters), true);
         }

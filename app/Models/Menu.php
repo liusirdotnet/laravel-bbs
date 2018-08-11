@@ -20,7 +20,7 @@ class Menu extends Model
     public function parentItems()
     {
         return $this->hasMany(Admin::getModelClass('MenuItem'))
-            ->whereNull('parent_id');
+            ->orWhereNull('parent_id');
     }
 
     /**
