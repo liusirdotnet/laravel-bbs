@@ -13,10 +13,10 @@ return [
 
     'user' => [
         'add_default_role_on_register' => true,
-        'default_role'                 => 'user',
-        'namespace'                    => null,
-        'default_avatar'               => 'users/default.png',
-        'redirect'                     => '/admin',
+        'default_role' => 'user',
+        'namespace' => null,
+        'default_avatar' => 'users/default.png',
+        'redirect' => '/admin',
     ],
 
     /*
@@ -124,7 +124,7 @@ return [
         /*
          * Set whether or not the admin layout default is RTL.
          */
-        'rtl'     => false,
+        'rtl' => false,
 
         /*
          * Select default language
@@ -153,17 +153,17 @@ return [
         // Add custom list items to navbar's dropdown
         'navbar_items' => [
             'Profile' => [
-                'route'      => 'voyager.profile',
-                'classes'    => 'class-full-of-rum',
+                'route' => 'voyager.profile',
+                'classes' => 'class-full-of-rum',
                 'icon_class' => 'voyager-person',
             ],
-            'Home'    => [
-                'route'        => '/',
-                'icon_class'   => 'voyager-home',
+            'Home' => [
+                'route' => '/',
+                'icon_class' => 'voyager-home',
                 'target_blank' => true,
             ],
-            'Logout'  => [
-                'route'      => 'voyager.logout',
+            'Logout' => [
+                'route' => 'voyager.logout',
                 'icon_class' => 'voyager-power',
             ],
         ],
@@ -186,16 +186,16 @@ return [
 
     'bread' => [
         // When a BREAD is added, create the Menu item using the BREAD properties.
-        'add_menu_item'  => true,
+        'add_menu_item' => true,
 
         // which menu add item to
-        'default_menu'   => 'admin',
+        'default_menu' => 'admin',
 
         // When a BREAD is added, create the related Permission.
         'add_permission' => true,
 
         // which role add premissions to
-        'default_role'   => 'admin',
+        'default_role' => 'admin',
     ],
 
     /*
@@ -209,7 +209,7 @@ return [
 
     'primary_color' => '#22A7F0',
 
-    'show_dev_tips'  => true, // Show development tip "How To Use:" in Menu and Settings
+    'show_dev_tips' => true, // Show development tip "How To Use:" in Menu and Settings
 
     // Here you can specify additional assets you would like to be included in the master.blade
     'additional_css' => [
@@ -221,12 +221,12 @@ return [
     ],
 
     'googlemaps' => [
-        'key'    => env('GOOGLE_MAPS_KEY', ''),
+        'key' => env('GOOGLE_MAPS_KEY', ''),
         'center' => [
             'lat' => env('GOOGLE_MAPS_DEFAULT_CENTER_LAT', '32.715738'),
             'lng' => env('GOOGLE_MAPS_DEFAULT_CENTER_LNG', '-117.161084'),
         ],
-        'zoom'   => env('GOOGLE_MAPS_DEFAULT_ZOOM', 11),
+        'zoom' => env('GOOGLE_MAPS_DEFAULT_ZOOM', 11),
     ],
 
 ];
