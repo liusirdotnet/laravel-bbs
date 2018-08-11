@@ -30,7 +30,7 @@ class Menu extends Model
      * @param null   $type
      * @param array  $options
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Illuminate\Support\HtmlString|bool
      */
     public static function display($name, $type = null, array $options = [])
     {
@@ -46,9 +46,9 @@ class Menu extends Model
             return false;
         }
 
-        $options = (object)$options;
+        $options = (object) $options;
 
-        if (\in_array(strtolower($type), ['admin', 'admin_menu'], true)) {
+        if (\in_array(strtolower($type), ['admin', 'admin_sidebar'], true)) {
             $permissions = Admin::getModel('Permission')->all();
             $dataTypes = Admin::getModel('DataType')->all();
             $prefix = trim(route('admin.dashboard', [], false), '/');
@@ -61,7 +61,7 @@ class Menu extends Model
                     ? $user->role->permissions->pluck('key')->toArray()
                     : [];
             }
-            $options->user = (object)compact(
+            $options->user = (object) compact(
                 'permissions',
                 'dataTypes',
                 'prefix',
@@ -72,10 +72,16 @@ class Menu extends Model
                 $type = \mb_substr($type, 6);
             }
             $type = 'admin.menus.' . $type;
+        } else {
+            if ($type === null) {
+                $type = 'admin.menus.default';
+            } elseif ($type === 'bootstrap' && ! \view()->exists($type)) {
+                $type = 'admin.menus.bootstrap';
+            }
         }
 
         $html = View::make($type, [
-            'items'   => $menu->parentItems->sortBy('order'),
+            'items' => $menu->parentItems->sortBy('order'),
             'options' => $options,
         ])->render();
 

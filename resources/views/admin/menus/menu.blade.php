@@ -1,9 +1,11 @@
 @extends('admin.layouts.app')
 
+@section('page_title', isset($dataTypeContent->id) ? '编辑菜单' : '添加菜单')
+
 @section('page_header')
   <h1 class="page-title">
-    <i class="{{ $dataType->icon }}"></i>
-    {{ ($dataTypeContent->getKey() !== null ? '编辑' : '添加') . ' ' . $dataType->display_name_singular }}
+    {{--<i class="{{ $dataType->icon }}"></i>--}}
+    {{ (isset($dataTypeContent->id) ? '编辑' : '添加') }}
   </h1>
 @stop
 
@@ -49,7 +51,7 @@
                   @include('admin.forms.fields.custom.' . $options->formfields_custom)
                 @else
                   <div
-                      class="form-group @if($row->type === 'hidden') hidden @endif col-md-{{ $display_options->width or 12 }}" @if(isset($display_options->id)){{ "id=$display_options->id" }}@endif>
+                    class="form-group @if($row->type === 'hidden') hidden @endif col-md-{{ $display_options->width or 12 }}" @if(isset($display_options->id)){{ "id=$display_options->id" }}@endif>
                     {{ $row->slugify }}
                     <label for="name">{{ $row->display_name }}</label>
                     @include('admin.elements.input-hidden-bread-access')
