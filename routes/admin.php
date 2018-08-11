@@ -65,7 +65,7 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
                 'prefix' => 'item',
             ], function () use ($namespacePrefix) {
                 Route::delete('{id}', ['uses' => $namespacePrefix . 'MenusController@delete_menu', 'as' => 'destroy']);
-                Route::post('/', ['uses' => $namespacePrefix . 'MenusController@add_item', 'as' => 'add']);
+                Route::post('/', ['uses' => $namespacePrefix . 'MenusController@addItem', 'as' => 'add']);
                 Route::put('/', ['uses' => $namespacePrefix . 'MenusController@update_item', 'as' => 'update']);
             });
         });
