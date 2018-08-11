@@ -28,20 +28,20 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
         // 用户头像上传路由。
         Route::post('upload', ['UsersController@upload'])->name('users.upload');
 
-        try {
-            foreach (\App\Models\DataType::all() as $dataType) {
-                $breadController = $dataType->controller ?: $namespacePrefix . 'AdminController';
-
-                Route::get($dataType->slug . '/order', $breadController . '@order')->name($dataType->slug . '.order');
-                Route::post($dataType->slug . '/order', $breadController . '@update_order')->name($dataType->slug
-                    . '.order');
-                Route::resource($dataType->slug, $breadController);
-            }
-        } catch (\InvalidArgumentException $e) {
-            throw new \InvalidArgumentException("Custom routes hasn't been configured because: " . $e->getMessage(), 1);
-        } catch (\Exception $e) {
-            // do nothing, might just be because table not yet migrated.
-        }
+        // try {
+        //     foreach (\App\Models\DataType::all() as $dataType) {
+        //         $breadController = $dataType->controller ?: $namespacePrefix . 'AdminController';
+        //
+        //         Route::get($dataType->slug . '/order', $breadController . '@order')->name($dataType->slug . '.order');
+        //         Route::post($dataType->slug . '/order', $breadController . '@update_order')->name($dataType->slug
+        //             . '.order');
+        //         Route::resource($dataType->slug, $breadController);
+        //     }
+        // } catch (\InvalidArgumentException $e) {
+        //     throw new \InvalidArgumentException("Custom routes hasn't been configured because: " . $e->getMessage(), 1);
+        // } catch (\Exception $e) {
+        //     // do nothing, might just be because table not yet migrated.
+        // }
 
         // 用户路由。
         Route::resource('users', 'UsersController');
@@ -50,15 +50,18 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
         Route::resource('roles', 'RolesController');
 
         // 菜单路由。
+        Route::resource('menus', 'MenusController');
+
+        // 菜单条目路由。
         Route::group([
-            'as'     => 'menus.',
+            'as' => 'menus.',
             'prefix' => 'menus/{menu}',
         ], function () use ($namespacePrefix) {
             Route::get('builder', ['uses' => $namespacePrefix . 'MenusController@builder', 'as' => 'builder']);
-            Route::post('order', ['uses' => $namespacePrefix . 'MenusController@order_item', 'as' => 'order']);
+            Route::post('order', ['uses' => $namespacePrefix . 'MenusController@orderItem', 'as' => 'order']);
 
             Route::group([
-                'as'     => 'item.',
+                'as' => 'item.',
                 'prefix' => 'item',
             ], function () use ($namespacePrefix) {
                 Route::delete('{id}', ['uses' => $namespacePrefix . 'MenusController@delete_menu', 'as' => 'destroy']);
