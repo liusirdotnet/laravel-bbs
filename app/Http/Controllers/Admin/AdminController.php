@@ -41,9 +41,9 @@ class AdminController extends Controller
         $getter = 'paginate';
         $orderBy = strtolower($request->get('order_by'));
         $orderType = $request->get('order_type');
-        $search = (object) [
-            'key'    => $request->get('key'),
-            'value'  => $request->get('s'),
+        $search = (object)[
+            'key' => $request->get('key'),
+            'value' => $request->get('s'),
             'filter' => $request->get('filter'),
         ];
         $searchable = Schema::getColumnListing($slug);
@@ -177,7 +177,8 @@ class AdminController extends Controller
     public
     function getSlug(
         Request $request
-    ) {
+    )
+    {
         if (isset($this->slug)) {
             $slug = $this->slug;
         } else {
@@ -193,15 +194,16 @@ class AdminController extends Controller
         $slug,
         Collection $rows,
         Model $model
-    ) {
+    )
+    {
         $select = [];
 
         foreach ($rows as $row) {
             $options = json_decode($row->details);
 
             if ($row->type !== 'checkbox'
-                && ! $request->hasFile($row->field)
-                && ! $request->has($row->field)
+                && !$request->hasFile($row->field)
+                && !$request->has($row->field)
             ) {
                 if ((isset($options->type) && $options->type !== 'belongsToMany')
                     || $row->field !== 'user_belongsto_role_relationship'
@@ -241,8 +243,8 @@ class AdminController extends Controller
 
             if ($row->type === 'relationship' && $options->type === 'belongsToMany') {
                 $select[] = [
-                    'model'   => $options->model,
-                    'table'   => $options->pivot_table,
+                    'model' => $options->model,
+                    'table' => $options->pivot_table,
                     'content' => $content,
                 ];
             } else {
@@ -267,7 +269,8 @@ class AdminController extends Controller
         Collection $collection,
         $name = null,
         $id = null
-    ) {
+    )
+    {
         $rules = $messages = $attributes = [];
         $isUpdate = $name && $id;
         $fieldsWithValidationRules = $this->getFieldsWithValidationRules($collection);
@@ -278,7 +281,7 @@ class AdminController extends Controller
             $fieldName = $field->field;
 
             // Show the field's display name on the error message.
-            if (! empty($field->display_name)) {
+            if (!empty($field->display_name)) {
                 $attributes[$fieldName] = $field->name;
             }
 
@@ -296,7 +299,7 @@ class AdminController extends Controller
             }
 
             // Set custom validation messages if any.
-            if (! empty($options->validation->messages)) {
+            if (!empty($options->validation->messages)) {
                 foreach ($options->validation->messages as $key => $msg) {
                     $messages["{$fieldName}.{$key}"] = $msg;
                 }
@@ -312,7 +315,8 @@ class AdminController extends Controller
         $slug,
         $row,
         $options
-    ) {
+    )
+    {
         switch ($row->type) {
             case 'password':
                 return (new PasswordType($request, $slug, $row, $options))->handle();
@@ -335,7 +339,8 @@ class AdminController extends Controller
     function cleanup(
         $dataType,
         $data
-    ) {
+    )
+    {
         // Delete Images.
         $this->deleteAvatarImages($data, $dataType->deleteRows->where('type', 'image'));
 
@@ -350,14 +355,15 @@ class AdminController extends Controller
     protected
     function getFieldsWithValidationRules(
         Collection $collection
-    ) {
+    )
+    {
         return $collection->filter(function ($value) {
             if (empty($value->details)) {
                 return false;
             }
             $decoded = json_decode($value->details, true);
 
-            return ! empty($decoded['validation']['rule']);
+            return !empty($decoded['validation']['rule']);
         });
     }
 
@@ -365,7 +371,8 @@ class AdminController extends Controller
     function deleteAvatarImages(
         $data,
         $rows
-    ) {
+    )
+    {
         foreach ($rows as $row) {
             if ($data->{$row->field} !== config('admin.user.default_avatar')) {
                 $this->deleteFileIfExists($data->{$row->field});
@@ -387,7 +394,8 @@ class AdminController extends Controller
     protected
     function deleteFileIfExists(
         $path
-    ) {
+    )
+    {
         if (Storage::disk(config('admin.storage.disk'))->exists($path)) {
             Storage::disk(config('admin.storage.disk'))->delete($path);
         }
