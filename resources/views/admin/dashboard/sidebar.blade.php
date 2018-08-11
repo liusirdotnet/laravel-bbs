@@ -25,6 +25,6 @@
 
     </div>
 
-    {!! admin_menu('founder', 'admin_menu') !!}
+    {!! admin_menu('founder', 'admin_sidebar') !!}
   </nav>
 </div>

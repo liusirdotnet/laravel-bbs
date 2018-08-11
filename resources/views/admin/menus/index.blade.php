@@ -19,7 +19,7 @@
     @endcan
 
     @can('edit', app($dataType->model_name))
-      @if(isset($dataType->order_column) && isset($dataType->order_display_column))
+      @if(isset($dataType->order_column, $dataType->order_display_column))
         <a href="#" class="btn btn-primary">
           <i class="voyager-list"></i> <span>排序</span>
         </a>
@@ -40,12 +40,12 @@
                 <select class="form-control" id="search_key" name="key">
                   @foreach($searchable as $key)
                     <option
-                        value="{{ $key }}" @if($search->key === $key){{ 'selected' }}@endif>{{ ucfirst(camel_case($key)) }}</option>
+                      value="{{ $key }}" @if($search->key === $key){{ 'selected' }}@endif>{{ ucfirst(camel_case($key)) }}</option>
                   @endforeach
                 </select>
                 <select class="form-control" id="filter" name="filter">
-                  <option value="contains" @if($search->filter === "contains"){{ 'selected' }}@endif>包含</option>
-                  <option value="equals" @if($search->filter === "equals"){{ 'selected' }}@endif>相等</option>
+                  <option value="contains" @if($search->filter === 'contains'){{ 'selected' }}@endif>包含</option>
+                  <option value="equals" @if($search->filter === 'equals'){{ 'selected' }}@endif>相等</option>
                 </select>
                 <input type="text" class="form-control" name="s" value="{{ $search->value }}" placeholder="请输入关键字搜索...">
               </div>

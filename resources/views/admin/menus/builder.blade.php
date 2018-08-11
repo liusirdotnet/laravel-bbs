@@ -16,12 +16,12 @@
       <div class="col-md-12">
         <div class="panel panel-bordered">
           <div class="panel-heading">
-            <p class="panel-title" style="color:#777">{{ __('voyager::menu_builder.drag_drop_info') }}</p>
+            <p class="panel-title" style="color:#777">拖放菜单项以重新排列它们。</p>
           </div>
 
           <div class="panel-body" style="padding:30px;">
             <div class="dd">
-              {{--              {!! menu($menu->name, 'admin') !!}--}}
+              {!! admin_menu($menu->name, 'admin') !!}
             </div>
           </div>
         </div>
@@ -60,10 +60,10 @@
             <span aria-hidden="true">&times;</span>
           </button>
           <h4 id="m_hd_add" class="modal-title hidden">
-            <i class="voyager-plus"></i> 创建一个新的条目
+            <i class="voyager-plus"></i> 创建一个新的菜单项
           </h4>
           <h4 id="m_hd_edit" class="modal-title hidden">
-            <i class="voyager-edit"></i> {{ __('voyager::menu_builder.edit_item') }}
+            <i class="voyager-edit"></i> 编辑菜单项
           </h4>
         </div>
         <form action="" id="m_form" method="POST"
@@ -72,10 +72,8 @@
           <input id="m_form_method" type="hidden" name="_method" value="POST">
           @csrf
           <div class="modal-body">
-            <label for="name">菜单条目标题</label>
-            {{--@include('admin.elements.input-hidden-bread-access', ['_field_name' => 'title', '_field_trans' => ''])--}}
-            <input type="text" class="form-control" id="m_title" name="title"
-                   placeholder="">
+            <label for="name">菜单项名称</label>
+            <input type="text" class="form-control" id="m_title" name="title" placeholder="请填写菜单项名称">
             <br>
             <label for="type">链接类型</label>
             <select id="m_link_type" class="form-control" name="type">
@@ -96,10 +94,7 @@
               <textarea rows="3" class="form-control" id="m_parameters" name="parameters"
                         placeholder="{{ json_encode(['key' => 'value'], JSON_PRETTY_PRINT) }}"></textarea><br>
             </div>
-            <label for="icon_class">
-              {{ __('voyager::menu_builder.icon_class') }}
-              <a href="" target="_blank">test</a>
-            </label>
+            <label for="icon_class">菜单项的字体图标类 <a href="" target="_blank">test</a></label>
             <input type="text" class="form-control" id="m_icon_class" name="icon_class"
                    placeholder="test"><br>
             <label for="color">test</label>
@@ -118,12 +113,12 @@
             <button type="button" class="btn btn-default pull-right" data-dismiss="modal">取消</button>
           </div>
         </form>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
+      </div>
+    </div>
+  </div>
 @stop
 
-@section('javascript')
+@section('scripts')
   <script>
     $(document).ready(function () {
       $('.dd').nestable({/* config options */});
@@ -131,13 +126,12 @@
       /**
        * Set Variables
        */
-      var $m_modal = $('#menu_item_modal'),
+      let $m_modal = $('#menu_item_modal'),
         $m_hd_add = $('#m_hd_add').hide().removeClass('hidden'),
         $m_hd_edit = $('#m_hd_edit').hide().removeClass('hidden'),
         $m_form = $('#m_form'),
         $m_form_method = $('#m_form_method'),
         $m_title = $('#m_title'),
-        $m_title_i18n = $('#title_i18n'),
         $m_url_type = $('#m_url_type'),
         $m_url = $('#m_url'),
         $m_link_type = $('#m_link_type'),
@@ -168,9 +162,7 @@
        * Menu Modal is Open
        */
       $m_modal.on('show.bs.modal', function (e, data) {
-        let _adding = e.relatedTarget.data ? false : true,
-          translatable = $m_modal.data('multilingual'),
-          $_str_i18n = '';
+        let _adding = e.relatedTarget.data ? false : true;
 
         if (_adding) {
           $m_form.attr('action', $m_form.data('action-add'));
@@ -199,36 +191,27 @@
           $m_color.val(_src.data('color'));
           $m_id.val(id);
 
-          if (translatable) {
-            $_str_i18n = $("#title" + id + "_i18n").val();
-          }
-
-          if (_src.data('target') == '_self') {
+          if (_src.data('target') === '_self') {
             $m_target.val('_self').change();
-          } else if (_src.data('target') == '_blank') {
+          } else if (_src.data('target') === '_blank') {
             $m_target.find("option[value='_self']").removeAttr('selected');
             $m_target.find("option[value='_blank']").attr('selected', 'selected');
             $m_target.val('_blank');
           }
-          if (_src.data('route') != "") {
+          if (_src.data('route') !== '') {
             $m_link_type.val('route').change();
             $m_url_type.hide();
           } else {
             $m_link_type.val('url').change();
             $m_route_type.hide();
           }
-          if ($m_link_type.val() == 'route') {
+          if ($m_link_type.val() === 'route') {
             $m_url_type.hide();
             $m_route_type.show();
           } else {
             $m_route_type.hide();
             $m_url_type.show();
           }
-        }
-
-        if (translatable) {
-          $m_title_i18n.val($_str_i18n);
-          translatable.refresh();
         }
       });
 
@@ -237,7 +220,7 @@
        * Toggle Form Menu Type
        */
       $m_link_type.on('change', function (e) {
-        if ($m_link_type.val() == 'route') {
+        if ($m_link_type.val() === 'route') {
           $m_url_type.hide();
           $m_route_type.show();
         } else {
