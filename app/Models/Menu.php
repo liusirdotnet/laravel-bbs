@@ -10,11 +10,17 @@ use Illuminate\Support\HtmlString;
 
 class Menu extends Model
 {
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function items()
     {
         return $this->hasMany(Admin::getModelClass('MenuItem'));
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function parentItems()
     {
         return $this->hasMany(Admin::getModelClass('MenuItem'))

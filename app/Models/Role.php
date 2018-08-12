@@ -10,6 +10,9 @@ class Role extends Model
 {
     use HasRelationshipTrait;
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
     public function users()
     {
         $user = Admin::getModelClass('User');
@@ -20,6 +23,9 @@ class Role extends Model
             ->getQuery();
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function permissions()
     {
         $permission = Admin::getModelClass('Permission');

@@ -10,6 +10,9 @@ class Permission extends Model
 {
     use HasRelationshipTrait;
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function roles()
     {
         return $this->hasMany(Admin::getModelClass('Role'));

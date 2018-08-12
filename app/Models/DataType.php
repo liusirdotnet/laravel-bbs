@@ -8,11 +8,6 @@ use App\Support\Facades\Admin;
 class DataType extends Model
 {
     /**
-     * @var string
-     */
-    protected $table = 'data_types';
-
-    /**
      * @var array
      */
     protected $fillable = [
@@ -31,36 +26,57 @@ class DataType extends Model
         'order_display_column',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function rows()
     {
         return $this->hasMany(Admin::getModelClass('DataRow'))->orderBy('order');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function accessRows()
     {
         return $this->rows()->where('access', 1);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function addRows()
     {
         return $this->rows()->where('add', 1);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function readRows()
     {
         return $this->rows()->where('read', 1);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function editRows()
     {
         return $this->rows()->where('edit', 1);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function deleteRows()
     {
         return $this->rows()->where('delete', 1);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Relations\HasMany|null|object
+     */
     public function lastRow()
     {
         return $this->hasMany(Admin::getModelClass('DataRow'))
