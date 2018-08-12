@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Route;
 class MenuItem extends Model
 {
     protected $fillable = [
+        'parent_id',
+        'menu_id',
         'title',
         'url',
         'route',
@@ -66,14 +68,16 @@ class MenuItem extends Model
     }
 
     /**
-     * @param bool   $absolute
-     * @param string $route
-     * @param mixed  $parameters
-     * @param string $url
+     * Prepare links for a given url address.
+     *
+     * @param bool        $absolute
+     * @param string|null $route
+     * @param mixed|null  $parameters
+     * @param string|null $url
      *
      * @return \Illuminate\Contracts\Routing\UrlGenerator|string
      */
-    protected function prepareLink($absolute, $route, $parameters, $url)
+    protected function prepareLink($absolute, $route, $parameters, $url = null)
     {
         if ($parameters === null) {
             $parameters = [];
@@ -93,7 +97,7 @@ class MenuItem extends Model
             return route($route, $parameters, $absolute);
         }
 
-        if ($absolute) {
+        if ($absolute && $url !== null) {
             return url($url);
         }
 

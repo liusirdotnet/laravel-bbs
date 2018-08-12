@@ -95,7 +95,7 @@ class MenusController extends AdminController
 
     private function prepareParameters($parameters)
     {
-        if (array_get($parameters, 'type')) {
+        if (array_get($parameters, 'type') === 'route') {
             $parameters['url'] = null;
         } else {
             $parameters['route'] = null;

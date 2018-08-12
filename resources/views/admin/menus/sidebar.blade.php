@@ -32,7 +32,7 @@
           $linkAttributes = 'href="#' . $transItem->id .'-dropdown-element" data-toggle="collapse" aria-expanded="'. (in_array('active', $listItemClass, true) ? 'true' : 'false').'"';
           $listItemClass[] = 'dropdown';
       } else {
-          $linkAttributes =  'href="' . url($href) .'"';
+          $linkAttributes =  'href="' . ($href ? url($href) : '#') .'"';
 
           if (! Auth::user()->can('access', $item)) {
               continue;

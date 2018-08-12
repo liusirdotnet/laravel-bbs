@@ -10,8 +10,6 @@ use Illuminate\Support\HtmlString;
 
 class Menu extends Model
 {
-    protected $table = 'menus';
-
     public function items()
     {
         return $this->hasMany(Admin::getModelClass('MenuItem'));
@@ -20,7 +18,7 @@ class Menu extends Model
     public function parentItems()
     {
         return $this->hasMany(Admin::getModelClass('MenuItem'))
-            ->orWhereNull('parent_id');
+            ->where('parent_id', '=', 0);
     }
 
     /**

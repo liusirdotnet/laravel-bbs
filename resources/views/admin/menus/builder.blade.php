@@ -60,7 +60,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
           <h4 id="m_hd_add" class="modal-title hidden">
-            <i class="voyager-plus"></i> 创建一个新的菜单项
+            <i class="voyager-plus"></i> 创建菜单项
           </h4>
           <h4 id="m_hd_edit" class="modal-title hidden">
             <i class="voyager-edit"></i> 编辑菜单项
@@ -82,25 +82,25 @@
             </select>
             <br>
             <div id="m_url_type">
-              <label for="url">url</label>
+              <label for="url">菜单 URL</label>
               <input type="text" class="form-control" id="m_url" name="url" placeholder="">
               <br>
             </div>
             <div id="m_route_type">
-              <label for="route">hello</label>
+              <label for="route"></label>
               <input type="text" class="form-control" id="m_route" name="route" placeholder="">
               <br>
               <label for="parameters">路由参数</label>
               <textarea rows="3" class="form-control" id="m_parameters" name="parameters"
                         placeholder="{{ json_encode(['key' => 'value'], JSON_PRETTY_PRINT) }}"></textarea><br>
             </div>
-            <label for="icon_class">菜单项的字体图标类 <a href="" target="_blank">test</a></label>
+            <label for="icon_class">菜单项的字体图标类 <a href="" target="_blank">voyager</a></label>
             <input type="text" class="form-control" id="m_icon_class" name="icon_class"
-                   placeholder="test"><br>
-            <label for="color">test</label>
+                   placeholder="voyager-tools"><br>
+            <label for="color">菜单项颜色</label>
             <input type="color" class="form-control" id="m_color" name="color"
                    placeholder="test"><br>
-            <label for="target">test</label>
+            <label for="target">打开窗口</label>
             <select id="m_target" class="form-control" name="target">
               <option value="_self" selected="selected">原窗口打开</option>
               <option value="_blank">新窗口打开</option>

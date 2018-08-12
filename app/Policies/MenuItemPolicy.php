@@ -14,8 +14,8 @@ class MenuItemPolicy extends Policy
 
     /**
      * @param \App\Support\Contracts\UserInterface $user
-     * @param                                      $model
-     * @param                                      $action
+     * @param  \Illuminate\Database\Eloquent\Model $model
+     * @param  string                              $action
      *
      * @return bool
      */
@@ -42,7 +42,7 @@ class MenuItemPolicy extends Policy
         }
 
         // If permission doesn't exist, we can't check it!
-        if (! self::$permissions->contains('key', 'access_' . $slug)) {
+        if (! self::$permissions->contains('action', 'access_' . $slug)) {
             return true;
         }
 
