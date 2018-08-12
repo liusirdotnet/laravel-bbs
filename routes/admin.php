@@ -17,7 +17,7 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
 
     Route::group(['middleware' => 'admin'], function () {
 
-        $namespacePrefix = '\\' . config('admin.controllers.namespace') . '\\';
+        $nsPrefix = '\\' . config('admin.controllers.namespace') . '\\';
 
         // 默认路由。
         Route::get('/', 'DefaultsController@index')->name('dashboard');
@@ -52,21 +52,21 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
         // 菜单路由。
         Route::resource('menus', 'MenusController');
 
-        // 菜单条目路由。
+        // 菜单项路由。
         Route::group([
             'as' => 'menus.',
             'prefix' => 'menus/{menu}',
-        ], function () use ($namespacePrefix) {
-            Route::get('builder', ['uses' => $namespacePrefix . 'MenusController@builder', 'as' => 'builder']);
-            Route::post('order', ['uses' => $namespacePrefix . 'MenusController@orderItem', 'as' => 'order']);
+        ], function () use ($nsPrefix) {
+            Route::get('builder', ['uses' => $nsPrefix . 'MenusController@builder', 'as' => 'builder']);
+            Route::post('order', ['uses' => $nsPrefix . 'MenusController@orderItem', 'as' => 'order']);
 
             Route::group([
                 'as' => 'item.',
                 'prefix' => 'item',
-            ], function () use ($namespacePrefix) {
-                Route::delete('{id}', ['uses' => $namespacePrefix . 'MenusController@delete_menu', 'as' => 'destroy']);
-                Route::post('/', ['uses' => $namespacePrefix . 'MenusController@addItem', 'as' => 'add']);
-                Route::put('/', ['uses' => $namespacePrefix . 'MenusController@update_item', 'as' => 'update']);
+            ], function () use ($nsPrefix) {
+                Route::delete('{id}', ['uses' => $nsPrefix . 'MenusController@destroyMenu', 'as' => 'destroy']);
+                Route::post('/', ['uses' => $nsPrefix . 'MenusController@storeItem', 'as' => 'store']);
+                Route::put('/', ['uses' => $nsPrefix . 'MenusController@updateItem', 'as' => 'update']);
             });
         });
     });

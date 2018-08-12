@@ -67,7 +67,7 @@
           </h4>
         </div>
         <form action="" id="m_form" method="POST"
-              data-action-add="{{ route('admin.menus.item.add', ['menu' => $menu->id]) }}"
+              data-action-add="{{ route('admin.menus.item.store', ['menu' => $menu->id]) }}"
               data-action-update="{{ route('admin.menus.item.update', ['menu' => $menu->id]) }}">
           <input id="m_form_method" type="hidden" name="_method" value="POST">
           @csrf

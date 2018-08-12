@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Menu;
 use App\Support\Facades\Admin;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Model;
@@ -58,7 +59,7 @@ class MenusController extends AdminController
         ]));
     }
 
-    public function addItem(Request $request)
+    public function storeItem(Request $request)
     {
         $menu = Admin::getModel('Menu');
 
@@ -84,6 +85,35 @@ class MenusController extends AdminController
 
     public function updateItem(Request $request)
     {
+    }
+
+    /**
+     * 删除菜单项操作。
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Menu         $menu
+     * @param int                      $id
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroyMenu(Request $request, Menu $menu, $id)
+    {
+        $item = Admin::getModel('MenuItem')->findOrFail($id);
+
+        try {
+            $this->authorize('delete', $item->menu);
+        } catch (AuthorizationException $e) {
+            //
+        }
+        $item->destroy($id);
+
+        return redirect()
+            ->route('admin.menus.builder', [$menu])
+            ->with([
+                'message' => '菜单项删除成功！',
+                'alert-type' => 'success',
+            ]);
+
     }
 
     public function orderItem(Request $request)
