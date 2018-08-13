@@ -48,7 +48,7 @@ class UsersController extends AdminController
             return redirect()
                 ->route("admin.{$dataType->slug}.index")
                 ->with([
-                    'message'    => $dataType->display_name_singular . '添加成功',
+                    'message' => $dataType->display_name_singular . '添加成功',
                     'alert-type' => 'success',
                 ]);
         }
@@ -90,7 +90,7 @@ class UsersController extends AdminController
             return redirect()
                 ->route('admin.' . $dataType->slug . '.index')
                 ->with([
-                    'message'    => $dataType->display_name_singular . ' 更新成功',
+                    'message' => $dataType->display_name_singular . ' 更新成功',
                     'alert-type' => 'success',
                 ]);
         }
@@ -132,11 +132,11 @@ class UsersController extends AdminController
         $result = $model->destroy($ids);
         $data = $result
             ? [
-                'message'    => "{$displayName} " . '删除成功！',
+                'message' => "{$displayName} " . '删除成功！',
                 'alert-type' => 'success',
             ]
             : [
-                'message'    => "{$displayName} " . '删除失败！',
+                'message' => "{$displayName} " . '删除失败！',
                 'alert-type' => 'error',
             ];
 

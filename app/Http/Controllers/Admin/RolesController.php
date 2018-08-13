@@ -29,7 +29,7 @@ class RolesController extends AdminController
             return redirect()
                 ->route("admin.{$dataType->slug}.index")
                 ->with([
-                    'message'    => __('添加成功') . " {$dataType->display_name_singular}",
+                    'message' => __('添加成功') . " {$dataType->display_name_singular}",
                     'alert-type' => 'success',
                 ]);
         }
@@ -63,7 +63,7 @@ class RolesController extends AdminController
             return redirect()
                 ->route("admin.{$slug}.index")
                 ->with([
-                    'message'    => $dataType->display_name_singular . ' 更新成功',
+                    'message' => $dataType->display_name_singular . ' 更新成功',
                     'alert-type' => 'success',
                 ]);
         }

@@ -116,6 +116,11 @@ class MenusController extends AdminController
 
     }
 
+    /**
+     * 排序菜单项操作。
+     *
+     * @param \Illuminate\Http\Request $request
+     */
     public function orderItem(Request $request)
     {
         $items = json_decode($request->input('order'));

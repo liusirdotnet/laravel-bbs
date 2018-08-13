@@ -41,7 +41,7 @@ class AdminController extends Controller
         $getter = 'paginate';
         $orderBy = strtolower($request->get('order_by'));
         $orderType = $request->get('order_type');
-        $search = (object)[
+        $search = (object) [
             'key' => $request->get('key'),
             'value' => $request->get('s'),
             'filter' => $request->get('filter'),
@@ -202,8 +202,8 @@ class AdminController extends Controller
             $options = json_decode($row->details);
 
             if ($row->type !== 'checkbox'
-                && !$request->hasFile($row->field)
-                && !$request->has($row->field)
+                && ! $request->hasFile($row->field)
+                && ! $request->has($row->field)
             ) {
                 if ((isset($options->type) && $options->type !== 'belongsToMany')
                     || $row->field !== 'user_belongsto_role_relationship'
@@ -281,7 +281,7 @@ class AdminController extends Controller
             $fieldName = $field->field;
 
             // Show the field's display name on the error message.
-            if (!empty($field->display_name)) {
+            if (! empty($field->display_name)) {
                 $attributes[$fieldName] = $field->name;
             }
 
@@ -299,7 +299,7 @@ class AdminController extends Controller
             }
 
             // Set custom validation messages if any.
-            if (!empty($options->validation->messages)) {
+            if (! empty($options->validation->messages)) {
                 foreach ($options->validation->messages as $key => $msg) {
                     $messages["{$fieldName}.{$key}"] = $msg;
                 }
@@ -363,7 +363,7 @@ class AdminController extends Controller
             }
             $decoded = json_decode($value->details, true);
 
-            return !empty($decoded['validation']['rule']);
+            return ! empty($decoded['validation']['rule']);
         });
     }
 
