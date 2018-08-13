@@ -75,16 +75,16 @@ class Menu extends Model
             if (starts_with($type, 'admin_')) {
                 $type = \mb_substr($type, 6);
             }
-            $type = 'admin.menus.' . $type;
         } else {
             if ($type === null) {
-                $type = 'admin.menus.default';
+                $type = 'default';
             } elseif ($type === 'bootstrap' && ! \view()->exists($type)) {
-                $type = 'admin.menus.bootstrap';
+                $type = 'bootstrap';
             }
         }
+        $view = 'admin.partials.' . $type;
 
-        $html = View::make($type, [
+        $html = View::make($view, [
             'items' => $menu->parentItems->sortBy('order'),
             'options' => $options,
         ])->render();

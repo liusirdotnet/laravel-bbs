@@ -50,7 +50,7 @@
         <div id="{{ $transItem->id }}-dropdown-element"
              class="panel-collapse collapse {{ (in_array('active', $listItemClass, true) ? 'in' : '') }}">
           <div class="panel-body">
-            @include('admin.menus.menu', ['items' => $item->children, 'options' => $options, 'innerLoop' => true])
+            @include('admin.partials.menu', ['items' => $item->children, 'options' => $options, 'innerLoop' => true])
           </div>
         </div>
       @endif

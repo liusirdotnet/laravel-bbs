@@ -172,7 +172,7 @@ class MenusController extends AdminController
     {
         $items = json_decode($request->input('order'));
 
-        $this->orderMenuItem($items, null);
+        $this->orderMenuItem($items);
     }
 
     private function prepareParameters($parameters)
@@ -191,13 +191,13 @@ class MenusController extends AdminController
         return $parameters;
     }
 
-    private function orderMenuItem($items, $parentId)
+    private function orderMenuItem(array $items, $parentId = 0)
     {
         foreach ($items as $index => $item) {
-            $item = Admin::getModel('MenuItem')->findOrFail($item->id);
-            $item->order = $index + 1;
-            $item->parent_id = $parentId;
-            $item->save();
+            $menuItem = Admin::getModel('MenuItem')->findOrFail($item->id);
+            $menuItem->order = $index + 1;
+            $menuItem->parent_id = $parentId;
+            $menuItem->save();
 
             if (isset($item->children)) {
                 $this->orderMenuItem($item->children, $item->id);

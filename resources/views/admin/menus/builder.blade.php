@@ -1,12 +1,11 @@
 @extends('admin.layouts.app')
 
-@section('page_title', '添加菜单')
+@section('page_title', '添加菜单项')
 
 @section('page_header')
   <h1 class="page-title">
-    <i class="voyager-list"></i> 菜单条目 ({{ $menu->name }})
-    <div class="btn btn-success add_item"><i class="voyager-plus"></i> 添加菜单条目
-    </div>
+    <i class="voyager-list"></i> 菜单项 ({{ $menu->name }})
+    <div class="btn btn-success add_item"><i class="voyager-plus"></i> 添加菜单项</div>
   </h1>
 @stop
 
@@ -20,9 +19,7 @@
           </div>
 
           <div class="panel-body" style="padding:30px;">
-            <div class="dd">
-              {!! admin_menu($menu->name, 'admin') !!}
-            </div>
+            <div class="dd">{!! admin_menu($menu->name, 'admin') !!}</div>
           </div>
         </div>
       </div>
@@ -36,7 +33,7 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="关闭">
             <span aria-hidden="true">&times;</span>
           </button>
-          <h4 class="modal-title"><i class="voyager-trash"></i> 删除条目</h4>
+          <h4 class="modal-title"><i class="voyager-trash"></i> 删除项</h4>
         </div>
         <div class="modal-footer">
           <form action="{{ route('admin.menus.item.destroy', ['menu' => $menu->id, 'id' => '__id']) }}"
@@ -44,7 +41,7 @@
                 method="POST">
             @method('DELETE')
             @csrf
-            <input type="submit" class="btn btn-danger pull-right delete-confirm" value="确定要删除条目？">
+            <input type="submit" class="btn btn-danger pull-right delete-confirm" value="确定要删除项？">
           </form>
           <button type="button" class="btn btn-default pull-right" data-dismiss="modal">取消</button>
         </div>

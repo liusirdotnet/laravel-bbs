@@ -23,7 +23,7 @@
         <small class="url">{{ $item->link() }}</small>
       </div>
       @if(!$item->children->isEmpty())
-        @include('admin.menus.admin', ['items' => $item->children])
+        @include('admin.partials.admin', ['items' => $item->children])
       @endif
     </li>
   @endforeach
