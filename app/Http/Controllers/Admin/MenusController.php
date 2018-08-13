@@ -10,6 +10,14 @@ use Illuminate\Http\Request;
 
 class MenusController extends AdminController
 {
+    /**
+     * 更新菜单操作。
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     */
     public function update(Request $request, $id)
     {
         $slug = $this->getSlug($request);
@@ -44,6 +52,14 @@ class MenusController extends AdminController
         }
     }
 
+    /**
+     * 生成菜单项页面。
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function builder(Request $request, $id)
     {
         $menu = Admin::getModel('Menu')->findOrFail($id);
@@ -59,6 +75,13 @@ class MenusController extends AdminController
         ]));
     }
 
+    /**
+     * 创建菜单项操作。
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function storeItem(Request $request)
     {
         $menu = Admin::getModel('Menu');
@@ -83,8 +106,32 @@ class MenusController extends AdminController
             ]);
     }
 
+    /**
+     * 更新菜单项操作。
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function updateItem(Request $request)
     {
+        $id = $request->input('id');
+        $data = $this->prepareParameters($request->except(['id']));
+        $item = Admin::getModel('MenuItem')->findOrFail($id);
+
+        try {
+            $this->authorize('edit', $item->menu);
+        } catch (AuthorizationException $e) {
+            //
+        }
+        $item->update($data);
+
+        return redirect()
+            ->route('admin.menus.builder', [$item->menu_id])
+            ->with([
+                'message' => '菜单项更新成功！',
+                'alert-type' => 'success',
+            ]);
     }
 
     /**
