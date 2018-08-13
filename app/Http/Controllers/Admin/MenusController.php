@@ -10,6 +10,37 @@ use Illuminate\Http\Request;
 
 class MenusController extends AdminController
 {
+    public function store(Request $request)
+    {
+        $slug = $this->getSlug($request);
+        $dataType = Admin::getModel('DataType')
+            ->where('slug', '=', $slug)
+            ->first();
+
+        try {
+            $this->authorize('add', app($dataType->model_name));
+        } catch (AuthorizationException $e) {
+            //
+        }
+
+        $validator = $this->validateWithForm($request->all(), $dataType->addRows);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()]);
+        }
+
+        if (! $request->has('_validate')) {
+            $this->saveData($request, $slug, $dataType->addRows, new $dataType->model_name);
+
+            return redirect()
+                ->route("admin.{$dataType->slug}.index")
+                ->with([
+                    'message' => __('添加成功') . " {$dataType->display_name_singular}",
+                    'alert-type' => 'success',
+                ]);
+        }
+    }
+
     /**
      * 更新菜单操作。
      *
@@ -50,6 +81,43 @@ class MenusController extends AdminController
                     'alert-type' => 'success',
                 ]);
         }
+    }
+
+    public function destroy(Request $request, $id)
+    {
+        $slug = $this->getSlug($request);
+        $dataType = Admin::getModel('DataType')
+            ->where('slug', '=', $slug)
+            ->first();
+
+        try {
+            $this->authorize('delete', app($dataType->model_name));
+        } catch (AuthorizationException $e) {
+            //
+        }
+
+        $ids = [];
+        if (empty($id)) {
+            // Bulk delete, get IDs from POST
+            $ids = explode(',', $request->ids);
+        } else {
+            // Single item delete, get ID from URL
+            $ids[] = $id;
+        }
+        foreach ($ids as $val) {
+            $data = \call_user_func([$dataType->model_name, 'findOrFail'], $val);
+            $this->cleanup($dataType, $data);
+        }
+
+        $displayName = \count($ids) > 1 ? $dataType->display_name_plural : $dataType->display_name_singular;
+        $result = $data->destroy($ids);
+        $data = $result
+            ? ['message' => $displayName . '删除成功', 'alert-type' => 'success',]
+            : ['message' => $displayName . '删除错误', 'alert-type' => 'error',];
+
+        return redirect()
+            ->route("admin.{$dataType->slug}.index")
+            ->with($data);
     }
 
     /**

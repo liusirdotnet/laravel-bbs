@@ -9,7 +9,7 @@
     </h1>
 
     @can('add', app($dataType->model_name))
-      <a href="{{ route('admin.roles.create') }}" class="btn btn-success btn-add-new">
+      <a href="{{ route('admin.menus.create') }}" class="btn btn-success btn-add-new">
         <i class="voyager-plus"></i> <span>添加菜单</span>
       </a>
     @endcan
@@ -94,7 +94,7 @@
                     <td class="no-sort no-click" id="bread-actions">
                       @can('delete', $instance)
                         <a href="javascript:;"
-                           class="btn btn-sm btn-danger pull-right edit"
+                           class="btn btn-sm btn-danger pull-right delete"
                            data-id="{{ $instance->{$instance->getKeyName()} }}">
                           <i class="voyager-trash"></i> 删除
                         </a>
@@ -156,9 +156,9 @@
           <form action="#" id="delete_form" method="POST">
             @method('DELETE')
             @csrf
-            <input type="submit" class="btn btn-danger pull-right delete-confirm" value="是的,删除它!">
+            <input type="submit" class="btn btn-danger pull-right delete-confirm" value="是的，删除它！">
           </form>
-          <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-default pull-right" data-dismiss="modal">取消</button>
         </div>
       </div>
     </div>
@@ -177,7 +177,6 @@
       });
     });
 
-    var deleteFormAction;
     $('td').on('click', '.delete', function (e) {
       $('#delete_form')[0].action = '{{ route('admin.'.$dataType->slug.'.destroy', ['id' => '__id']) }}'.replace('__id', $(this).data('id'));
       $('#delete_modal').modal('show');

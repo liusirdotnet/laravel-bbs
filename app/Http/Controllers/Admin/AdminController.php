@@ -174,10 +174,7 @@ class AdminController extends Controller
         ));
     }
 
-    public
-    function getSlug(
-        Request $request
-    )
+    public function getSlug(Request $request)
     {
         if (isset($this->slug)) {
             $slug = $this->slug;
@@ -188,13 +185,7 @@ class AdminController extends Controller
         return $slug;
     }
 
-    public
-    function saveData(
-        Request $request,
-        $slug,
-        Collection $rows,
-        Model $model
-    )
+    public function saveData(Request $request, $slug, Collection $rows, Model $model)
     {
         $select = [];
 
@@ -263,13 +254,7 @@ class AdminController extends Controller
         return $model;
     }
 
-    public
-    function validateWithForm(
-        array $data,
-        Collection $collection,
-        $name = null,
-        $id = null
-    )
+    public function validateWithForm(array $data, Collection $collection, $name = null, $id = null)
     {
         $rules = $messages = $attributes = [];
         $isUpdate = $name && $id;
@@ -309,13 +294,7 @@ class AdminController extends Controller
         return Validator::make($data, $rules, $messages, $attributes);
     }
 
-    public
-    function getContentFromType(
-        Request $request,
-        $slug,
-        $row,
-        $options
-    )
+    public function getContentFromType(Request $request, $slug, $row, $options)
     {
         switch ($row->type) {
             case 'password':
@@ -335,11 +314,7 @@ class AdminController extends Controller
         }
     }
 
-    protected
-    function cleanup(
-        $dataType,
-        $data
-    )
+    protected function cleanup($dataType, $data)
     {
         // Delete Images.
         $this->deleteAvatarImages($data, $dataType->deleteRows->where('type', 'image'));
@@ -352,10 +327,7 @@ class AdminController extends Controller
         }
     }
 
-    protected
-    function getFieldsWithValidationRules(
-        Collection $collection
-    )
+    protected function getFieldsWithValidationRules(Collection $collection)
     {
         return $collection->filter(function ($value) {
             if (empty($value->details)) {
@@ -367,11 +339,7 @@ class AdminController extends Controller
         });
     }
 
-    protected
-    function deleteAvatarImages(
-        $data,
-        $rows
-    )
+    protected function deleteAvatarImages($data, $rows)
     {
         foreach ($rows as $row) {
             if ($data->{$row->field} !== config('admin.user.default_avatar')) {
@@ -391,10 +359,7 @@ class AdminController extends Controller
         }
     }
 
-    protected
-    function deleteFileIfExists(
-        $path
-    )
+    protected function deleteFileIfExists($path)
     {
         if (Storage::disk(config('admin.storage.disk'))->exists($path)) {
             Storage::disk(config('admin.storage.disk'))->delete($path);
