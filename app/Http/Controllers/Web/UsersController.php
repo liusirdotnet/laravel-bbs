@@ -63,7 +63,8 @@ class UsersController extends Controller
         UserFormRequest $request,
         User $user,
         ImageHandler $handler
-    ) {
+    )
+    {
         $this->authorize('update', $user);
         $data = $request->all();
 

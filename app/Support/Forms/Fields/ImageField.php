@@ -11,9 +11,9 @@ class ImageField extends AbstractField
     public function createContent($row, $dataType, $dataTypeContent, $options)
     {
         return view('admin.forms.fields.image', [
-            'row'             => $row,
-            'options'         => $options,
-            'dataType'        => $dataType,
+            'row' => $row,
+            'options' => $options,
+            'dataType' => $dataType,
             'dataTypeContent' => $dataTypeContent,
         ]);
     }

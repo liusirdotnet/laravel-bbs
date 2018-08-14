@@ -14,9 +14,9 @@ class CheckboxField extends AbstractField
     public function createContent($row, $dataType, $dataTypeContent, $options)
     {
         return view('admin.forms.fields.checkbox', [
-            'row'             => $row,
-            'options'         => $options,
-            'dataType'        => $dataType,
+            'row' => $row,
+            'options' => $options,
+            'dataType' => $dataType,
             'dataTypeContent' => $dataTypeContent,
         ]);
     }

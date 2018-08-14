@@ -29,8 +29,8 @@ class TopicFormRequest extends FormRequest
             case 'PATCH':
                 {
                     return [
-                        'title'       => 'required|min:2',
-                        'body'        => 'required|min:3',
+                        'title' => 'required|min:2',
+                        'body' => 'required|min:3',
                         'category_id' => 'required|numeric',
                     ];
                 }
@@ -48,7 +48,7 @@ class TopicFormRequest extends FormRequest
     {
         return [
             'title.min' => '标题 必须至少两个字符。',
-            'body.min'  => '文章内容 必须至少三个字符。',
+            'body.min' => '文章内容 必须至少三个字符。',
         ];
     }
 }

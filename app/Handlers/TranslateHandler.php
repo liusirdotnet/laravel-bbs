@@ -29,12 +29,12 @@ class TranslateHandler
 
         $sign = md5($appid . $text . $salt . $appkey);
         $query = http_build_query([
-            'q'     => $text,
-            'from'  => 'zh',
-            'to'    => 'en',
+            'q' => $text,
+            'from' => 'zh',
+            'to' => 'en',
             'appid' => $appid,
-            'salt'  => $salt,
-            'sign'  => $sign,
+            'salt' => $salt,
+            'sign' => $sign,
         ]);
         $uri = $api . '?' . $query;
         $response = $client->get($uri);

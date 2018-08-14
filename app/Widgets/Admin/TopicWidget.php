@@ -23,14 +23,14 @@ class TopicWidget extends AbstractWidget implements WidgetInterface
     public function run()
     {
         return view('widgets.admin.panel_widget', array_merge($this->config, [
-            'icon'   => 'voyager-news',
-            'title'  => '',
-            'text'   => '',
+            'icon' => 'voyager-news',
+            'title' => '',
+            'text' => '',
             'button' => [
                 'text' => __('查看所有话题'),
                 'link' => '/',
             ],
-            'image'  => asset('backend/images/widget-backgrounds/02.jpg'),
+            'image' => asset('backend/images/widget-backgrounds/02.jpg'),
         ]));
     }
 

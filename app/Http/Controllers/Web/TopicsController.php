@@ -153,8 +153,8 @@ class TopicsController extends Controller
     {
         $data = [
             'status' => false,
-            'msg'    => '上传失败！',
-            'path'   => '',
+            'msg' => '上传失败！',
+            'path' => '',
         ];
 
         if ($uploader = $request->uploader) {

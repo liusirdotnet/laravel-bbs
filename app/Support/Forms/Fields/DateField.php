@@ -11,9 +11,9 @@ class DateField extends AbstractField
     public function createContent($row, $dataType, $dataTypeContent, $options)
     {
         return view('admin.forms.fields.date', [
-            'row'             => $row,
-            'options'         => $options,
-            'dataType'        => $dataType,
+            'row' => $row,
+            'options' => $options,
+            'dataType' => $dataType,
             'dataTypeContent' => $dataTypeContent,
         ]);
     }

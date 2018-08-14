@@ -59,14 +59,14 @@ class Admin
      */
     protected $models
         = [
-            'User'       => User::class,
-            'Role'       => Role::class,
+            'User' => User::class,
+            'Role' => Role::class,
             'Permission' => Permission::class,
-            'DataRow'    => DataRow::class,
-            'DataType'   => DataType::class,
-            'Topic'      => Topic::class,
-            'Menu'       => Menu::class,
-            'MenuItem'   => MenuItem::class,
+            'DataRow' => DataRow::class,
+            'DataType' => DataType::class,
+            'Topic' => Topic::class,
+            'Menu' => Menu::class,
+            'MenuItem' => MenuItem::class,
         ];
 
     public function getModel($name)

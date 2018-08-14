@@ -28,7 +28,7 @@ trait UserTrait
     {
         $roles = $this->getAllRoles()->pluck('name')->toArray();
 
-        foreach ((array)$name as $role) {
+        foreach ((array) $name as $role) {
             if (\in_array(strtolower($role), $roles, true)) {
                 return true;
             }

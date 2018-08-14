@@ -23,14 +23,14 @@ class UserWidget extends AbstractWidget implements WidgetInterface
     public function run()
     {
         return view('widgets.admin.panel_widget', array_merge($this->config, [
-            'icon'   => 'voyager-group',
-            'title'  => '',
-            'text'   => '',
+            'icon' => 'voyager-group',
+            'title' => '',
+            'text' => '',
             'button' => [
                 'text' => __('查看所有用户'),
                 'link' => '/',
             ],
-            'image'  => asset('backend/images/widget-backgrounds/01.jpg'),
+            'image' => asset('backend/images/widget-backgrounds/01.jpg'),
         ]));
     }
 
