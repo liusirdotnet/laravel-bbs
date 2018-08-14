@@ -72,5 +72,13 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
                 Route::put('/', ['uses' => $nsPrefix . 'MenusController@updateItem', 'as' => 'update']);
             });
         });
+
+        // 指南路由。
+        Route::group([
+            'as' => 'compasses.',
+            'prefix' => 'compasses',
+        ], function () use ($nsPrefix) {
+            Route::get('/', ['uses' => $nsPrefix . 'CompassesController@index', 'as' => 'index']);
+        });
     });
 });
