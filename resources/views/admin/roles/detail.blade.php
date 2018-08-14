@@ -32,7 +32,7 @@
         <div class="panel panel-bordered" style="padding-bottom:5px;">
           @foreach($dataType->readRows as $row)
             @php
-              $rowDetails = json_decode($row->details);
+              $rowDetails = $row->details === null ?: json_decode($row->details);
               if($rowDetails === null) {
                 $rowDetails=new stdClass();
                 $rowDetails->options=new stdClass();
@@ -60,15 +60,17 @@
               @elseif($row->type === 'relationship')
                 @include('admin.forms.fields.relationship', ['view' => 'read', 'options' => $rowDetails])
               @elseif($row->type === 'select_dropdown' && property_exists($rowDetails, 'options') && !empty($rowDetails->options->{$dataTypeContent->{$row->field}}))
-                    <?php echo $rowDetails->options->{$dataTypeContent->{$row->field}};?>
+                <?php echo $rowDetails->options->{$dataTypeContent->{$row->field}};?>
               @elseif($row->type === 'select_dropdown' && $dataTypeContent->{$row->field . '_page_slug'})
-                <a href="{{ $dataTypeContent->{$row->field . '_page_slug'} }}">{{ $dataTypeContent->{$row->field}  }}</a>
+                <a
+                  href="{{ $dataTypeContent->{$row->field . '_page_slug'} }}">{{ $dataTypeContent->{$row->field}  }}</a>
               @elseif($row->type === 'select_multiple')
                 @if(property_exists($rowDetails, 'relationship'))
 
                   @foreach(json_decode($dataTypeContent->{$row->field}) as $item)
                     @if($item->{$row->field . '_page_slug'})
-                      <a href="{{ $item->{$row->field . '_page_slug'} }}">{{ $item->{$row->field}  }}</a>@if(!$loop->last)
+                      <a
+                        href="{{ $item->{$row->field . '_page_slug'} }}">{{ $item->{$row->field}  }}</a>@if(!$loop->last)
                         , @endif
                     @else
                       {{ $item->{$row->field}  }}
@@ -155,9 +157,9 @@
 
 @section('scripts')
   <script>
-    var deleteFormAction;
+    let deleteFormAction;
     $('.delete').on('click', function (e) {
-      var form = $('#delete_form')[0];
+      let form = $('#delete_form')[0];
 
       if (!deleteFormAction) { // Save form action initial value
         deleteFormAction = form.action;
@@ -166,7 +168,6 @@
       form.action = deleteFormAction.match(/\/[0-9]+$/)
         ? deleteFormAction.replace(/([0-9]+$)/, $(this).data('id'))
         : deleteFormAction + '/' + $(this).data('id');
-      console.log(form.action);
 
       $('#delete_modal').modal('show');
     });

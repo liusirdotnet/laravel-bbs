@@ -60,15 +60,17 @@
               @elseif($row->type === 'relationship')
                 @include('admin.forms.fields.relationship', ['view' => 'read', 'options' => $rowDetails])
               @elseif($row->type === 'select_dropdown' && property_exists($rowDetails, 'options') && !empty($rowDetails->options->{$dataTypeContent->{$row->field}}))
-                    <?php echo $rowDetails->options->{$dataTypeContent->{$row->field}};?>
+                <?php echo $rowDetails->options->{$dataTypeContent->{$row->field}};?>
               @elseif($row->type === 'select_dropdown' && $dataTypeContent->{$row->field . '_page_slug'})
-                <a href="{{ $dataTypeContent->{$row->field . '_page_slug'} }}">{{ $dataTypeContent->{$row->field}  }}</a>
+                <a
+                  href="{{ $dataTypeContent->{$row->field . '_page_slug'} }}">{{ $dataTypeContent->{$row->field}  }}</a>
               @elseif($row->type === 'select_multiple')
                 @if(property_exists($rowDetails, 'relationship'))
 
                   @foreach(json_decode($dataTypeContent->{$row->field}) as $item)
                     @if($item->{$row->field . '_page_slug'})
-                      <a href="{{ $item->{$row->field . '_page_slug'} }}">{{ $item->{$row->field}  }}</a>@if(!$loop->last)
+                      <a
+                        href="{{ $item->{$row->field . '_page_slug'} }}">{{ $item->{$row->field}  }}</a>@if(!$loop->last)
                         , @endif
                     @else
                       {{ $item->{$row->field}  }}

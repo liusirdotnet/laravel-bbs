@@ -62,16 +62,12 @@
                   @php
                     $dataTypeRows = $dataType->{(isset($dataTypeContent->id) ? 'editRows' : 'addRows' )};
                     $row = $dataTypeRows->where('field', 'role')->first();
-                    $options = json_decode($row->details);
+                    $options = $row->details === null ?: json_decode($row->details);
                   @endphp
                   @include('admin.forms.fields.relationship')
                 </div>
                 <div class="form-group">
                   <label for="additional_roles">其它角色</label>
-                  @php
-                    $row = $dataTypeRows->where('field', 'roles')->first();
-                    $options = json_decode($row->details);
-                  @endphp
                   @include('admin.forms.fields.relationship')
                 </div>
               @endcan
@@ -85,8 +81,8 @@
               <div class="form-group">
                 @if(isset($dataTypeContent->avatar))
                   <img
-                      src="{{ filter_var($dataTypeContent->avatar, FILTER_VALIDATE_URL) ? $dataTypeContent->avatar : Admin::getImage( $dataTypeContent->avatar ) }}"
-                      style="width:200px;height:auto;clear:both;display:block;padding:2px;border:1px solid #ddd;margin-bottom:10px;">
+                    src="{{ filter_var($dataTypeContent->avatar, FILTER_VALIDATE_URL) ? $dataTypeContent->avatar : Admin::getImage( $dataTypeContent->avatar ) }}"
+                    style="width:200px;height:auto;clear:both;display:block;padding:2px;border:1px solid #ddd;margin-bottom:10px;">
                 @endif
                 <input type="file" data-name="avatar" name="avatar" value="上传头像">
               </div>
