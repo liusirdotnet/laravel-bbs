@@ -79,7 +79,7 @@ class MenuItemsTableSeeder extends Seeder
         $menuItem = MenuItem::firstOrCreate([
             'parent_id' => 0,
             'menu_id' => $menu->id,
-            'title' => '系统设置',
+            'title' => '系统管理',
             'url' => '',
             'route' => '',
             'icon_class' => 'voyager-settings',
@@ -90,10 +90,10 @@ class MenuItemsTableSeeder extends Seeder
         $item = MenuItem::firstOrNew([
             'parent_id' => $menuItem->id,
             'menu_id' => $menu->id,
-            'title' => '用户',
+            'title' => '指南',
             'url' => '',
-            'route' => 'admin.users.index',
-            'icon_class' => 'voyager-people',
+            'route' => 'admin.compasses.index',
+            'icon_class' => 'voyager-compass',
         ]);
         if (! $item->exists) {
             $item->fill(['target' => '_self', 'color' => null, 'order' => 7,])->save();
