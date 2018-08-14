@@ -49,6 +49,9 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
         // 角色路由。
         Route::resource('roles', 'RolesController');
 
+        // 分类路由。
+        Route::resource('categories', 'CategoriesController');
+
         // 菜单路由。
         Route::resource('menus', 'MenusController');
 
