@@ -16,34 +16,39 @@ class CreateMenuItemsTable extends Migration
         Schema::create('menu_items', function (Blueprint $table) {
             $table->increments('id')
                 ->comment('主键 ID');
-            $table->integer('parent_id')
-                ->nullable()
-                ->default(0)
-                ->comment('菜单条目父级 ID');
             $table->integer('menu_id')
                 ->unsigned()
                 ->nullable()
                 ->comment('菜单 ID');
+            $table->integer('parent_id')
+                ->nullable()
+                ->default(0)
+                ->comment('菜单项父级 ID');
             $table->string('title')
-                ->comment('菜单条目名称');
+                ->comment('菜单项名称');
             $table->string('url')
-                ->comment('菜单条目地址');
+                ->default('')
+                ->comment('菜单项地址');
             $table->string('route')
                 ->nullable()
-                ->default(null)
-                ->comment('菜单条目路由');
+                ->default('')
+                ->comment('菜单项路由');
             $table->string('target')
                 ->default('_self');
             $table->string('icon_class')
                 ->nullable()
-                ->comment('菜单条目 Icon');
+                ->comment('菜单项图标');
             $table->string('color')
-                ->nullable();
+                ->nullable()
+                ->default('')
+                ->comment('菜单项颜色');
             $table->integer('order')
-                ->comment('菜单条目排序');
+                ->default(0)
+                ->comment('菜单项排序');
             $table->text('parameters')
                 ->nullable()
-                ->default(null);
+                ->default(null)
+                ->comment('菜单项参数');
             $table->timestamps();
         });
 
