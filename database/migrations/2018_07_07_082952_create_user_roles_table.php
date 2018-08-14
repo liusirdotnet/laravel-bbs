@@ -15,13 +15,13 @@ class CreateUserRolesTable extends Migration
     {
         Schema::create('user_roles', function (Blueprint $table) {
             $table->integer('user_id')
-                  ->unsigned()
-                  ->index()
-                  ->comment('用户 ID');
+                ->unsigned()
+                ->index()
+                ->comment('用户 ID');
             $table->integer('role_id')
-                  ->unsigned()
-                  ->index()
-                  ->comment('角色 ID');
+                ->unsigned()
+                ->index()
+                ->comment('角色 ID');
             $table->primary(['user_id', 'role_id']);
         });
     }

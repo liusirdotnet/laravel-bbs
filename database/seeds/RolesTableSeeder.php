@@ -14,9 +14,9 @@ class RolesTableSeeder extends Seeder
     public function run()
     {
         $data = [
-            'founder'   => 'Founder',
+            'founder' => 'Founder',
             'webmaster' => 'Webmaster',
-            'user'      => 'User',
+            'user' => 'User',
         ];
         $faker = app(Generator::class);
         $roles = factory(Role::class)

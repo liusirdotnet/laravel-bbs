@@ -15,13 +15,13 @@ class CreatePermissionRolesTable extends Migration
     {
         Schema::create('permission_roles', function (Blueprint $table) {
             $table->integer('permission_id')
-                  ->unsigned()
-                  ->index()
-                  ->comment('权限 ID');
+                ->unsigned()
+                ->index()
+                ->comment('权限 ID');
             $table->integer('role_id')
-                  ->unsigned()
-                  ->index()
-                  ->comment('角色 ID');
+                ->unsigned()
+                ->index()
+                ->comment('角色 ID');
             $table->primary(['permission_id', 'role_id']);
         });
     }
