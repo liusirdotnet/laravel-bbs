@@ -67,6 +67,10 @@
                   @include('admin.forms.fields.relationship')
                 </div>
                 <div class="form-group">
+                  @php
+                    $row = $dataTypeRows->where('field', 'roles')->first();
+                    $options = json_decode($row->details);
+                  @endphp
                   <label for="additional_roles">其它角色</label>
                   @include('admin.forms.fields.relationship')
                 </div>

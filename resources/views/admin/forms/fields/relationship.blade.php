@@ -31,7 +31,7 @@
 
           @foreach($query as $relationship)
             <option
-                value="{{ $relationship->{$options->key} }}" @if($dataTypeContent->{$options->column} === $relationship->{$options->key}){{ 'selected="selected"' }}@endif>{{ $relationship->{$options->label} }}</option>
+              value="{{ $relationship->{$options->key} }}" @if($dataTypeContent->{$options->column} === $relationship->{$options->key}){{ 'selected="selected"' }}@endif>{{ $relationship->{$options->label} }}</option>
           @endforeach
         </select>
       @endif
@@ -129,13 +129,13 @@
         @endif
       @else
         <select
-            class="form-control @if(isset($options->taggable) && $options->taggable === 'on') select2-taggable @else select2 @endif"
-            name="{{ $relationshipField }}[]" multiple
-            @if(isset($options->taggable) && $options->taggable === 'on')
-            data-route="{{ route('voyager.'.str_slug($options->table).'.store') }}"
-            data-label="{{$options->label}}"
-            data-error-message="Sorry it appears there may have been a problem creating the record. Please make sure your table has defaults for other fields."
-            @endif
+          class="form-control @if(isset($options->taggable) && $options->taggable === 'on') select2-taggable @else select2 @endif"
+          name="{{ $relationshipField }}[]" multiple
+          @if(isset($options->taggable) && $options->taggable === 'on')
+          data-route="{{ route('voyager.'.str_slug($options->table).'.store') }}"
+          data-label="{{$options->label}}"
+          data-error-message="Sorry it appears there may have been a problem creating the record. Please make sure your table has defaults for other fields."
+          @endif
         >
 
           @php
@@ -148,7 +148,7 @@
 
           @foreach($relationshipOptions as $relationshipOption)
             <option
-                value="{{ $relationshipOption->{$options->key} }}" @if(in_array($relationshipOption->{$options->key}, $selected_values, true)){{ 'selected="selected"' }}@endif>{{ $relationshipOption->{$options->label} }}</option>
+              value="{{ $relationshipOption->{$options->key} }}" @if(in_array($relationshipOption->{$options->key}, $selected_values, true)){{ 'selected="selected"' }}@endif>{{ $relationshipOption->{$options->label} }}</option>
           @endforeach
         </select>
       @endif
