@@ -79,6 +79,7 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
             'prefix' => 'compasses',
         ], function () use ($nsPrefix) {
             Route::get('/', ['uses' => $nsPrefix . 'CompassesController@index', 'as' => 'index']);
+            Route::post('/', ['uses' => $nsPrefix . 'CompassesController@index', 'as' => 'command']);
         });
     });
 });

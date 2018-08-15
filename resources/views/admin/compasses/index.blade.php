@@ -5,15 +5,10 @@
 @stop
 
 @section('page_header')
-  <h1 class="page-title">
-    <i class="voyager-compass"></i>
-    <p>指南</p>
-    <span class="page-description">欢迎使用 Voyager - 不可错过的 Laravel 后台管理框架</span>
-  </h1>
+  <h1 class="page-title"><i class="voyager-compass"></i> 指南</h1>
 @stop
 
 @section('content')
-
   <div id="gradient_bg"></div>
 
   <div class="container-fluid">
@@ -92,8 +87,9 @@
       </div>
 
       <div id="commands" class="tab-pane fade in @if($active_tab === 'commands'){!! 'active' !!}@endif">
-        <h3><i class="voyager-terminal"></i> 命令撒大司法
-          <small>命令文本</small>
+        <h3>
+          <i class="voyager-terminal"></i> Artisan 命令
+          <small>点击运行相关命令</small>
         </h3>
         <div id="command_lists">
           @include('admin.compasses.partials.commands')
