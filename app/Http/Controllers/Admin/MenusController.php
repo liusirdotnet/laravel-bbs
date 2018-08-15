@@ -10,6 +10,13 @@ use Illuminate\Http\Request;
 
 class MenusController extends AdminController
 {
+    /**
+     * 创建菜单操作。
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request)
     {
         $slug = $this->getSlug($request);

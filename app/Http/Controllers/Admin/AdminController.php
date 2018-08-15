@@ -192,12 +192,12 @@ class AdminController extends Controller
         foreach ($rows as $row) {
             $options = json_decode($row->details);
 
-            if ($row->type !== 'checkbox'
-                && ! $request->hasFile($row->field)
-                && ! $request->has($row->field)
+            if ($row->type !== 'checkbox' &&
+                ! $request->hasFile($row->field) &&
+                ! $request->has($row->field)
             ) {
-                if ((isset($options->type) && $options->type !== 'belongsToMany')
-                    || $row->field !== 'user_belongsto_role_relationship'
+                if ((isset($options->type) && $options->type !== 'belongsToMany') ||
+                    $row->field !== 'user_belongsto_role_relationship'
                 ) {
                     continue;
                 }
@@ -209,10 +209,7 @@ class AdminController extends Controller
                 $row->field = @$options->column;
             }
 
-            if ($row->type === 'images'
-                && null !== $content
-                && isset($model->{$row->field})
-            ) {
+            if ($row->type === 'images' && null !== $content && isset($model->{$row->field})) {
                 $files = json_decode($model->{$row->field}, true);
                 if (null !== $files) {
                     $content = json_encode(array_merge($files, json_decode($content)));
@@ -224,9 +221,9 @@ class AdminController extends Controller
                     $content = $model->{$row->field};
                 }
 
-                if (isset($model->{$row->type})
-                    && null === $request->input($row->field)
-                    && \in_array(strtolower($row->type), ['image', 'images'], true)
+                if (isset($model->{$row->type}) &&
+                    null === $request->input($row->field) &&
+                    \in_array(strtolower($row->type), ['image', 'images'], true)
                 ) {
                     $content = $model->{$row->field};
                 }
@@ -244,7 +241,6 @@ class AdminController extends Controller
         }
         $model->save();
 
-
         if (\count($select)) {
             foreach ($select as $item) {
                 $model->belongsToMany($item['model'], $item['table'])->sync($item['content']);
@@ -256,6 +252,7 @@ class AdminController extends Controller
 
     public function validateWithForm(array $data, Collection $collection, $name = null, $id = null)
     {
+        $data = array_filter($data);
         $rules = $messages = $attributes = [];
         $isUpdate = $name && $id;
         $fieldsWithValidationRules = $this->getFieldsWithValidationRules($collection);
