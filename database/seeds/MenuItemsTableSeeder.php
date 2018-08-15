@@ -34,7 +34,7 @@ class MenuItemsTableSeeder extends Seeder
             'title' => '权限管理',
             'url' => '',
             'route' => '',
-            'icon_class' => 'voyager-dashboard',
+            'icon_class' => 'voyager-medal-rank-star',
             'color' => '',
             'order' => 2,
         ]);
@@ -75,7 +75,7 @@ class MenuItemsTableSeeder extends Seeder
             $item->fill(['target' => '_self', 'color' => null, 'order' => 5,])->save();
         }
 
-
+        // 系统管理。
         $menuItem = MenuItem::firstOrCreate([
             'parent_id' => 0,
             'menu_id' => $menu->id,
