@@ -5,19 +5,38 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Artisan;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 class CompassesController extends Controller
 {
     public function index(Request $request)
     {
-        $active_tab = null;
-
+        $activeTab = null;
         $commands = $this->getArtisanCommands();
-
         $artisanOutput = '';
 
+        if ($request->isMethod('POST')) {
+            $command = $request->command;
+            $args = $request->args;
+            $args = $args !== null ? ' ' . $args : '';
+
+            try {
+                $process = new Process('cd ' . base_path() . ' && php artisan ' . $command . $args);
+                $process->run();
+
+                if (! $process->isSuccessful()) {
+                    throw new ProcessFailedException($process);
+                }
+                $artisanOutput = $process->getOutput();
+            } catch (\Exception $e) {
+                $artisanOutput = $e->getMessage();
+            }
+            $activeTab = 'commands';
+        }
+
         return view('admin.compasses.index', compact(
-            'active_tab',
+            'activeTab',
             'commands',
             'artisanOutput'
         ));

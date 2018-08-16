@@ -17,17 +17,17 @@
 
   <div class="page-content compass container-fluid">
     <ul class="nav nav-tabs">
-      <li @if(empty($active_tab) || (isset($active_tab) && $active_tab === 'resources')){!! 'class="active"' !!}@endif>
+      <li @if(empty($activeTab) || (isset($activeTab) && $activeTab === 'resources')){!! 'class="active"' !!}@endif>
         <a data-toggle="tab" href="#resources">
           <i class="voyager-book"></i> 图标
         </a>
       </li>
-      <li @if($active_tab === 'commands'){!! 'class="active"' !!}@endif>
+      <li @if($activeTab === 'commands'){!! 'class="active"' !!}@endif>
         <a data-toggle="tab" href="#commands">
           <i class="voyager-terminal"></i> 命令
         </a>
       </li>
-      <li @if($active_tab === 'logs'){!! 'class="active"' !!}@endif>
+      <li @if($activeTab === 'logs'){!! 'class="active"' !!}@endif>
         <a data-toggle="tab" href="#logs">
           <i class="voyager-logbook"></i> 日志
         </a>
@@ -36,7 +36,7 @@
 
     <div class="tab-content">
       <div id="resources"
-           class="tab-pane fade in @if(empty($active_tab) || (isset($active_tab) && $active_tab === 'resources')){!! 'active' !!}@endif">
+           class="tab-pane fade in @if(empty($activeTab) || (isset($activeTab) && $activeTab === 'resources')){!! 'active' !!}@endif">
         <h3><i class="voyager-book"></i> 资源
           <small>快速找到合适的字体图标</small>
         </h3>
@@ -75,7 +75,7 @@
         <div class="collapsible">
           <div class="collapse-head" data-toggle="collapse" data-target="#fonts" aria-expanded="true"
                aria-controls="fonts">
-            <h4>体段图标</h4>
+            <h4>字体图标</h4>
             <i class="voyager-angle-down"></i>
             <i class="voyager-angle-up"></i>
           </div>
@@ -86,7 +86,7 @@
         </div>
       </div>
 
-      <div id="commands" class="tab-pane fade in @if($active_tab === 'commands'){!! 'active' !!}@endif">
+      <div id="commands" class="tab-pane fade in @if($activeTab === 'commands'){!! 'active' !!}@endif">
         <h3>
           <i class="voyager-terminal"></i> Artisan 命令
           <small>点击运行相关命令</small>
@@ -96,7 +96,7 @@
         </div>
       </div>
 
-      <div id="logs" class="tab-pane fade in @if($active_tab === 'logs'){!! 'active' !!}@endif">
+      <div id="logs" class="tab-pane fade in @if($activeTab === 'logs'){!! 'active' !!}@endif">
         <div class="row">
           @include('admin.compasses.partials.logs')
         </div>
@@ -104,13 +104,13 @@
     </div>
 
   </div>
-
 @stop
-@section('javascript')
+
+@section('scripts')
   <script>
     $('document').ready(function () {
       $('.collapse-head').click(function () {
-        var collapseContainer = $(this).parent();
+        let collapseContainer = $(this).parent();
         if (collapseContainer.find('.collapse-content').hasClass('in')) {
           collapseContainer.find('.voyager-angle-up').fadeOut('fast');
           collapseContainer.find('.voyager-angle-down').fadeIn('slow');
@@ -119,12 +119,7 @@
           collapseContainer.find('.voyager-angle-up').fadeIn('slow');
         }
       });
-    });
-  </script>
-  <!-- JS for commands -->
-  <script>
 
-    $(document).ready(function () {
       $('.command').click(function () {
         $(this).find('.cmd_form').slideDown();
         $(this).addClass('more_args');
@@ -134,16 +129,11 @@
       $('.close-output').click(function () {
         $('#commands pre').slideUp();
       });
-    });
 
-  </script>
-
-  <!-- JS for logs -->
-  <script>
-    $(document).ready(function () {
       $('.table-container tr').on('click', function () {
         $('#' + $(this).data('display')).toggle();
       });
+
       $('#table-log').DataTable({
         "order": [1, 'desc'],
         "stateSave": true,
