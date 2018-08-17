@@ -2,17 +2,40 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Support\LogViewer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Response;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
 class CompassesController extends Controller
 {
+    /**
+     * 首页。
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Contracts\View\Factory|
+     *         \Illuminate\View\View|
+     *         \Symfony\Component\HttpFoundation\BinaryFileResponse
+     *
+     * @throws \Exception
+     */
     public function index(Request $request)
     {
-        $activeTab = null;
+        $activeTab = '';
+
+        if ($request->input('logs')) {
+            $activeTab = 'logs';
+            LogViewer::setFile(base64_decode($request->input('logs')));
+        }
+
+        if ($download = $request->input('download')) {
+            return $this->download(LogViewer::pathToLogFile(base64_decode($download)));
+        }
+
         $commands = $this->getArtisanCommands();
         $artisanOutput = '';
 
@@ -35,11 +58,27 @@ class CompassesController extends Controller
             $activeTab = 'commands';
         }
 
+        $logs = LogViewer::all();
+        $files = LogViewer::getFiles(true);
+        $filename = LogViewer::getFileName();
+
         return view('admin.compasses.index', compact(
             'activeTab',
+            'logs',
+            'files',
             'commands',
-            'artisanOutput'
+            'artisanOutput',
+            'filename'
         ));
+    }
+
+    private function download($data)
+    {
+        if (\function_exists('response')) {
+            return response()->download($data);
+        }
+
+        return app(Response::class)->download($data);
     }
 
     public function getArtisanCommands()
