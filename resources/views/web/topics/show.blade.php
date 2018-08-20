@@ -58,7 +58,7 @@
             <div class="row reply-list">
               <div class="col col-md-12">
                 @includeWhen(Auth::check(), 'web.topics._reply_box', ['topic' => $topic])
-                @include('webviews/admin/menus/menu.blade.php.topics._reply_list', ['replies' => $topic->replies()->with('user')->get()])
+                @include('web.topics._reply_list', ['replies' => $topic->replies()->with('user')->get()])
               </div>
             </div>
           </div>
