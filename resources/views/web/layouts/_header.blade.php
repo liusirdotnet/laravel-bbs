@@ -28,9 +28,7 @@
         </li>
       </ul>
 
-      <!-- Right Side Of Navbar -->
       <ul class="navbar-nav ml-auto lbs-nav-right">
-        <!-- Authentication Links -->
         @guest
           <li class="nav-item">
             <a class="nav-link" href="{{ route('login') }}">登录</a>
@@ -64,6 +62,11 @@
             </a>
 
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+              @if(Auth::user()->hasRole('founder') || Auth::user()->hasRole('webmaster'))
+                <a href="#" class="dropdown-item">
+                  <i class="fa fa-dashboard"></i> 管理后台
+                </a>
+              @endif
               <a href="{{ route('users.show', Auth::id()) }}" class="dropdown-item">
                 <i class="fa fa-user"></i> 个人中心
               </a>

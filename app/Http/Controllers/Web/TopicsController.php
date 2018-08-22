@@ -137,7 +137,7 @@ class TopicsController extends Controller
         $topic->delete();
 
         return redirect()
-            ->route('web.topics.index')
+            ->route('topics.index')
             ->with('success', '删除成功。');
     }
 

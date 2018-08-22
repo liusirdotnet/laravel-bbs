@@ -37,14 +37,9 @@ class Policy
 
     public function before($user, $ability)
     {
-        // if ($user->isSuperAdmin()) {
-        // 		return true;
-        // }
-
-        // 如果用户拥有管理内容的权限，即授权通过。
-        // if ($user->can('manage_contents')) {
-        // return true;
-        // }
+        if ($user->hasRole('founder') || $user->hasRole('webmaster')) {
+            return true;
+        }
     }
 
     protected function checkPermission(UserInterface $user, $model, $action)
