@@ -63,7 +63,7 @@ class TopicsController extends Controller
     {
         $categories = Category::all();
 
-        return view('web.topics.create_and_edit', compact('topic', 'categories'));
+        return view('web.topics.topic', compact('topic', 'categories'));
     }
 
     /**
@@ -99,7 +99,7 @@ class TopicsController extends Controller
         $this->authorize('update', $topic);
         $categories = Category::all();
 
-        return view('web.topics.create_and_edit', compact('topic', 'categories'));
+        return view('web.topics.topic', compact('topic', 'categories'));
     }
 
     /**
