@@ -4,46 +4,71 @@
       <button class="hamburger btn-link">
         <span class="hamburger-inner"></span>
       </button>
-      <ol class="breadcrumb hidden-xs">
-        <li class="active"><i class="voyager-boat"></i> 仪表盘</li>
-      </ol>
+      @section('breadcrumbs')
+        <ol class="breadcrumb hidden-xs">
+          @if(count(Request::segments()) === 1)
+            <li class="active"><i class="voyager-boat"></i> 仪表盘</li>
+          @else
+            <li class="active">
+              <a href="{{ route('admin.dashboard') }}"><i class="voyager-boat"></i> 仪表盘</a>
+            </li>
+          @endif
+          <?php $breadcrumbUrl = url(''); ?>
+          @for($i = 1; $i <= count(Request::segments()); $i++)
+            <?php $breadcrumbUrl .= '/' . Request::segment($i); ?>
+            @if(Request::segment($i) != ltrim(route('admin.dashboard', [], false), '/') && !is_numeric(Request::segment($i)))
+              @if($i < count(Request::segments()) & $i > 0 && array_search('database', Request::segments()) === false)
+                <li class="active">
+                  <a href="{{ $breadcrumbUrl }}">{{ ucwords(str_replace('-', ' ', str_replace('_', ' ', Request::segment($i)))) }}</a>
+                </li>
+              @else
+                <li>{{ ucwords(str_replace('-', ' ', str_replace('_', ' ', Request::segment($i)))) }}</li>
+              @endif
+            @endif
+          @endfor
+        </ol>
+      @show
     </div>
     <ul class="nav navbar-nav navbar-right">
       <li class="dropdown profile">
-        <a href="#" class="dropdown-toggle text-right" data-toggle="dropdown" role="button" aria-expanded="false"><img
-              src="{{ asset('backend/images/captain-avatar.png') }}" class="profile-img">
+        <a href="#" class="dropdown-toggle text-right" data-toggle="dropdown" role="button" aria-expanded="false">
+          <img src="{{ $userAvatar }}" class="profile-img">
           <span class="caret"></span>
         </a>
         <ul class="dropdown-menu dropdown-menu-animated">
           <li class="profile-img">
-            <img src="{{ asset('backend/images/captain-avatar.png') }}" class="profile-img">
+            <img src="{{ $userAvatar }}" class="profile-img">
             <div class="profile-body">
               <h5>{{ ucwords(Auth::user()->name) }}</h5>
               <h6>{{ Auth::user()->email }}</h6>
             </div>
           </li>
           <li class="divider"></li>
-          <li class="class-full-of-rum">
-            <a href="{{ route('admin.profile') }}">
-              <i class="voyager-person"></i>
-              个人简介
-            </a>
-          </li>
-          <li>
-            <a href="/" target="_blank">
-              <i class="voyager-home"></i>
-              前台主页
-            </a>
-          </li>
-          <li>
-            <form action="{{ route('logout') }}" method="POST">
-              @csrf
-              <button type="submit" class="btn btn-danger btn-block">
-                <i class="voyager-power"></i>
-                退出登录
-              </button>
-            </form>
-          </li>
+          <?php $navItems = config('admin.dashboard.navbar_items'); ?>
+          @if (is_array($navItems) && !empty($navItems))
+            @foreach ($navItems as $name => $item)
+              <li {!! isset($item['classes']) && !empty($item['classes']) ? 'class="'.$item['classes'].'"' : '' !!}>
+                @if (isset($item['route']) && $item['route'] == 'logout')
+                  <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-danger btn-block">
+                        @if (isset($item['icon_class']) && !empty($item['icon_class']))
+                        <i class="{!! $item['icon_class'] !!}"></i>
+                        @endif
+                        {{ $name }}
+                    </button>
+                  </form>
+                @else
+                  <a href="{{ isset($item['route']) && Route::has($item['route']) ? route($item['route']) : (isset($item['route']) ? $item['route'] : '#') }}" {!! isset($item['target_blank']) && $item['target_blank'] ? 'target="_blank"' : '' !!}>
+                    @if (isset($item['icon_class']) && !empty($item['icon_class']))
+                      <i class="{!! $item['icon_class'] !!}"></i>
+                    @endif
+                    {{ $name }}
+                  </a>
+                @endif
+              </li>
+            @endforeach
+          @endif
         </ul>
       </li>
     </ul>

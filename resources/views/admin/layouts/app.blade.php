@@ -30,6 +30,14 @@
   <img src="{{ asset('backend/images/logo-icon.png') }}" alt="Admin Loader">
 </div>
 
+<?php
+if (starts_with(Auth::user()->avatar, 'http://') || starts_with(Auth::user()->avatar, 'https://')) {
+  $userAvatar = Auth::user()->avatar;
+} else {
+  $userAvatar = Admin::image(Auth::user()->avatar);
+}
+?>
+
 <div class="app-container">
   <div class="fadetoblack visible-xs"></div>
   <div class="row content-container">

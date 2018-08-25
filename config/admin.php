@@ -152,18 +152,18 @@ return [
     'dashboard' => [
         // Add custom list items to navbar's dropdown
         'navbar_items' => [
-            'Profile' => [
-                'route' => 'voyager.profile',
+            '个人简介' => [
+                'route' => 'admin.profile',
                 'classes' => 'class-full-of-rum',
                 'icon_class' => 'voyager-person',
             ],
-            'Home' => [
+            '站点主页' => [
                 'route' => '/',
                 'icon_class' => 'voyager-home',
                 'target_blank' => true,
             ],
-            'Logout' => [
-                'route' => 'voyager.logout',
+            '退出登录' => [
+                'route' => 'logout',
                 'icon_class' => 'voyager-power',
             ],
         ],
