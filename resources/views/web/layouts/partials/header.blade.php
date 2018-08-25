@@ -63,7 +63,7 @@
 
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
               @if(Auth::user()->hasRole('founder') || Auth::user()->hasRole('webmaster'))
-                <a href="#" class="dropdown-item">
+                <a href="{{ route('admin.dashboard') }}" class="dropdown-item">
                   <i class="fa fa-dashboard"></i> 管理后台
                 </a>
               @endif
