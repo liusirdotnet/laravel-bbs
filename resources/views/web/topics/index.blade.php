@@ -22,13 +22,13 @@
             </nav>
           </div>
           <div class="card-body">
-            @include('web.topics._topic_list', ['topics' => $topics])
+            @include('web.topics.partials.topic_list', ['topics' => $topics])
             {!! $topics->appends(Request::except('page'))->render() !!}
           </div>
         </div>
       </div>
       <div class="col-lg-3 col-md-3">
-        @include('web.topics._sidebar')
+        @include('web.topics.partials.sidebar')
       </div>
     </div>
   </div>

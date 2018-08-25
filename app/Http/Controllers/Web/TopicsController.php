@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Web;
 
 use App\Handlers\ImageHandler;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\TopicFormRequest;
 use App\Models\Category;
 use App\Models\Topic;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class TopicsController extends Controller
