@@ -41,7 +41,7 @@
           </h3>
         </div>
 
-        @include('web.components.error')
+        @include('web.partials.message')
 
         <div class="card-body">
           @php

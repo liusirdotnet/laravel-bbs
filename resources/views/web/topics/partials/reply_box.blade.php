@@ -1,4 +1,4 @@
-@include('web.components.error')
+@include('web.partials.message')
 
 <div class="reply-box">
   <form action="{{ route('replies.store') }}" method="POST" accept-charset="UTF-8">
