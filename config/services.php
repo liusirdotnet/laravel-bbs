@@ -35,10 +35,16 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
-    'baidu_translate' => [
-        'api'    => env('BAIDU_TRANSLATE_API'),
-        'appid'  => env('BAIDU_TRANSLATE_APPID'),
-        'appkey' => env('BAIDU_TRANSLATE_APPKEY'),
+    'translate' => [
+        'driver' => env('TRANSLATE_DRIVER', 'baidu'),
+        'baidu' => ['url' => env('BAIDU_TRANSLATE_URL'),
+            'key' => env('BAIDU_TRANSLATE_KEY'),
+            'secret' => env('BAIDU_TRANSLATE_SECRET'),],
+        'youdao' => [
+            'url' => env('YOUDAO_TRANSLATE_URL'),
+            'key' => env('YOUDAO_TRANSLATE_KEY'),
+            'secret' => env('YOUDAO_TRANSLATE_SECRET'),
+        ],
     ],
 
 ];

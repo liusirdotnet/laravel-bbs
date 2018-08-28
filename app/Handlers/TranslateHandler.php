@@ -14,38 +14,39 @@ class TranslateHandler
      *
      * @return string
      */
-    public function translate(string $text)
+    public function translate($text)
     {
         $client = new Client();
+        $service = $this->getTranslateService();
+        $url = $service['url'] . '?';
 
-        $api = config('services.baidu_translate.api');
-        $appid = config('services.baidu_translate.appid');
-        $appkey = config('services.baidu_translate.appkey');
-        $salt = time();
-
-        if (empty($appid) || empty($appkey)) {
+        // 如果 key 或者 secret 不存在，就转成拼音。
+        if (empty($service['key']) || empty($service['secret'])) {
             return $this->pinyin($text);
         }
 
-        $sign = md5($appid . $text . $salt . $appkey);
-        $query = http_build_query([
+        $isBaidu = $service['driver'] === 'baidu';
+        $salt = time();
+        $sign = md5($service['key'] . $text . $salt . $service['secret']);
+        $parameter = [
             'q' => $text,
-            'from' => 'zh',
-            'to' => 'en',
-            'appid' => $appid,
+            'from' => $isBaidu ? 'zh' : 'zh-CHS',
+            'to' => $isBaidu ? 'en' : 'EN',
+            $isBaidu ? 'appid' : 'appKey' => $service['key'],
             'salt' => $salt,
             'sign' => $sign,
-        ]);
-        $uri = $api . '?' . $query;
-        $response = $client->get($uri);
+        ];
+        $query = http_build_query($parameter);
+        $response = $client->get($url . $query);
         $result = json_decode($response->getBody(), true);
-        $key = 'trans_result';
 
-        if (isset($result[$key][0]['dst'])) {
-            return str_slug($result[$key][0]['dst']);
+        if ($isBaidu) {
+            $text = $result['trans_result'][0]['dst'] ?: '';
+        } else {
+            $text = $result['translation'][0] ?: '';
         }
 
-        return $this->pinyin($text);
+        return str_slug($text);
     }
 
     /**
@@ -58,5 +59,21 @@ class TranslateHandler
     public function pinyin(string $text)
     {
         return str_slug(app(Pinyin::class)->permalink($text));
+    }
+
+    private function getTranslateService()
+    {
+        $driver = config('services.translate.driver', 'baidu');
+
+        $url = config("services.translate.{$driver}.url");
+        $key = config("services.translate.{$driver}.key");
+        $secret = config("services.translate.{$driver}.secret");
+
+        return [
+            'driver' => $driver,
+            'url' => $url,
+            'key' => $key,
+            'secret' => $secret,
+        ];
     }
 }
