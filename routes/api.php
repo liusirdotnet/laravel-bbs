@@ -1,5 +1,6 @@
 <?php
 
+use Dingo\Api\Routing\Router;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+$api = app(Router::class);
+
+$api->version('v1', function ($api) {
+    $api->get('version', function () {
+        return response('this is version 1.');
+    });
+
+    $api->post('verificationCodes', 'VerificationCodes@store')
+        ->name('api.verificationCodes.store');
 });
+
+$api->version('v2', function ($api) {
+    $api->get('version', function () {
+        return response('this is version 2.');
+    });
+});
+
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
