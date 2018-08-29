@@ -17,12 +17,14 @@ use Illuminate\Support\Facades\Route;
 
 $api = app(Router::class);
 
-$api->version('v1', function ($api) {
+$api->version('v1', [
+    'namespace' => 'App\Http\Controllers\Api'
+], function ($api) {
     $api->get('version', function () {
         return response('this is version 1.');
     });
 
-    $api->post('verificationCodes', 'VerificationCodes@store')
+    $api->post('verificationCodes', 'VerificationCodesController@store')
         ->name('api.verificationCodes.store');
 });
 
