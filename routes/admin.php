@@ -81,5 +81,8 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
             Route::get('/', ['uses' => $nsPrefix . 'CompassesController@index', 'as' => 'index']);
             Route::post('/', ['uses' => $nsPrefix . 'CompassesController@index', 'as' => 'command']);
         });
+
+        // 数据库路由。
+        Route::resource('databases', 'DatabasesController');
     });
 });
