@@ -2,21 +2,22 @@
 
 namespace App\Support;
 
-use App\Models\Menu;
-use App\Models\Role;
-use App\Models\User;
-use App\Models\Topic;
+use App\Events\Admin\AlertEvent;
 use App\Models\DataRow;
 use App\Models\DataType;
+use App\Models\Menu;
 use App\Models\MenuItem;
 use App\Models\Permission;
-use App\Events\Admin\AlertEvent;
+use App\Models\Role;
+use App\Models\Topic;
+use App\Models\User;
 use App\Support\Actions\DeleteAction;
 use App\Support\Actions\EditAction;
 use App\Support\Actions\ViewAction;
 use App\Support\Contracts\Forms\Fields\FieldInterface;
 use Arrilot\Widgets\Facade as Widget;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class Admin
 {
@@ -55,19 +56,28 @@ class Admin
     protected $alertsCollected = false;
 
     /**
+     * @var bool
+     */
+    protected $permissionsLoaded = false;
+
+    /**
      * @var array
      */
-    protected $models
-        = [
-            'User' => User::class,
-            'Role' => Role::class,
-            'Permission' => Permission::class,
-            'DataRow' => DataRow::class,
-            'DataType' => DataType::class,
-            'Topic' => Topic::class,
-            'Menu' => Menu::class,
-            'MenuItem' => MenuItem::class,
-        ];
+    protected $permissions = [];
+
+    /**
+     * @var array
+     */
+    protected $models = [
+        'User' => User::class,
+        'Role' => Role::class,
+        'Permission' => Permission::class,
+        'DataRow' => DataRow::class,
+        'DataType' => DataType::class,
+        'Topic' => Topic::class,
+        'Menu' => Menu::class,
+        'MenuItem' => MenuItem::class,
+    ];
 
     public function getModel($name)
     {
@@ -100,7 +110,7 @@ class Admin
 
     public function getAlerts()
     {
-        if (! $this->alertsCollected) {
+        if (!$this->alertsCollected) {
             event(new AlertEvent($this->alerts));
 
             $this->alertsCollected = true;
@@ -116,7 +126,7 @@ class Admin
 
     public function getImage($file, $default = '')
     {
-        if (! empty ($file)) {
+        if (!empty($file)) {
             return str_replace('\\', '/', Storage::disk(config('admin.storage.disk'))->url($file));
         }
 
@@ -125,7 +135,7 @@ class Admin
 
     public function addFormField($formField)
     {
-        if (! $formField instanceof FieldInterface) {
+        if (!$formField instanceof FieldInterface) {
             $instance = app($formField);
         }
 
@@ -170,5 +180,59 @@ class Admin
     public function getVersion()
     {
         return $this->version;
+    }
+
+    public function can($permission)
+    {
+        $this->loadPermissions();
+
+        $exist = $this->permissions->where('action', $permission)->first();
+
+        if (!$exist) {
+            throw new \Exception('Permission does not exist.', 400);
+        }
+
+        $user = $this->getUser();
+
+        if ($user === null || !$user->hasPermission($permission)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function canOrFail($permission)
+    {
+        if (!$this->can($permission)) {
+            throw new AccessDeniedHttpException();
+        }
+
+        return true;
+    }
+
+    protected function loadPermissions()
+    {
+        if (!$this->permissionsLoaded) {
+            $this->permissionsLoaded = true;
+
+            $this->permissions = self::getModel('Permission')->all();
+        }
+    }
+
+    protected function getUser($id = null)
+    {
+        if ($id === null) {
+            $id = auth()->check() ? auth()->user()->id : null;
+        }
+
+        if ($id === null) {
+            return;
+        }
+
+        if (! isset($this->users[$id])) {
+            $this->users[$id] = self::getModel('User')->find($id);
+        }
+
+        return $this->users[$id];
     }
 }
