@@ -73,6 +73,15 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
             });
         });
 
+        // 面包屑路由。
+        Route::group([
+            'as' => 'breads.',
+            'prefix' => 'breads',
+        ], function () use ($nsPrefix) {
+            Route::get('/', ['uses' => $nsPrefix . 'BreadsController@index']);
+            Route::get('{table}/create', ['uses' => $nsPrefix . 'BreadsController@create', 'as' => 'create']);
+        });
+
         // 指南路由。
         Route::group([
             'as' => 'compasses.',
