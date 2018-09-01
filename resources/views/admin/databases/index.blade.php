@@ -41,7 +41,7 @@
                     <td>
                       <div class="bread_actions">
                         @if($table->dataTypeId)
-                          <a href="" class="btn-sm btn-warning browse_bread">
+                          <a href="#" class="btn-sm btn-warning browse_bread">
                             <i class="voyager-plus"></i> 查看 Bread
                           </a>
                           <a href="" class="btn-sm btn-default edit">
@@ -52,7 +52,7 @@
                             删除 Bread
                           </a>
                         @else
-                          <a href="" class="btn-sm btn-default">
+                          <a href="{{ route('admin.breads.create', ['name' => $table->name]) }}" class="btn-sm btn-default">
                             <i class="voyager-plus"></i> 添加 Bread
                           </a>
                         @endif
