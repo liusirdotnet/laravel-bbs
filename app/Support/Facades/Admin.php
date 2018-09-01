@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static void addFormField()
  * @method static void getFormField()
  * @method static string getVersion()
+ * @method static bool can($action)
  */
 class Admin extends Facade
 {
