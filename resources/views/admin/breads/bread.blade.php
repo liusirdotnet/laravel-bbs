@@ -141,8 +141,8 @@
                   $r_order = 0;
                 @endphp
 
-                @if (isset($fieldOptions))
-                  @foreach($fieldOptions as $data)
+                @if (isset($options))
+                  @foreach($options as $data)
                     @php
                       $r_order += 1;
                     @endphp
@@ -154,15 +154,15 @@
                     <div class="row row-dd">
                       <div class="col-xs-2">
                         <h4><strong>{{ $data['field'] }}</strong></h4>
-                        <strong>{{ __('voyager::database.type') }}:</strong> <span>{{ $data['type'] }}</span><br/>
-                        <strong>{{ __('voyager::database.key') }}:</strong> <span>{{ $data['key'] }}</span><br/>
-                        <strong>{{ __('voyager::generic.required') }}:</strong>
-                        @if($data['null'] === "NO")
-                          <span>{{ __('voyager::generic.yes') }}</span>
+                        <strong>类型：</strong> <span>{{ $data['type'] }}</span><br/>
+                        <strong>索引：</strong> <span>{{ $data['key'] }}</span><br/>
+                        <strong>非空：</strong>
+                        @if($data['null'] === 'NO')
+                          <span>是</span>
                           <input type="hidden" value="1" name="field_required_{{ $data['field'] }}"
                                  checked="checked">
                         @else
-                          <span>{{ __('voyager::generic.no') }}</span>
+                          <span>否</span>
                           <input type="hidden" value="0" name="field_required_{{ $data['field'] }}">
                         @endif
                         <div class="handler voyager-handle"></div>
@@ -176,28 +176,28 @@
                                name="field_browse_{{ $data['field'] }}"
                         @if(isset($dataRow->browse) && $dataRow->browse)
                           {{ 'checked="checked"' }}
-                          @elseif($data['key'] == 'PRI')
-                          @elseif($data['type'] == 'timestamp' && $data['field'] == 'updated_at')
+                          @elseif($data['key'] === 'PRI')
+                          @elseif($data['type'] === 'timestamp' && $data['field'] === 'updated_at')
                           @elseif(!isset($dataRow->browse))
                           {{ 'checked="checked"' }}
                           @endif>
-                        <label for="field_browse_{{ $data['field'] }}">{{ __('voyager::generic.browse') }}</label><br/>
+                        <label for="field_browse_{{ $data['field'] }}">访问</label><br/>
                         <input type="checkbox"
                                id="field_read_{{ $data['field'] }}"
                                name="field_read_{{ $data['field'] }}" @if(isset($dataRow->read) && $dataRow->read){{ 'checked="checked"' }}@elseif($data['key'] == 'PRI')@elseif($data['type'] == 'timestamp' && $data['field'] == 'updated_at')@elseif(!isset($dataRow->read)){{ 'checked="checked"' }}@endif>
-                        <label for="field_read_{{ $data['field'] }}">{{ __('voyager::generic.read') }}</label><br/>
+                        <label for="field_read_{{ $data['field'] }}">读取</label><br/>
                         <input type="checkbox"
                                id="field_edit_{{ $data['field'] }}"
                                name="field_edit_{{ $data['field'] }}" @if(isset($dataRow->edit) && $dataRow->edit){{ 'checked="checked"' }}@elseif($data['key'] == 'PRI')@elseif($data['type'] == 'timestamp' && $data['field'] == 'updated_at')@elseif(!isset($dataRow->edit)){{ 'checked="checked"' }}@endif>
-                        <label for="field_edit_{{ $data['field'] }}">{{ __('voyager::generic.edit') }}</label><br/>
+                        <label for="field_edit_{{ $data['field'] }}">编辑</label><br/>
                         <input type="checkbox"
                                id="field_add_{{ $data['field'] }}"
                                name="field_add_{{ $data['field'] }}" @if(isset($dataRow->add) && $dataRow->add){{ 'checked="checked"' }}@elseif($data['key'] == 'PRI')@elseif($data['type'] == 'timestamp' && $data['field'] == 'created_at')@elseif($data['type'] == 'timestamp' && $data['field'] == 'updated_at')@elseif(!isset($dataRow->add)){{ 'checked="checked"' }}@endif>
-                        <label for="field_add_{{ $data['field'] }}">{{ __('voyager::generic.add') }}</label><br/>
+                        <label for="field_add_{{ $data['field'] }}">添加</label><br/>
                         <input type="checkbox"
                                id="field_delete_{{ $data['field'] }}"
                                name="field_delete_{{ $data['field'] }}" @if(isset($dataRow->delete) && $dataRow->delete){{ 'checked="checked"' }}@elseif($data['key'] == 'PRI')@elseif($data['type'] == 'timestamp' && $data['field'] == 'updated_at')@elseif(!isset($dataRow->delete)){{ 'checked="checked"' }}@endif>
-                        <label for="field_delete_{{ $data['field'] }}">{{ __('voyager::generic.delete') }}</label><br/>
+                        <label for="field_delete_{{ $data['field'] }}">删除</label><br/>
                       </div>
                       <div class="col-xs-2">
                         <input type="hidden" name="field_{{ $data['field'] }}" value="{{ $data['field'] }}">
@@ -207,7 +207,7 @@
                                  name="field_input_type_{{ $data['field'] }}">
                         @else
                           <select name="field_input_type_{{ $data['field'] }}">
-                            @foreach (Voyager::formFields() as $formField)
+                            @foreach (\App\Support\Facades\Admin::formFields() as $formField)
                               @php
                                 if (
                                     (isset($dataRow->type) && $dataRow->type == $formField->getCodename())
