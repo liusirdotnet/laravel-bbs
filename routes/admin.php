@@ -80,6 +80,7 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
         ], function () use ($nsPrefix) {
             Route::get('/', ['uses' => $nsPrefix . 'BreadsController@index']);
             Route::get('{table}/create', ['uses' => $nsPrefix . 'BreadsController@create', 'as' => 'create']);
+            Route::get('{table}/edit', ['uses' => $nsPrefix . 'BreadsController@edit', 'as' => 'edit']);
         });
 
         // 指南路由。
