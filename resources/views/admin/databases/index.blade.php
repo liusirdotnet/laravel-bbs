@@ -44,7 +44,8 @@
                           <a href="#" class="btn-sm btn-warning browse_bread">
                             <i class="voyager-plus"></i> 查看 Bread
                           </a>
-                          <a href="" class="btn-sm btn-default edit">
+                          <a href="{{ route('admin.breads.edit', ['name' => $table->name]) }}"
+                             class="btn-sm btn-default edit">
                             编辑 Bread
                           </a>
                           <a data-id="{{ $table->dataTypeId }}" data-name="{{ $table->name }}"
@@ -52,7 +53,8 @@
                             删除 Bread
                           </a>
                         @else
-                          <a href="{{ route('admin.breads.create', ['name' => $table->name]) }}" class="btn-sm btn-default">
+                          <a href="{{ route('admin.breads.create', ['name' => $table->name]) }}"
+                             class="btn-sm btn-default">
                             <i class="voyager-plus"></i> 添加 Bread
                           </a>
                         @endif

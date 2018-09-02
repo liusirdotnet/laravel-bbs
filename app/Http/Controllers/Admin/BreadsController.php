@@ -25,6 +25,22 @@ class BreadsController extends Controller
         return view('admin.breads.bread', $data);
     }
 
+    public function edit(Request $request, $table)
+    {
+        Admin::can('access_bread');
+
+        $dataType = Admin::getModel('DataType')->whereName($table)->first();
+        $options = AbstractSchemaManager::describeTable($table);
+        $tables = AbstractSchemaManager::listTables();
+
+        return view('admin.breads.bread', compact(
+            'dataType',
+            'options',
+            'table',
+            'tables'
+        ));
+    }
+
     protected function getBreads($table)
     {
         $displayName = Str::singular(implode(' ', explode('_', Str::title($table))));

@@ -137,17 +137,12 @@
                 <div class="col-xs-4">可选项</div>
               </div>
               <div id="bread-items">
-                @php
-                  $r_order = 0;
-                @endphp
+                <?php $r_order = 0 ?>
 
                 @if (isset($options))
                   @foreach($options as $data)
-                    @php
-                      $r_order += 1;
-                    @endphp
-
-                    @if(isset($dataType->id))
+                    <?php ++$r_order ?>
+                    @if (isset($dataType->id))
                       <?php $dataRow = \App\Models\DataRow::where('data_type_id', '=', $dataType->id)->where('field', '=', $data['field'])->first(); ?>
                     @endif
 
@@ -159,20 +154,17 @@
                         <strong>非空：</strong>
                         @if($data['null'] === 'NO')
                           <span>是</span>
-                          <input type="hidden" value="1" name="field_required_{{ $data['field'] }}"
-                                 checked="checked">
+                          <input type="hidden" value="1" name="field_required_{{ $data['field'] }}" checked="checked">
                         @else
                           <span>否</span>
                           <input type="hidden" value="0" name="field_required_{{ $data['field'] }}">
                         @endif
                         <div class="handler voyager-handle"></div>
-                        <input class="row_order" type="hidden"
-                               value="@if(isset($dataRow->order)){{ $dataRow->order }}@else{{ $r_order }}@endif"
-                               name="field_order_{{ $data['field'] }}">
+                        <input class="row_order" type="hidden" name="field_order_{{ $data['field'] }}"
+                               value="@if(isset($dataRow->order)){{ $dataRow->order }}@else{{ $r_order }}@endif">
                       </div>
                       <div class="col-xs-2">
-                        <input type="checkbox"
-                               id="field_browse_{{ $data['field'] }}"
+                        <input type="checkbox" id="field_browse_{{ $data['field'] }}"
                                name="field_browse_{{ $data['field'] }}"
                         @if(isset($dataRow->browse) && $dataRow->browse)
                           {{ 'checked="checked"' }}
@@ -201,18 +193,15 @@
                       </div>
                       <div class="col-xs-2">
                         <input type="hidden" name="field_{{ $data['field'] }}" value="{{ $data['field'] }}">
-                        @if($data['type'] === 'timestamp')
-                          <p>{{ __('voyager::generic.timestamp') }}</p>
-                          <input type="hidden" value="timestamp"
-                                 name="field_input_type_{{ $data['field'] }}">
+                        @if ($data['type'] === 'timestamp')
+                          <p>时间戳</p>
+                          <input type="hidden" value="timestamp" name="field_input_type_{{ $data['field'] }}">
                         @else
                           <select name="field_input_type_{{ $data['field'] }}">
                             @foreach (\App\Support\Facades\Admin::formFields() as $formField)
                               @php
-                                if (
-                                    (isset($dataRow->type) && $dataRow->type == $formField->getCodename())
-                                    ||
-                                    (!isset($dataRow->type) && $formField->getCodename() == 'text')
+                                if ((isset($dataRow->type) && $dataRow->type === $formField->getCodename())
+                                    || (!isset($dataRow->type) && $formField->getCodename() === 'text')
                                 ) {
                                     $selected = true;
                                 } else {
@@ -227,14 +216,11 @@
                         @endif
                       </div>
                       <div class="col-xs-2">
-                        <input type="text" class="form-control"
-                               value="@if(isset($dataRow->display_name)){{ $dataRow->display_name }}@else{{ ucwords(str_replace('_', ' ', $data['field'])) }}@endif"
-                               name="field_display_name_{{ $data['field'] }}">
+                        <input type="text" class="form-control" name="field_display_name_{{ $data['field'] }}"
+                               value="@if(isset($dataRow->display_name)){{ $dataRow->display_name }}@else{{ ucwords(str_replace('_', ' ', $data['field'])) }}@endif">
                       </div>
                       <div class="col-xs-4">
-                        <div class="alert alert-danger validation-error">
-                          {{ __('voyager::json.invalid') }}
-                        </div>
+                        <div class="alert alert-danger validation-error">无效的 JSON</div>
                         <textarea id="json-input-{{ $data['field'] }}" class="resizable-editor" data-editor="json"
                                   name="field_details_{{ $data['field'] }}">@if(isset($dataRow->details)){{ $dataRow->details }}@endif</textarea>
                       </div>
@@ -244,7 +230,7 @@
 
                 @if(isset($dataTypeRelationships))
                   @foreach($dataTypeRelationships as $relationship)
-                    @include('voyager::tools.bread.relationship-partial', $relationship)
+                    @include('admin.tools.bread.relationship-partial', $relationship)
                   @endforeach
                 @endif
 
@@ -270,6 +256,7 @@
     window.invalidEditors = [];
     let validationAlerts = $('.validation-error');
     validationAlerts.hide();
+
     $(function () {
       /**
        * Reorder items
@@ -277,13 +264,11 @@
       reOrderItems();
 
       $('#bread-items').disableSelection();
-
       $('[data-toggle="tooltip"]').tooltip();
-
       $('.toggleswitch').bootstrapToggle();
 
       $('textarea[data-editor]').each(function () {
-        var textarea = $(this),
+        let textarea = $(this),
           mode = textarea.data('editor'),
           editDiv = $('<div>').insertBefore(textarea),
           editor = ace.edit(editDiv[0]),
@@ -300,7 +285,7 @@
             }
           } else {
             for (var i = window.invalidEditors.length - 1; i >= 0; i--) {
-              if (window.invalidEditors[i] == textarea.attr('id')) {
+              if (window.invalidEditors[i] === textarea.attr('id')) {
                 window.invalidEditors.splice(i, 1);
               }
             }
@@ -341,7 +326,7 @@
             ev.preventDefault();
             ev.stopPropagation();
             validationAlerts.hide();
-            for (var i = window.invalidEditors.length - 1; i >= 0; i--) {
+            for (let i = window.invalidEditors.length - 1; i >= 0; i--) {
               $('#' + window.invalidEditors[i]).siblings('.validation-error').show();
             }
             toastr.error('{{ __('voyager::json.invalid_message') }}', '{{ __('voyager::json.validation_errors') }}', {
@@ -379,8 +364,8 @@
     }
 
     function sort() {
-      var sortableList = $('#bread-items');
-      var listitems = $('div.row.row-dd', sortableList);
+      let sortableList = $('#bread-items');
+      let listitems = $('div.row.row-dd', sortableList);
 
       listitems.sort(function (a, b) {
         return (parseInt($(a).find('.row_order').val()) > parseInt($(b).find('.row_order').val())) ? 1 : -1;
@@ -390,21 +375,20 @@
     }
 
     /********** Relationship functionality **********/
-
     $(function () {
       $('.rowDrop').each(function () {
         populateRowsFromTable($(this));
       });
 
       $('.relationship_type').change(function () {
-        if ($(this).val() == 'belongsTo') {
+        if ($(this).val() === 'belongsTo') {
           $(this).parent().parent().find('.relationshipField').show();
           $(this).parent().parent().find('.relationshipPivot').hide();
           $(this).parent().parent().find('.relationship_key').show();
           $(this).parent().parent().find('.relationship_taggable').hide();
           $(this).parent().parent().find('.hasOneMany').removeClass('flexed');
           $(this).parent().parent().find('.belongsTo').addClass('flexed');
-        } else if ($(this).val() == 'hasOne' || $(this).val() == 'hasMany') {
+        } else if ($(this).val() === 'hasOne' || $(this).val() === 'hasMany') {
           $(this).parent().parent().find('.relationshipField').show();
           $(this).parent().parent().find('.relationshipPivot').hide();
           $(this).parent().parent().find('.relationship_key').hide();
@@ -426,8 +410,8 @@
       relationshipTextDataBinding();
 
       $('.relationship_table').on('change', function () {
-        var tbl_selected = $(this).val();
-        var rowDropDowns = $(this).parent().parent().find('.rowDrop');
+        let tbl_selected = $(this).val();
+        let rowDropDowns = $(this).parent().parent().find('.rowDrop');
         $(this).parent().parent().find('.rowDrop').each(function () {
           console.log('1');
           $(this).data('table', tbl_selected);
