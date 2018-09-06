@@ -50,7 +50,7 @@ class Menu extends Model
             return false;
         }
 
-        $options = (object) $options;
+        $options = (object)$options;
 
         if (\in_array(strtolower($type), ['admin', 'admin_sidebar'], true)) {
             $permissions = Admin::getModel('Permission')->all();
@@ -65,7 +65,7 @@ class Menu extends Model
                     ? $user->role->permissions->pluck('key')->toArray()
                     : [];
             }
-            $options->user = (object) compact(
+            $options->user = (object)compact(
                 'permissions',
                 'dataTypes',
                 'prefix',

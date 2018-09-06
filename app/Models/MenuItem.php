@@ -61,7 +61,7 @@ class MenuItem extends Model
             ->first();
 
         if ($item !== null) {
-            $order = (int) $item->order + 1;
+            $order = (int)$item->order + 1;
         }
 
         return $order;
