@@ -11,7 +11,13 @@
   <div class="page-content container-fluid">
     <div class="row">
       <div class="col-md-12">
-        <form action="">
+        <form method="post" role="form"
+              action="@if(isset($dataType->id)){{ route('admin.breads.update', $dataType->id) }}@else{{ route('admin.breads.store') }}@endif">
+          @if(isset($dataType->id))
+            <input type="hidden" value="{{ $dataType->id }}" name="id">
+            @method('PUT')
+          @endif
+          @csrf
           <div class="panel panel-primary panel-bordered">
             <div class="panel-heading">
               <h3 class="panel-title panel-icon"><i
@@ -143,7 +149,10 @@
                   @foreach($options as $data)
                     <?php ++$r_order ?>
                     @if (isset($dataType->id))
-                      <?php $dataRow = \App\Models\DataRow::where('data_type_id', '=', $dataType->id)->where('field', '=', $data['field'])->first(); ?>
+                      <?php
+                      $dataRow = \App\Models\DataRow::where('data_type_id', '=', $dataType->id)
+                        ->where('field', '=', $data['field'])->first();
+                      ?>
                     @endif
 
                     <div class="row row-dd">
@@ -164,31 +173,31 @@
                                value="@if(isset($dataRow->order)){{ $dataRow->order }}@else{{ $r_order }}@endif">
                       </div>
                       <div class="col-xs-2">
-                        <input type="checkbox" id="field_browse_{{ $data['field'] }}"
-                               name="field_browse_{{ $data['field'] }}"
-                        @if(isset($dataRow->browse) && $dataRow->browse)
+                        <input type="checkbox" id="field_access_{{ $data['field'] }}"
+                               name="field_access_{{ $data['field'] }}"
+                        @if(isset($dataRow->access) && $dataRow->access)
                           {{ 'checked="checked"' }}
                           @elseif($data['key'] === 'PRI')
                           @elseif($data['type'] === 'timestamp' && $data['field'] === 'updated_at')
-                          @elseif(!isset($dataRow->browse))
+                          @elseif(!isset($dataRow->access))
                           {{ 'checked="checked"' }}
                           @endif>
-                        <label for="field_browse_{{ $data['field'] }}">访问</label><br/>
+                        <label for="field_access_{{ $data['field'] }}">访问</label><br/>
                         <input type="checkbox"
                                id="field_read_{{ $data['field'] }}"
-                               name="field_read_{{ $data['field'] }}" @if(isset($dataRow->read) && $dataRow->read){{ 'checked="checked"' }}@elseif($data['key'] == 'PRI')@elseif($data['type'] == 'timestamp' && $data['field'] == 'updated_at')@elseif(!isset($dataRow->read)){{ 'checked="checked"' }}@endif>
+                               name="field_read_{{ $data['field'] }}" @if(isset($dataRow->read) && $dataRow->read){{ 'checked="checked"' }}@elseif($data['key'] === 'PRI')@elseif($data['type'] === 'timestamp' && $data['field'] === 'updated_at')@elseif(!isset($dataRow->read)){{ 'checked="checked"' }}@endif>
                         <label for="field_read_{{ $data['field'] }}">读取</label><br/>
                         <input type="checkbox"
                                id="field_edit_{{ $data['field'] }}"
-                               name="field_edit_{{ $data['field'] }}" @if(isset($dataRow->edit) && $dataRow->edit){{ 'checked="checked"' }}@elseif($data['key'] == 'PRI')@elseif($data['type'] == 'timestamp' && $data['field'] == 'updated_at')@elseif(!isset($dataRow->edit)){{ 'checked="checked"' }}@endif>
+                               name="field_edit_{{ $data['field'] }}" @if(isset($dataRow->edit) && $dataRow->edit){{ 'checked="checked"' }}@elseif($data['key'] === 'PRI')@elseif($data['type'] === 'timestamp' && $data['field'] === 'updated_at')@elseif(!isset($dataRow->edit)){{ 'checked="checked"' }}@endif>
                         <label for="field_edit_{{ $data['field'] }}">编辑</label><br/>
                         <input type="checkbox"
                                id="field_add_{{ $data['field'] }}"
-                               name="field_add_{{ $data['field'] }}" @if(isset($dataRow->add) && $dataRow->add){{ 'checked="checked"' }}@elseif($data['key'] == 'PRI')@elseif($data['type'] == 'timestamp' && $data['field'] == 'created_at')@elseif($data['type'] == 'timestamp' && $data['field'] == 'updated_at')@elseif(!isset($dataRow->add)){{ 'checked="checked"' }}@endif>
+                               name="field_add_{{ $data['field'] }}" @if(isset($dataRow->add) && $dataRow->add){{ 'checked="checked"' }}@elseif($data['key'] === 'PRI')@elseif($data['type'] === 'timestamp' && $data['field'] === 'created_at')@elseif($data['type'] === 'timestamp' && $data['field'] === 'updated_at')@elseif(!isset($dataRow->add)){{ 'checked="checked"' }}@endif>
                         <label for="field_add_{{ $data['field'] }}">添加</label><br/>
                         <input type="checkbox"
                                id="field_delete_{{ $data['field'] }}"
-                               name="field_delete_{{ $data['field'] }}" @if(isset($dataRow->delete) && $dataRow->delete){{ 'checked="checked"' }}@elseif($data['key'] == 'PRI')@elseif($data['type'] == 'timestamp' && $data['field'] == 'updated_at')@elseif(!isset($dataRow->delete)){{ 'checked="checked"' }}@endif>
+                               name="field_delete_{{ $data['field'] }}" @if(isset($dataRow->delete) && $dataRow->delete){{ 'checked="checked"' }}@elseif($data['key'] === 'PRI')@elseif($data['type'] === 'timestamp' && $data['field'] === 'updated_at')@elseif(!isset($dataRow->delete)){{ 'checked="checked"' }}@endif>
                         <label for="field_delete_{{ $data['field'] }}">删除</label><br/>
                       </div>
                       <div class="col-xs-2">
