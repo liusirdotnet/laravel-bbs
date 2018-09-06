@@ -16,6 +16,7 @@ use App\Support\Actions\EditAction;
 use App\Support\Actions\ViewAction;
 use App\Support\Contracts\Forms\Fields\FieldInterface;
 use Arrilot\Widgets\Facade as Widget;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
@@ -108,9 +109,9 @@ class Admin
         return $groups;
     }
 
-    public function getAlerts()
+    public function getAlerts(): array
     {
-        if (!$this->alertsCollected) {
+        if (! $this->alertsCollected) {
             event(new AlertEvent($this->alerts));
 
             $this->alertsCollected = true;
@@ -119,14 +120,14 @@ class Admin
         return $this->alerts;
     }
 
-    public function getActions()
+    public function getActions(): array
     {
         return $this->actions;
     }
 
     public function getImage($file, $default = '')
     {
-        if (!empty($file)) {
+        if (! empty($file)) {
             return str_replace('\\', '/', Storage::disk(config('admin.storage.disk'))->url($file));
         }
 
@@ -135,7 +136,7 @@ class Admin
 
     public function addFormField($formField)
     {
-        if (!$formField instanceof FieldInterface) {
+        if (! $formField instanceof FieldInterface) {
             $instance = app($formField);
         }
 
@@ -151,7 +152,7 @@ class Admin
         return $formField->handle($row, $dataType, $dataTypeContent);
     }
 
-    public function formFields()
+    public function formFields(): Collection
     {
         $connection = config('database.default');
         $driver = config("database.connections.{$connection}.driver", 'mysql');
@@ -161,7 +162,7 @@ class Admin
         });
     }
 
-    public function afterFormFields($row, $dataType, $dataTypeContent)
+    public function afterFormFields($row, $dataType, $dataTypeContent): Collection
     {
         $options = json_decode($row->details);
 
@@ -177,45 +178,59 @@ class Admin
         return $collect;
     }
 
-    public function getVersion()
+    public function getVersion(): string
     {
         return $this->version;
     }
 
-    public function can($permission)
+    /**
+     * @param string $permission
+     *
+     * @return bool
+     *
+     * @throws \Exception
+     */
+    public function can(string $permission): bool
     {
         $this->loadPermissions();
 
         $exist = $this->permissions->where('action', $permission)->first();
 
-        if (!$exist) {
+        if (! $exist) {
             throw new \Exception('Permission does not exist.', 400);
         }
 
         $user = $this->getUser();
 
-        if ($user === null || !$user->hasPermission($permission)) {
+        if ($user === null || ! $user->hasPermission($permission)) {
             return false;
         }
 
         return true;
     }
 
-    public function canOrFail($permission)
+    /**
+     * @param string $permission
+     *
+     * @return bool
+     *
+     * @throws \Exception
+     */
+    public function canOrFail(string $permission): bool
     {
-        if (!$this->can($permission)) {
+        if (! $this->can($permission)) {
             throw new AccessDeniedHttpException();
         }
 
         return true;
     }
 
-    protected function loadPermissions()
+    protected function loadPermissions(): void
     {
-        if (!$this->permissionsLoaded) {
+        if (! $this->permissionsLoaded) {
             $this->permissionsLoaded = true;
 
-            $this->permissions = self::getModel('Permission')->all();
+            $this->permissions = $this->getModel('Permission')->all();
         }
     }
 
@@ -226,11 +241,11 @@ class Admin
         }
 
         if ($id === null) {
-            return;
+            return null;
         }
 
         if (! isset($this->users[$id])) {
-            $this->users[$id] = self::getModel('User')->find($id);
+            $this->users[$id] = $this->getModel('User')->find($id);
         }
 
         return $this->users[$id];

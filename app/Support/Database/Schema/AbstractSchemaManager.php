@@ -2,6 +2,8 @@
 
 namespace App\Support\Database\Schema;
 
+use Doctrine\DBAL\Connection;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 abstract class AbstractSchemaManager
@@ -22,7 +24,7 @@ abstract class AbstractSchemaManager
      *
      * @return \Doctrine\DBAL\Schema\AbstractSchemaManager
      */
-    public static function getDoctrineSchemaManager()
+    public static function getDoctrineSchemaManager(): \Doctrine\DBAL\Schema\AbstractSchemaManager
     {
         return DB::connection()->getDoctrineSchemaManager();
     }
@@ -32,7 +34,7 @@ abstract class AbstractSchemaManager
      *
      * @return \Doctrine\DBAL\Connection
      */
-    public static function getDatabaseConnection()
+    public static function getDatabaseConnection(): Connection
     {
         return DB::connection()->getDoctrineConnection();
     }
@@ -40,13 +42,13 @@ abstract class AbstractSchemaManager
     /**
      * Returns true if all the given tables exist.
      *
-     * @param string $table
+     * @param string $tableName
      *
      * @return bool
      */
-    public static function tableExists($table)
+    public static function tableExists(string $tableName)
     {
-        return static::getDoctrineSchemaManager()->tablesExist((array) $table);
+        return static::getDoctrineSchemaManager()->tablesExist((array)$tableName);
     }
 
     /**
@@ -54,7 +56,7 @@ abstract class AbstractSchemaManager
      *
      * @throws \Doctrine\DBAL\DBALException
      */
-    public static function listTables()
+    public static function listTables(): array
     {
         $tables = [];
 
@@ -72,7 +74,7 @@ abstract class AbstractSchemaManager
      *
      * @throws \Doctrine\DBAL\DBALException
      */
-    public static function listTableDetails($table)
+    public static function listTableDetails($table): Table
     {
         $columns = static::getDoctrineSchemaManager()->listTableColumns($table);
 
@@ -86,7 +88,14 @@ abstract class AbstractSchemaManager
         return new Table($table, $columns, $indexes, $foreignKeys, false, []);
     }
 
-    public static function describeTable($tableName)
+    /**
+     * @param string $tableName
+     *
+     * @return \Illuminate\Support\Collection
+     *
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public static function describeTable(string $tableName): Collection
     {
         /** @var \App\Support\Database\Schema\Table $talbe */
         $table = static::listTableDetails($tableName);
@@ -100,5 +109,21 @@ abstract class AbstractSchemaManager
 
             return $columns;
         });
+    }
+
+    /**
+     * @param string $tableName
+     *
+     * @return array
+     */
+    public static function listTableColumnNames(string $tableName): array
+    {
+        $columnNames = [];
+
+        foreach (static::getDoctrineSchemaManager()->listTableColumns($tableName) as $column) {
+            $columnNames[] = $column->getName();
+        }
+
+        return $columnNames;
     }
 }

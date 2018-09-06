@@ -13,6 +13,22 @@ class BreadsController extends Controller
 {
     public function index(Request $request)
     {
+        Admin::can('access_bread');
+
+        $dataTypes = Admin::getModel('DataType')
+            ->select('id', 'name', 'slug')
+            ->get()
+            ->keyBy('name')
+            ->toArray();
+        $tables = array_map(function ($table) use ($dataTypes) {
+            $table = [
+                'name' => $table,
+                'slug' => isset($dataTypes[$table]['slug']) ?? null,
+                'dataTypeId' => isset($dataTypes[$table]['id']) ?? null,
+            ];
+
+            return (object)$table;
+        }, AbstractSchemaManager::listTables());
     }
 
     public function create(Request $request, $table)
@@ -23,6 +39,22 @@ class BreadsController extends Controller
         $data['options'] = AbstractSchemaManager::describeTable($table);
 
         return view('admin.breads.bread', $data);
+    }
+
+    public function store(Request $request)
+    {
+        try {
+            /** @var \App\Models\DataType $dataType */
+            $dataType = Admin::getModel('DataType');
+            $result = $dataType->updateDataType($request->all(), true);
+            $data = $result
+                ? $this->alertSuccess('创建 Bread 成功')
+                : $this->alertError('创建 Bread 失败');
+
+            return redirect()->route('voyager.bread.index')->with($data);
+        } catch (\Exception $e) {
+            return redirect()->route('admin.breads.index');
+        }
     }
 
     public function edit(Request $request, $table)
@@ -39,6 +71,19 @@ class BreadsController extends Controller
             'table',
             'tables'
         ));
+    }
+
+    public function update(Request $request, $id)
+    {
+        Admin::can('access_bread');
+
+        try {
+            /** @var \App\Models\DataType $dataType */
+            $dataType = Admin::getModel('DataType')->find($id);
+            $result = $dataType->updateDataType($request->all(), true);
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+        }
     }
 
     protected function getBreads($table)

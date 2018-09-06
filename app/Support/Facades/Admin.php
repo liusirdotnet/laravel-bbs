@@ -12,10 +12,12 @@ use Illuminate\Support\Facades\Facade;
  * @method static array getActions()
  * @method static void addFormField()
  * @method static formField($row, $dataType, $dataTypeContent)
- * @method static afterFormFields($row, $dataType, $dataTypeContent)
+ * @method static \Illuminate\Support\Collection formFields()
+ * @method static \Illuminate\Support\Collection afterFormFields($row, $dataType, $dataTypeContent)
  * @method static void getFormField()
  * @method static string getVersion()
  * @method static bool can($action)
+ * @method static bool canOrFail($permission)
  */
 class Admin extends Facade
 {
