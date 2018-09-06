@@ -81,6 +81,7 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
             Route::get('/', ['uses' => $nsPrefix . 'BreadsController@index']);
             Route::get('{table}/create', ['uses' => $nsPrefix . 'BreadsController@create', 'as' => 'create']);
             Route::get('{table}/edit', ['uses' => $nsPrefix . 'BreadsController@edit', 'as' => 'edit']);
+            Route::put('{id}', ['uses' => $nsPrefix . 'BreadsController@update', 'as' => 'update']);
         });
 
         // 指南路由。
