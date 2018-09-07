@@ -165,7 +165,6 @@ class Admin
     public function afterFormFields($row, $dataType, $dataTypeContent): Collection
     {
         $options = json_decode($row->details);
-
         $collect = collect($this->afterFormFields)->filter(function ($after) use (
             $row,
             $dataType,
