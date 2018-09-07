@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Support\Database\Schema\AbstractSchemaManager;
 use App\Support\Facades\Admin;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -81,8 +81,18 @@ class BreadsController extends Controller
             /** @var \App\Models\DataType $dataType */
             $dataType = Admin::getModel('DataType')->find($id);
             $result = $dataType->updateDataType($request->all(), true);
+            $table = $dataType->display_name_singular;
+            $data = [
+                'message' => $result ? __('更新 :table 表成功', ['table' => $table]) : __('更新失败'),
+                'alert-type' => $result ? 'success' : 'error',
+            ];
+
+            return redirect()->route('admin.databases.index')->with($data);
         } catch (\Exception $e) {
-            dd($e->getMessage());
+            return back()->with([
+                'message' =>'更新失败',
+                'alert-type' => 'error',
+            ]);
         }
     }
 

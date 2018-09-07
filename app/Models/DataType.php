@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use App\Support\Database\Schema\AbstractSchemaManager;
-use Illuminate\Database\Eloquent\Model;
 use App\Support\Facades\Admin;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class DataType extends Model
@@ -106,29 +106,27 @@ class DataType extends Model
 
             if ($this->fill($data)->save()) {
                 $fields = $this->fields(array_get($data, 'name'));
-
-                dd($data);
                 foreach ($fields as $field) {
                     $dataRow = $this->rows()->firstOrNew(['field' => $field]);
-                    foreach (['access', 'read', 'add', 'edit', 'delete'] as $check) {
-                        $dataRow->{$check} = isset($data["field_{$check}_{$field}"]);
-                    }
-                    $dataRow->required = $data['field_required_' . $field];
-                    $dataRow->field = $data['field_' . $field];
                     $dataRow->type = $data['field_input_type_' . $field];
-                    $dataRow->details = $data['field_details_' . $field];
                     $dataRow->display_name = $data['field_display_name_' . $field];
-                    $dataRow->order = (int)$data['field_order_' . $field];
+                    $dataRow->field = $data['field_' . $field];
+                    $dataRow->required = $data['field_required_' . $field];
 
-                    dd($dataRow->toArray());
-                    if ($dataRow->save()) {
+                    foreach (['access', 'read', 'add', 'edit', 'delete'] as $action) {
+                        $dataRow->{$action} = isset($data["field_{$action}_{$field}"]);
+                    }
+                    $dataRow->order = (int) $data['field_order_' . $field];
+                    $dataRow->details = $data['field_details_' . $field];
+
+                    if (! $dataRow->save()) {
                         throw new \Exception(__('未能保存字段 :field，正在回滚操作！', ['field' => $field]));
                     }
                 }
                 $this->rows()->whereNotIn('field', $fields)->delete();
 
                 if ($this->generate_permissions) {
-                    Admin::getModel('Permission')->generateFor($this->name);
+                    Admin::getModel('Permission')::generate($this->name);
                 }
                 DB::commit();
 
