@@ -6,6 +6,17 @@ use Doctrine\DBAL\Schema\Table as SchemaTable;
 
 class Table extends SchemaTable
 {
+    public function __get($property)
+    {
+        $getter = 'get' . ucfirst($property);
+
+        if (! method_exists($this, $getter)) {
+            throw new \Exception("Property {$property} doesn't exist or is unavailable");
+        }
+
+        return $this->$getter();
+    }
+
     public function toArray()
     {
         return [
