@@ -80,6 +80,7 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
         ], function () use ($nsPrefix) {
             Route::get('/', ['uses' => $nsPrefix . 'BreadsController@index', 'as' => 'index']);
             Route::get('{table}/create', ['uses' => $nsPrefix . 'BreadsController@create', 'as' => 'create']);
+            Route::post('/', ['uses' => $nsPrefix . 'BreadsController@store', 'as' => 'store']);
             Route::get('{table}/edit', ['uses' => $nsPrefix . 'BreadsController@edit', 'as' => 'edit']);
             Route::put('{id}', ['uses' => $nsPrefix . 'BreadsController@update', 'as' => 'update']);
         });
