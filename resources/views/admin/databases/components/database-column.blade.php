@@ -26,13 +26,14 @@
     <td>
       <select :value="index.type" @change="onIndexTypeChange"
               :disabled="column.type.notSupportIndex"
-              class="form-control">
+              class="form-control"
+      >
         <option value=""></option>
-        <option value="INDEX">{{ __('voyager::database.index') }}</option>
-        <option value="UNIQUE">{{ __('voyager::database.unique') }}</option>
-        <option value="PRIMARY">{{ __('voyager::database.primary') }}</option>
+        <option value="INDEX">{{ __('普通索引') }}</option>
+        <option value="UNIQUE">{{ __('唯一索引') }}</option>
+        <option value="PRIMARY">{{ __('主键索引') }}</option>
       </select>
-      <small v-if="column.composite" v-once>{{ __('voyager::database.composite_warning') }}</small>
+      <small v-if="column.composite" v-once>{{ __('警告：此列是复合索引的一部分') }}</small>
     </td>
     <td>
       <database-column-default :column="column"></database-column-default>
@@ -85,14 +86,12 @@
 
         // Reset default value
         this.column.default = null;
-
         this.column.type = type;
-
         this.setLengthInputType();
       },
       onIndexTypeChange(event) {
         if (this.column.name === '') {
-          return toastr.error("{{ __('voyager::database.name_warning') }}");
+          return toastr.error("{{ __('请在添加索引之前给列命名') }}");
         }
 
         return this.$emit('indexChanged', {

@@ -17,8 +17,8 @@
                 <div class="col-md-3 col-sm-4 col-xs-6">
                   <label for="create_model">{{ __('创建模型表') }}</label><br>
                   <input type="checkbox" name="create_model" data-toggle="toggle"
-                         data-on="{{ __('voyager::generic.yes_please') }}"
-                         data-off="{{ __('voyager::generic.no_thanks') }}"
+                         data-on="{{ __('是的，就这样做') }}"
+                         data-off="{{ __('不，谢谢') }}"
                   >
                 </div>
               @endif
@@ -32,7 +32,6 @@
 
           <template v-if="tableHasColumns">
             <p>{{ __('表列') }}</p>
-
             <table class="table table-bordered" style="width:100%;">
               <thead>
               <tr>
@@ -266,7 +265,7 @@
       getIndexesColumns(indexes) {
         let columns = [];
 
-        for (i in indexes) {
+        for (let i in indexes) {
           for (col in indexes[i].columns) {
             columns.push(indexes[i].columns[col]);
           }

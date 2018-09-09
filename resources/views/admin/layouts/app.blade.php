@@ -45,7 +45,7 @@ if (starts_with(Auth::user()->avatar, 'http://') || starts_with(Auth::user()->av
     @include('admin.dashboard.sidebar')
     <script>
       (function () {
-        var appContainer = document.querySelector('.app-container'),
+        let appContainer = document.querySelector('.app-container'),
           sidebar = appContainer.querySelector('.side-menu'),
           navbar = appContainer.querySelector('nav.navbar.navbar-top'),
           loader = document.getElementById('voyager-loader'),
@@ -58,7 +58,7 @@ if (starts_with(Auth::user()->avatar, 'http://') || starts_with(Auth::user()->av
           appContainer.style.WebkitTransition = appContainer.style.MozTransition = appContainer.style.transition =
             navbar.style.WebkitTransition = navbar.style.MozTransition = navbar.style.transition = 'none';
 
-        if (window.localStorage && window.localStorage['voyager.stickySidebar'] == 'true') {
+        if (window.localStorage && window.localStorage['voyager.stickySidebar'] === 'true') {
           appContainer.className += ' expanded no-animation';
           loader.style.left = (sidebar.clientWidth / 2) + 'px';
           hamburgerMenu.className += ' is-active no-animation';
@@ -86,21 +86,21 @@ if (starts_with(Auth::user()->avatar, 'http://') || starts_with(Auth::user()->av
 <script src="{{ asset('backend/js/app.js') }}"></script>
 <script>
   @if(Session::has('alerts'))
-    let alerts = {!! json_encode(Session::get('alerts')) !!};
-    helpers.displayAlerts(alerts, toastr);
+  let alerts = {!! json_encode(Session::get('alerts')) !!};
+  helpers.displayAlerts(alerts, toastr);
   @endif
 
   @if(Session::has('message'))
-    // TODO: change Controllers to use AlertsMessages trait... then remove this
-    var alertType = {!! json_encode(Session::get('alert-type', 'info')) !!};
-    var alertMessage = {!! json_encode(Session::get('message')) !!};
-    var alerter = toastr[alertType];
+  // TODO: change Controllers to use AlertsMessages trait... then remove this
+  let alertType = {!! json_encode(Session::get('alert-type', 'info')) !!};
+  let alertMessage = {!! json_encode(Session::get('message')) !!};
+  let alerter = toastr[alertType];
 
-    if (alerter) {
-      alerter(alertMessage);
-    } else {
-      toastr.error("toastr alert-type " + alertType + " is unknown");
-    }
+  if (alerter) {
+    alerter(alertMessage);
+  } else {
+    toastr.error("toastr alert-type " + alertType + " is unknown");
+  }
   @endif
 </script>
 @yield('scripts')
