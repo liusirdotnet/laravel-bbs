@@ -161,6 +161,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         App\Providers\AdminServiceProvider::class,
+        App\Providers\EasySmsServiceProvider::class,
 
     ],
 
