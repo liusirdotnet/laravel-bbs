@@ -23,6 +23,8 @@ class VerificationCodesController extends ApiController
         $phone = $request->phone;
 
         if (! app()->environment('production')) {
+            $code = '3333';
+        } else {
             $code = str_pad(random_int(1, 9999), 4, 0, STR_PAD_LEFT);
 
             try {
@@ -34,8 +36,6 @@ class VerificationCodesController extends ApiController
 
                 return $this->response->errorInternal($message ?? '短信发送异常');
             }
-        } else {
-            $code = '3333';
         }
         $key = 'verificationCode_' . str_random(15);
         $expiredAt = now()->addMinutes(10);

@@ -25,6 +25,7 @@ class UsersController extends ApiController
             return $this->response->error('验证码已失效', 422);
         }
 
+        // hash_equals() 函数可以有效的防止时序攻击。
         if (! hash_equals($data['code'], $request->verification_code)) {
             return $this->response->errorUnauthorized('验证码错误');
         }
