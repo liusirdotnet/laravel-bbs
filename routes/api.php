@@ -24,6 +24,7 @@ $api->version('v1', [
         return response('this is version 1.');
     });
 
+    // 发送短信验证码。
     $api->post('verificationCodes', 'VerificationCodesController@store')
         ->name('api.verificationCodes.store');
 });
