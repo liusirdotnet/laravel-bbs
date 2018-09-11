@@ -20,12 +20,9 @@ return [
     ],
 
     'gateways' => [
-        'errorlog' => [
-            'file' => storage_path('logs') . 'easysms.log',
-        ],
         'yunpian' => [
             'api_key' => env('YUNPIAN_API_KEY'),
-        ]
+        ],
     ],
 
 ];
