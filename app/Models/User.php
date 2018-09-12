@@ -26,6 +26,8 @@ class User extends Authenticatable implements UserInterface
         'phone',
         'email',
         'password',
+        'weixin_openid',
+        'weixin_unionid',
         'introduction',
         'avatar',
     ];
