@@ -48,6 +48,14 @@ $api->version('v1', [
         // 用户登录。
         $api->post('authorizations', 'AuthorizationsController@store')
             ->name('api.authorizations.store');
+
+        // 刷新令牌。
+        $api->put('authorizations/current', 'AuthorizationsController@update')
+            ->name('api.authorizations.update');
+
+        // 删除令牌。
+        $api->delete('authorizations/current', 'AuthorizationsController@destroy')
+            ->name('api.authorizations.delete');
     });
 });
 
