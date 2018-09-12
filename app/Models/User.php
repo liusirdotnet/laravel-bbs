@@ -8,8 +8,9 @@ use App\Support\Contracts\UserInterface;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements UserInterface
+class User extends Authenticatable implements UserInterface, JWTSubject
 {
     use UserTrait, HasRelationshipTrait;
     use Notifiable {
@@ -93,5 +94,15 @@ class User extends Authenticatable implements UserInterface
     public function isAuthor(\Illuminate\Database\Eloquent\Model $model)
     {
         return $this->id === $model->user_id;
+    }
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }
