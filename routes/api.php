@@ -40,6 +40,14 @@ $api->version('v1', [
         // 生成图片验证码。
         $api->post('captchas', 'CaptchasController@store')
             ->name('api.captchas.store');
+
+        // 第三方登录。
+        $api->post('socials/{social_type}/authorizations', 'SocialsController@store')
+            ->name('api.socials.store');
+
+        // 用户登录。
+        $api->post('authorizations', 'AuthorizationsController@store')
+            ->name('api.authorizations.store');
     });
 });
 
