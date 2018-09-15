@@ -18,7 +18,8 @@ use Illuminate\Support\Facades\Route;
 $api = app(Router::class);
 
 $api->version('v1', [
-    'namespace' => 'App\Http\Controllers\Api'
+    'namespace' => 'App\Http\Controllers\Api',
+    'middleware' => 'serializer:array'
 ], function ($api) {
     $api->get('version', function () {
         return response('this is version 1.');
@@ -56,6 +57,12 @@ $api->version('v1', [
         // 删除令牌。
         $api->delete('authorizations/current', 'AuthorizationsController@destroy')
             ->name('api.authorizations.delete');
+
+        $api->group(['middleware' => 'api.auth'], function ($api) {
+            // 当前登录用户信息。
+            $api->get('user', 'UsersController@me')
+                ->name('api.user.show');
+        });
     });
 });
 
