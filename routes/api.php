@@ -58,6 +58,10 @@ $api->version('v1', [
         $api->delete('authorizations/current', 'AuthorizationsController@destroy')
             ->name('api.authorizations.delete');
 
+        // 分类。
+        $api->get('categories', 'CategoriesController@index')
+            ->name('api.categories.index');
+
         $api->group(['middleware' => 'api.auth'], function ($api) {
             // 更新用户信息。
             $api->patch('user', 'UsersController@update')
