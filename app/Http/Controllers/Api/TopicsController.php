@@ -55,6 +55,11 @@ class TopicsController extends ApiController
         return $this->response->paginator($topics, new TopicTransformer());
     }
 
+    public function show(Topic $topic)
+    {
+        return $this->response->item($topic, new TopicTransformer());
+    }
+
     /**
      * 创建话题。
      *

@@ -66,6 +66,10 @@ $api->version('v1', [
         $api->get('users/{user}/topics', 'TopicsController@userIndex')
             ->name('api.users.topics.index');
 
+        // 话题详情。
+        $api->get('topics/{topic}', 'TopicsController@show')
+            ->name('api.topics.show');
+
         $api->group(['middleware' => 'api.auth'], function ($api) {
             // 更新用户信息。
             $api->patch('user', 'UsersController@update')

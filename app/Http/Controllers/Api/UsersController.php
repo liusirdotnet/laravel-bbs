@@ -18,7 +18,7 @@ class UsersController extends ApiController
      *
      * @param \App\Http\Requests\Api\UserRequest $request
      *
-     * @return void
+     * @return \Dingo\Api\Http\Response
      */
     public function store(UserRequest $request)
     {
