@@ -2,21 +2,10 @@
 
 namespace App\Providers;
 
-use App\Models\Menu;
-use App\Models\Role;
-use App\Models\User;
-use App\Models\Reply;
-use App\Models\Topic;
-use App\Models\MenuItem;
-use App\Policies\Policy;
-use App\Policies\UserPolicy;
-use Laravel\Horizon\Horizon;
-use App\Policies\ReplyPolicy;
-use App\Policies\TopicPolicy;
-use App\Policies\MenuItemPolicy;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Laravel\Horizon\Horizon;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -26,12 +15,12 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        User::class => UserPolicy::class,
-        Role::class => Policy::class,
-        Topic::class => TopicPolicy::class,
-        Reply::class => ReplyPolicy::class,
-        Menu::class => Policy::class,
-        MenuItem::class => MenuItemPolicy::class,
+        \App\Models\User::class => \App\Policies\UserPolicy::class,
+        \App\Models\Role::class => \App\Policies\Policy::class,
+        \App\Models\Topic::class => \App\Policies\TopicPolicy::class,
+        \App\Models\Reply::class => \App\Policies\ReplyPolicy::class,
+        \App\Models\Menu::class => \App\Policies\Policy::class,
+        \App\Models\MenuItem::class => \App\Policies\MenuItemPolicy::class,
     ];
 
     /**

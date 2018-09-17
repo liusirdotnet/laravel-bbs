@@ -2,12 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\Reply;
-use App\Models\Topic;
-use App\Models\User;
-use App\Observers\ReplyObserver;
-use App\Observers\TopicObserver;
-use App\Observers\UserObserver;
 use Carbon\Carbon;
 use Illuminate\Support\ServiceProvider;
 
@@ -20,9 +14,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        User::observe(UserObserver::class);
-        Topic::observe(TopicObserver::class);
-        Reply::observe(ReplyObserver::class);
+        \App\Models\User::observe(\App\Observers\UserObserver::class);
+        \App\Models\Topic::observe(\App\Observers\TopicObserver::class);
+        \App\Models\Reply::observe(\App\Observers\ReplyObserver::class);
 
         Carbon::setLocale('zh');
     }
@@ -37,5 +31,13 @@ class AppServiceProvider extends ServiceProvider
         if (app()->isLocal()) {
             $this->app->register(\VIACreative\SudoSu\ServiceProvider::class);
         }
+
+        \API::error(function (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            abort(404);
+        });
+
+        \Api::error(function (\Illuminate\Auth\AuthenticationException $e) {
+            abort(403, $e->getMessage());
+        });
     }
 }

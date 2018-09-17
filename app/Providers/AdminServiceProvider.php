@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\MenuItem;
-use App\Policies\MenuItemPolicy;
 use App\Policies\Policy;
 use App\Support\Facades\Admin;
 use Illuminate\Foundation\AliasLoader;
@@ -20,7 +18,7 @@ class AdminServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        MenuItem::class => MenuItemPolicy::class,
+        \App\Models\MenuItem::class => \App\Policies\MenuItemPolicy::class,
     ];
 
     /**
