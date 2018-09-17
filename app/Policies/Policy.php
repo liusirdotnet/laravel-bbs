@@ -16,7 +16,7 @@ class Policy
     protected static $dataTypes = [];
 
     /**
-     * Policy constructor.
+     * policy constructor.
      */
     public function __construct()
     {
@@ -26,7 +26,7 @@ class Policy
     public function __call($name, $arguments)
     {
         if (\count($arguments) < 2) {
-            throw new \InvalidArgumentException('Not enough arguments.');
+            throw new \InvalidArgumentException('Not enough arguments');
         }
 
         /** @var \App\Support\Contracts\UserInterface $user */

@@ -14,7 +14,7 @@ class MenuItemPolicy extends Policy
 
     /**
      * @param \App\Support\Contracts\UserInterface $user
-     * @param  \Illuminate\Database\Eloquent\Model $model
+     * @param \Illuminate\Database\Eloquent\Model $model
      * @param  string                              $action
      *
      * @return bool
