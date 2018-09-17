@@ -42,4 +42,19 @@ class TopicsController extends ApiController
 
         return $this->response->item($topic, new TopicTransformer());
     }
+
+    /**
+     * 删除话题。
+     *
+     * @param \App\Models\Topic $topic
+     *
+     * @return \Dingo\Api\Http\Response
+     */
+    public function destroy(Topic $topic)
+    {
+        $this->authorize('destroy', $topic);
+        $topic->delete();
+
+        return $this->response->noContent();
+    }
 }
