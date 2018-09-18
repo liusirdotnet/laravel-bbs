@@ -2,21 +2,11 @@
 
 namespace App\Http\Requests\Api;
 
-use Dingo\Api\Http\FormRequest;
+use App\Http\Requests\ApiRequest;
 use Illuminate\Support\Facades\Auth;
 
-class UserRequest extends FormRequest
+class UserRequest extends ApiRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
