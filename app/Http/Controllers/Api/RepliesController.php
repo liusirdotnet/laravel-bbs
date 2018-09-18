@@ -7,7 +7,6 @@ use App\Http\Requests\Api\ReplyRequest;
 use App\Models\Reply;
 use App\Models\Topic;
 use App\Transformers\ReplyTransformer;
-use Illuminate\Http\Request;
 
 class RepliesController extends ApiController
 {
@@ -29,5 +28,17 @@ class RepliesController extends ApiController
 
         return $this->response->item($reply, new ReplyTransformer())
             ->setStatusCode(201);
+    }
+
+    public function destroy(Topic $topic, Reply $reply)
+    {
+        if ($reply->topic_id !== $topic->id) {
+            return $this->response->errorBadRequest();
+        }
+
+        $this->authorize('destroy', $reply);
+        $reply->delete();
+
+        return $this->response->noContent();
     }
 }
