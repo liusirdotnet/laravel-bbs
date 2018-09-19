@@ -21,7 +21,10 @@ trait UserTrait
     {
         $this->loadRolesRelations();
 
-        return collect([$this->role])->merge($this->roles);
+        return collect([$this->role])
+            ->merge($this->roles)
+            ->unique('id')
+            ->sort();
     }
 
     public function hasRole($name)
