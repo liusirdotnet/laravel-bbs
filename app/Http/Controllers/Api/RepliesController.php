@@ -6,10 +6,39 @@ use App\Http\Controllers\ApiController;
 use App\Http\Requests\Api\ReplyRequest;
 use App\Models\Reply;
 use App\Models\Topic;
+use App\Models\User;
 use App\Transformers\ReplyTransformer;
 
 class RepliesController extends ApiController
 {
+    /**
+     * 话题回复列表。
+     *
+     * @param \App\Models\Topic $topic
+     *
+     * @return \Dingo\Api\Http\Response
+     */
+    public function index(Topic $topic)
+    {
+        $replies = $topic->replies()->paginate(20);
+
+        return $this->response->paginator($replies, new ReplyTransformer());
+    }
+
+    /**
+     * 用户回复列表。
+     *
+     * @param \App\Models\User $user
+     *
+     * @return \Dingo\Api\Http|Response
+     */
+    public function userIndex(User $user)
+    {
+        $replies = $user->replies()->paginate(20);
+
+        return $this->response->paginator($replies, new ReplyTransformer());
+    }
+
     /**
      * 发布回复。
      *
