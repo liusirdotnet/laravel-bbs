@@ -78,8 +78,7 @@ $api->version('v1', [
 
         // 用户回复列表。
         $api->get('users/{user}/replies', 'RepliesController@userIndex')
-        ->name('api.users.replies.index');
-
+            ->name('api.users.replies.index');
 
         $api->group(['middleware' => 'api.auth'], function ($api) {
             // 更新用户信息。
@@ -113,6 +112,10 @@ $api->version('v1', [
             // 删除回复。
             $api->delete('topics/{topic}/replies/{reply}', 'RepliesController@destroy')
                 ->name('api.topics.replies.destroy');
+
+            // 通知列表。
+            $api->get('user/notifications', 'NotificationsController@index')
+                ->name('api.user.notifications.index');
         });
     });
 });
