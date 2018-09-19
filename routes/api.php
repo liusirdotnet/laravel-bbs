@@ -80,6 +80,10 @@ $api->version('v1', [
         $api->get('users/{user}/replies', 'RepliesController@userIndex')
             ->name('api.users.replies.index');
 
+        // 推荐资源列表。
+        $api->get('links', 'LinksController@index')
+            ->name('api.links.index');
+
         $api->group(['middleware' => 'api.auth'], function ($api) {
             // 更新用户信息。
             $api->patch('user', 'UsersController@update')
