@@ -11,7 +11,7 @@ use Dingo\Api\Routing\Router;
 | routes are loaded by the RouteServiceProvider within a group which
 | is assigned the "api" middleware group. Enjoy building your API!
 |
-*/
+ */
 
 $api = app(Router::class);
 
@@ -63,12 +63,23 @@ $api->version('v1', [
         // 话题列表。
         $api->get('topics', 'TopicsController@index')
             ->name('api.topics.index');
+
+        // 用户话题列表。
         $api->get('users/{user}/topics', 'TopicsController@userIndex')
             ->name('api.users.topics.index');
 
         // 话题详情。
         $api->get('topics/{topic}', 'TopicsController@show')
             ->name('api.topics.show');
+
+        // 话题回复列表。
+        $api->get('topics/{topic}/replies', 'RepliesController@index')
+            ->name('api.topics.replies.index');
+
+        // 用户回复列表。
+        $api->get('users/{user}/replies', 'RepliesController@userIndex')
+        ->name('api.users.replies.index');
+
 
         $api->group(['middleware' => 'api.auth'], function ($api) {
             // 更新用户信息。
