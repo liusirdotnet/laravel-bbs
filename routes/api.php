@@ -124,6 +124,10 @@ $api->version('v1', [
             // 通知已读。
             $api->patch('user/read/notifications', 'NotificationsController@read')
                 ->name('api.user.notifications.read');
+
+            // 当前用户角色。
+            $api->get('user/roles', 'RolesController@index')
+                ->name('api.user.roles.index');
         });
     });
 });
