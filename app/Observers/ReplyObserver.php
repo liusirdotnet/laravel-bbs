@@ -24,7 +24,9 @@ class ReplyObserver
         $reply->topic->increment('reply_count', 1);
 
         // 通知作者话题被回复了。
-        $topic->user->notify(new ReplyNotification($reply));
+        if (! $reply->user->isAuthor($topic)) {
+            $topic->user->notify(new ReplyNotification($reply));
+        }
     }
 
     /**
