@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\ActiveUserTrait;
 use App\Models\Traits\HasRelationshipTrait;
 use App\Models\Traits\UserTrait;
 use App\Support\Contracts\UserInterface;
@@ -12,7 +13,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements UserInterface, JWTSubject
 {
-    use UserTrait, HasRelationshipTrait;
+    use UserTrait, HasRelationshipTrait, ActiveUserTrait;
     use Notifiable {
         notify as protected inform;
     }
@@ -82,6 +83,14 @@ class User extends Authenticatable implements UserInterface, JWTSubject
         $this->notification_count = 0;
         $this->save();
         $this->unreadNotifications->markAsRead();
+    }
+
+    public function setAvatarAttribute($path)
+    {
+        if (! starts_with($path, 'http')) {
+            $path = config('app.url') . "/uploads/images/avatars/$path";
+        }
+        $this->attributes['avatar'] = $path;
     }
 
     /**
