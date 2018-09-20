@@ -30,6 +30,7 @@ class User extends Authenticatable implements UserInterface, JWTSubject
         'password',
         'weixin_openid',
         'weixin_unionid',
+        'registration_id',
         'introduction',
         'avatar',
     ];
