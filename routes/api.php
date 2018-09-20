@@ -84,6 +84,10 @@ $api->version('v1', [
         $api->get('links', 'LinksController@index')
             ->name('api.links.index');
 
+        // 活跃用户。
+        $api->get('users/active', 'UsersController@activeIndex')
+            ->name('api.users.active.index');
+
         $api->group(['middleware' => 'api.auth'], function ($api) {
             // 更新用户信息。
             $api->patch('user', 'UsersController@update')
