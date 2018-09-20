@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\Cache;
 
 class UsersController extends ApiController
 {
+    public function activeIndex(User $user)
+    {
+        return $this->response->collection($user->getActiveUsers(), new UserTransformer());
+    }
+
     /**
      * 用户注册。
      *
