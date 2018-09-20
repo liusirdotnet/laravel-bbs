@@ -162,6 +162,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         App\Providers\AdminServiceProvider::class,
         App\Providers\EasySmsServiceProvider::class,
+        App\Providers\JpushServiceProvider::class,
 
     ],
 
