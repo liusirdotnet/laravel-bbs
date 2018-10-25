@@ -235,7 +235,6 @@ class MenusController extends AdminController
                 'message' => '菜单项删除成功！',
                 'alert-type' => 'success',
             ]);
-
     }
 
     /**

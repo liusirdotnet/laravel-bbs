@@ -33,8 +33,7 @@ trait RelationshipParserTrait
     protected function removeRelationshipField(
         DataType $dataType,
         $type = 'access'
-    )
-    {
+    ) {
         $forgetKeys = [];
         foreach ($dataType->{$type . 'Rows'} as $key => $row) {
             if ($row->type === 'relationship') {
